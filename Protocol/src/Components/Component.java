@@ -5,7 +5,6 @@ import Protocol.Messages.Message;
 import SensorReading.DataAdmin;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 /*
     Los Componentes virtualizan los componentes del auto. Tienen un arreglo de valores int y un arreglo de bits significativos.
@@ -41,6 +40,7 @@ public abstract class Component {
         this.bitRange = bitsSignificativos;
     }
 
+    /* Test */
     /**
      * Recibe un Id de mensaje porque ese mensaje ha actualizado sus valores. El componente debe tomar el objeto mensaje,
      * buscando en su Map con el id, xtraer los valores que le conciernen y hacer update de 'myRawBytes y 'myValues'.
@@ -66,7 +66,7 @@ public abstract class Component {
      * @param bitInicio : bit de Inicio
      * @return Posición del valor correspondiente a ese bit de inicio
      */
-    public int getPosition(int bitInicio){
+    private int getPosition(int bitInicio){
         int i = 0;
         int pos = 0;
         while(i < bitInicio){
@@ -76,7 +76,14 @@ public abstract class Component {
         return pos;
     }
 
-
+    /**
+     * Añade un Mensaje e informacion extra a este Componente. Para que luego sepa como actualizarse, sabiendo que
+     * bit le corresponden. Se añade como MessageWithHeader en un Map para tener coste O(1).
+     * @param m Message
+     * @param inicio Bit de inicio en Mensaje
+     * @param fin Bit de fin en Mensaje
+     * @param myInicio Bit de inicio en componente
+     */
     public void addNewMessage(Message m, int inicio, int fin, int myInicio){
         this.myMessages.put(m.getHeader(), new MessagesWithIndexes(m,inicio, fin,myInicio));
     }
