@@ -3,6 +3,7 @@ import java.util.Random;
 
 public class Sandbox {
     public static void main(String args[]) {
+        /*
         BlockingQueue<Integer> sharedQueue = new LinkedBlockingQueue<>();
 
         ExecutorService pes = Executors.newFixedThreadPool(2);
@@ -17,7 +18,25 @@ public class Sandbox {
 
         pes.shutdown();
         ces.shutdown();
-        
+        */
+        int[] a = {1,2,3,4,5};
+        System.out.println(ts(a));
+        calc(a);
+        System.out.println(ts(a));
+    }
+
+    public static void calc(int[] a){
+        a[0] = 1222;
+        return;
+    }
+
+    public static String ts(int[] a){
+        StringBuilder sb = new StringBuilder();
+        for (int aa: a
+             ) {
+            sb.append(String.valueOf(aa) + " ");
+        }
+        return sb.toString();
     }
 }
 

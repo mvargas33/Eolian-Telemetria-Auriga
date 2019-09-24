@@ -3,7 +3,7 @@ import Components.Component;
 
 import java.util.ArrayList;
 
-public class OldMessage {
+public class OldMessage {/*
     private char header;
     private ArrayList<Component> components;    // Values and Sizes available
     private int firstComponentValueIndex;       // Índice del primer valor a usar en el primer componente
@@ -172,5 +172,5 @@ public class OldMessage {
 
     public ArrayList<Component> getComponents(){
         return components;
-    }
+    }*/
 }

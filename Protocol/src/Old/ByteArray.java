@@ -1,4 +1,4 @@
-package Utilidades;
+package Old;
 
 public class ByteArray {
     // Abstract byte representation:
@@ -239,5 +239,7 @@ public class ByteArray {
     }
 
 
+
+    //public int[] updateValues(byte[] bytes, int[] bitSig, int[] )
 
 }

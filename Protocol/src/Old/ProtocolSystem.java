@@ -4,7 +4,7 @@ import Protocol.Messages.Message;
 
 import java.util.ArrayList;
 
-public class ProtocolSystem {
+public class ProtocolSystem {/*
     String type;                        // Significative bytes of components's data
     ArrayList<Component> components;    // All components
     ArrayList<Message> messages;        // Array of Messages => Array of Headers & Components
@@ -166,5 +166,5 @@ public class ProtocolSystem {
             }
         }
         return true;
-    }
+    }*/
 }
