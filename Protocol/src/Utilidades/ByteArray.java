@@ -1,4 +1,4 @@
-package ByteArray;
+package Utilidades;
 
 public class ByteArray {
     // Abstract byte representation:
