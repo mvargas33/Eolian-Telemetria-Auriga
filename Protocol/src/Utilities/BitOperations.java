@@ -11,11 +11,11 @@ public class BitOperations {
      * @param destino : Array donde se actualizarán los valores
      * @param rawBytes : Nuevos Bytes a extraer
      * @param bitSig : Contiene la información de bits significativos de los valores a actualizar
+     * @param bitSig_inicio : Indice de inicio de bits, de 'bitSig'
      * @param rawBytes_inicio : Indice de inicio de extracción de bits, de 'rawBytes'
      * @param rawBytes_fin : Indice de fin de extracción de bits, de 'rawBytes'
-     * @param bitSig_inicio : Indice de inicio de bits, de 'bitSig'
      */
-    public static void updateValuesFromByteArray(int[] destino, byte[] rawBytes, int[] bitSig, int rawBytes_inicio, int rawBytes_fin, int bitSig_inicio){
+    public static void updateValuesFromByteArray(int[] destino, byte[] rawBytes, int[] bitSig, int bitSig_inicio, int rawBytes_inicio, int rawBytes_fin){
         // Inferir índice del primer valor a actualizar y del largo a extraer, dejandolo en 'indiceValor'
         int indiceValor = 0;
         int aux = bitSig_inicio;
@@ -35,7 +35,6 @@ public class BitOperations {
 
         // Calcular el índice del byte inicial de extracción
         aux = (int) Math.floor(rawBytes_inicio / 8.0); // Si quiero bit 7, entonces es byte 0, bit 8 es byte 1
-
 
 
 
