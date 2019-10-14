@@ -94,6 +94,15 @@ public class BitOperations {
     //  Índice en arreglo       |‾‾‾‾‾0‾‾‾‾‾|‾‾‾‾‾1‾‾‾‾‾|‾...‾|‾‾‾n - 2‾‾‾|‾‾‾n - 1‾‾‾|
     //                          ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
     // mask debe retornar short, porque los numeros 0b1XXX XXXX Java los extiende con 1's a la izquierda, no ceros
+
+    /**
+     * Retorna una máscara para rescatar 'cantidadDeBits' desde 'posicionEnByte' en un byte.
+     * Se retorna como short para tener la extensión a 0 a la izquierda y no de 1, ya que
+     * 0b1XXX XXXX extiende con 1's a la izquierda en Java. Esto evita código sucio y casteos en otros métodos.
+     * @param posicionEnByte : Indice del bit izquierdo: Valores de 0-7
+     * @param cantidadDeBits: Cantidad de bits a rescatar: Valores de 0-7 dependiendo de posicionEnByte
+     * @return máscara para rescatar bits
+     */
     public static short genMask(int posicionEnByte, int cantidadDeBits){
         // 0000  0001  0010  0011  0100  0101  0110  0111  1000  1001  1010  1011  1100  1101  1110  1111
         // 0     1     2     3     4     5     6     7     8     9     A     B     C     D     E     F
