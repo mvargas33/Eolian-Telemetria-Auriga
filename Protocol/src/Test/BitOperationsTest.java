@@ -6,21 +6,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BitOperationsTest {
 
+    /**
+     * Varifica el funcionamiento del método updateValuesFromByteArray() que actualiza un array destino extrayendo bits
+     * de un arreglo de bytes, segun los bits significativos de un arreglo de enteros para un rango dado.
+     */
     @org.junit.jupiter.api.Test
     void TestDeCorrectitud1() {
         int[] destino = {0,1,2,3};
-        byte[] rawBytes = {0b00000000, 0b00000001, 0b00000010, 0b00000011};
-        int[] bitSig = {8, 8, 8, 8};
+        byte[] rawBytes = {(byte) 0b00110011, (byte) 0b10101010, (byte) 0b00001111, (byte) 0b00100010}; // Array de ejemplo
+        int[] bitSig = {8, 8, 8, 8}; // Sacar ocho cada vez
         int bitSigInicio = 0;
         int rawBytes_inicio = 0;
         int rawBytes_fin = 8*4 - 1;
 
+        int[] res = {0b0000000000110011, 0b0000000010101010, 0b0000000000001111, 0b0000000000100010};
         BitOperations.updateValuesFromByteArray(destino, rawBytes, bitSig, bitSigInicio, rawBytes_inicio, rawBytes_fin);
-
-        int[] respuesta = {0, 1, 2, 3};
-
-
-        assertArrayEquals(destino, respuesta);
+        assertArrayEquals(res, destino);
     }
 
     /**

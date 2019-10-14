@@ -1,12 +1,19 @@
 package Utilities;
 
 public class BitOperations {
+    // Raw tiene n bytes de la forma:
+    //                          _______________________________________________________
+    //  bytes[] raw             | xxxx xxxx | xxxx xxxx | ... | xxxx xxxx | xxxx xxxx |
+    //  Índice de bytes         |‾0123‾4567‾|‾0123‾4567‾|‾...‾|‾0123‾4567‾|‾0123‾4567‾|
+    //  Índice en arreglo       |‾‾‾‾‾0‾‾‾‾‾|‾‾‾‾‾1‾‾‾‾‾|‾...‾|‾‾‾n - 2‾‾‾|‾‾‾n - 1‾‾‾|
+    //                          ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+
 
     /**
      * Coloca en 'destino' los valores correspondientes a la lectura hecha en 'rawBytes' desde el bit 'rawBytes_inicio'
-     * hasta el bit 'rawBytes_fin' correspondientes con los largos en 'bitSig', calzando 'rawBytes_inicio' con 'bitSig_inicio'
-     * extrayendo los bits significativos de 'bitSig', leyendo el valor correspondiente y colocandolo en el índice
-     * correspondiente en 'destino'. Infiere el índice en 'destino' con el índice inferido de 'bitSig' a partir de 'bitSig_inicio'
+     * hasta el bit 'rawBytes_fin' correspondientes con los largos en 'bitSig', extrayendo los bits significativos de 'bitSig',
+     * desde el bit 'bitSig_inicio', leyendo el valor correspondiente y colocandolo en el índice correspondiente en 'destino'.
+     * Infiere el índice en 'destino' con el índice inferido de 'bitSig' a partir de 'bitSig_inicio'
      * NOTA: Los bytes están indexados de 0 a 7 y NO de 1 a 8.
      * @param destino : Array donde se actualizarán los valores
      * @param rawBytes : Nuevos Bytes a extraer
@@ -16,29 +23,24 @@ public class BitOperations {
      * @param rawBytes_fin : Indice de fin de extracción de bits, de 'rawBytes'
      */
     public static void updateValuesFromByteArray(int[] destino, byte[] rawBytes, int[] bitSig, int bitSig_inicio, int rawBytes_inicio, int rawBytes_fin){
-        // Inferir índice del primer valor a actualizar y del largo a extraer, dejandolo en 'indiceValor'
-        int indiceValor = 0;
-        int aux = bitSig_inicio;
-        while(aux != 1){// Si antes hay 10 bits, y quiero empezar del 11, habrán 10 bits antes de llegar, quedando en 1 al final
-            aux -= bitSig[indiceValor];
-            indiceValor++;
+        // Índice en arreglo bitSig y dest.
+        int indiceBitSigYDest = 0;
+        int count = 0;
+        while(count != bitSig_inicio){
+            count += bitSig[indiceBitSigYDest];
+            indiceBitSigYDest++;
         }
 
-        // Infiero el índice final de extracción
-        int indiceFinal = indiceValor; // Empezamos desde donde inicia para iterar menos
-        aux = rawBytes_fin - rawBytes_inicio; // Bits a avanzar desde 'bitSig_inicio' en indice 'indiceValor'
-        while(aux != 1){
-            aux -= bitSig[indiceFinal];
-            if(aux == -1){break;} // Ej: Necesitaba avanzar dos, estando en uno, y resto 3, me da -1, entonces estoy en índice correcto
-            indiceFinal++;
+        int bitsASacar; // Bits a sacar en cada iteración
+        int valor; // Valor a extraer en cada iteración
+
+        while(rawBytes_inicio != rawBytes_fin + 1){ // Hasta que no haya sacado todos los bits | es +1, ya que por ej, si tengo desde 0 hasta 1, extraigo 2, entonces 0 + 2 = 2 > 1
+            bitsASacar = bitSig[indiceBitSigYDest]; // Veo cuantos bits tengo que sacar ahora
+            valor = extraerBits(rawBytes, rawBytes_inicio, bitsASacar); // Extraigo desde rawBytesInicio, la cantidad de bitSig
+            destino[indiceBitSigYDest] = valor; // Actualizo valor interpretado
+            rawBytes_inicio += bitsASacar; // Sumo la cantidad que saqué
+            indiceBitSigYDest++; // Avanzo en bitSig & dest
         }
-
-        // Calcular el índice del byte inicial de extracción
-        aux = (int) Math.floor(rawBytes_inicio / 8.0); // Si quiero bit 7, entonces es byte 0, bit 8 es byte 1
-
-
-
-
     }
 
     public String byteArrayToString(byte[] array){
@@ -87,13 +89,6 @@ public class BitOperations {
         //System.out.println(Integer.toBinaryString(valor));
         return valor;
     }
-    // Raw tiene n bytes de la forma:
-    //                          _______________________________________________________
-    //  bytes[] raw             | xxxx xxxx | xxxx xxxx | ... | xxxx xxxx | xxxx xxxx |
-    //  Índice de bytes         |‾0123‾4567‾|‾0123‾4567‾|‾...‾|‾0123‾4567‾|‾0123‾4567‾|
-    //  Índice en arreglo       |‾‾‾‾‾0‾‾‾‾‾|‾‾‾‾‾1‾‾‾‾‾|‾...‾|‾‾‾n - 2‾‾‾|‾‾‾n - 1‾‾‾|
-    //                          ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-    // mask debe retornar short, porque los numeros 0b1XXX XXXX Java los extiende con 1's a la izquierda, no ceros
 
     /**
      * Retorna una máscara para rescatar 'cantidadDeBits' desde 'posicionEnByte' en un byte.
