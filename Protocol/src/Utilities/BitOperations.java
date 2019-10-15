@@ -8,6 +8,84 @@ public class BitOperations {
     //  Índice en arreglo       |‾‾‾‾‾0‾‾‾‾‾|‾‾‾‾‾1‾‾‾‾‾|‾...‾|‾‾‾n - 2‾‾‾|‾‾‾n - 1‾‾‾|
     //                          ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 
+    public static String ArraytoString(byte[] byteArray){
+        StringBuilder sb = new StringBuilder();
+        for (byte b : byteArray) {
+            sb.append(Integer.toBinaryString(b & 0x00FF));
+            sb.append(" ");
+        }
+        sb.append('\n');
+        return sb.toString();
+    }
+    /**
+     * Coloca en 'rawBytes' los 'bitSig[i]' bits sinificativos del valor 'source[i]', para cada i comenzando en el bit
+     * 'bitSig_inicio' de 'bitSig', desde el bit 'rawBytes_inicio' de 'rawBytes'.
+     * @param source : valores reales a poner en 'rawBytes' según los bits significativos de 'bitsSig'
+     * @param rawBytes : array de bytes destino
+     * @param bitSig : contiene la información de bits significativos
+     * @param bitSig_inicio : bit de inicio de valores reales
+     * @param rawBytes_inicio : bit de inicio en array destino
+     * @param rawBytes_fin : bit de fin en array destino
+     */
+    public static void updateByteArrayFromValues(int[] source, byte[] rawBytes, int[] bitSig, int bitSig_inicio, int rawBytes_inicio, int rawBytes_fin) {
+        // Índice en arreglo bitSig y dest.
+        int indiceBitSigYSource = 0;
+        int count = 0;
+        while(count != bitSig_inicio){
+            count += bitSig[indiceBitSigYSource];
+            indiceBitSigYSource++;
+        }
+
+        int valorAponer;
+        int bitsSignificativos;
+
+        while(rawBytes_inicio != rawBytes_fin + 1) {// Hasta que no haya puesto todos los bits | es +1, ya que por ej, si tengo desde 0 hasta 1, pongo 2, entonces 0 + 2 = 2 > 1
+            valorAponer = source[indiceBitSigYSource];
+            //System.out.println(Integer.toBinaryString(valorAponer));
+            bitsSignificativos = bitSig[indiceBitSigYSource];
+            //System.out.println(ArraytoString(rawBytes));
+            ponerValorEnArray(rawBytes, rawBytes_inicio, valorAponer, bitsSignificativos);
+            //System.out.println(ArraytoString(rawBytes));
+            rawBytes_inicio += bitsSignificativos; // Acabo de poner 'bitsSignificativos' bits ahora
+            indiceBitSigYSource++;
+        }
+
+    }
+
+    /**
+     * Pone en 'rawBbytes' los 'bitsSignificativos' del valor 'valorAponer' desde el bit 'rawBytes_inicio'
+     * @param rawBytes : array donde poner valor
+     * @param rawBytes_inicio : bit de array desde donde poner valor
+     * @param valorAponer : valor a poner
+     * @param bitsAPoner : bits significativos del valor a poner
+     */
+    public static void ponerValorEnArray(byte[] rawBytes, int rawBytes_inicio, int valorAponer, int bitsAPoner) {
+        int index = rawBytes_inicio / 8;
+        int subIndex = rawBytes_inicio % 8;
+
+        short mask;
+        while(bitsAPoner != 0){
+            if(bitsAPoner > (8 - subIndex)){ // Pongo hasta el final del byte actual
+                if(subIndex != 0){
+                    mask = genMask(subIndex, (8 - subIndex)); // desde subIndex, voy a poner (8 - subIndex) bits
+                    rawBytes[index] |= (byte) ((valorAponer >> (bitsAPoner - (8 - subIndex))) & mask); // Dejo los( 8 - subindex) bits a la derecha y los pongo
+                    bitsAPoner -= (8 - subIndex); // Puse (8 - subIndex) bits
+                    index++; // Avanzo en arreglo de bytes para siguientes bits, ya que este esta lleno ahora
+                    subIndex = 0; // Ahora parto desde el 0 del byte siguiente
+                }else{
+                    mask = 0x00FF; // Ahora llamada a genMask
+                    rawBytes[index] |= (byte) ((valorAponer >> (bitsAPoner - 8)) & mask); // Dejo los 8 bits que necesito
+                    bitsAPoner -= 8;
+                    index++; // Paso a siguiente byte, ya que puse 8
+                }
+            }else{
+                mask = genMask(subIndex, bitsAPoner);
+                rawBytes[index] |= (byte) ((valorAponer << ((8 - bitsAPoner) - subIndex)) & mask); // (8 - bitsAPoner) me da el indice en source, subIndex el indice en raw. Los calzo
+                bitsAPoner = 0;
+            }
+        }
+    }
+
 
     /**
      * Coloca en 'destino' los valores correspondientes a la lectura hecha en 'rawBytes' desde el bit 'rawBytes_inicio'
@@ -43,15 +121,6 @@ public class BitOperations {
         }
     }
 
-    public String byteArrayToString(byte[] array){
-        StringBuilder sb = new StringBuilder();
-        for (byte b : array) {
-            sb.append(Integer.toBinaryString(b & 0xFF));
-            sb.append(" ");
-        }
-        sb.append('\n');
-        return sb.toString();
-    }
 
     /**
      * Extrae de un byte[] el valor númerico de los 'cantidad' bits significativos del array, comenzando en el bit 'desde'.
