@@ -17,18 +17,19 @@ public abstract class Component {
     /* Estructura necesaria para guardar correlación mensage-componente, guarda que intervalos de bits de un mensaje le conciernen a qué intervalos de bits en este componente */
     public class MessagesWithIndexes {
         Message message; // RAW bits
-        int inicio;
-        int fin;
-        int mi_inicio;
+        int raw_inicio; // De donde este componente inicia sus bits en mensaje
+        int raw_fin; // Donde este componente termina sus bits en mensaje
+        int myBitSig_inicio; // Desde que bit en mi array tengo que poner en mensaje
 
-        private MessagesWithIndexes(Message m, int inicio, int fin, int mi_inicio) {
+        private MessagesWithIndexes(Message m, int raw_inicio, int raw_fin, int myBitSig_inicio) {
             this.message = m;
-            this.inicio = inicio;
-            this.fin = fin;
-            this.mi_inicio = mi_inicio;
+            this.raw_inicio = raw_inicio;
+            this.raw_fin = raw_fin;
+            this.myBitSig_inicio = myBitSig_inicio;
         }
     }
 
+    public String ID; // Component ID, can be the name
     private int[] myValues;     // True values
     private int[] bitRange;     // Bits significativos, MUST match myvalues[] lenght
     private LocalMasterAdmin myAdmin;           // Queue admin que entrega info a DatabaseADmin y ServerAdmin
@@ -40,6 +41,16 @@ public abstract class Component {
         this.bitRange = bitsSignificativos;
     }
 
+
+
+    /**
+     * Direct replacement of values[]. Then updates all the messages of this component
+     * @param newValues
+     */
+    public void replaceMyValues(int[] newValues){
+        this.myValues = newValues; // Just replace the values
+    }
+
     /* Test */
     /**
      * Recibe un Id de mensaje porque ese mensaje ha actualizado sus valores. El componente debe tomar el objeto mensaje,
@@ -48,11 +59,11 @@ public abstract class Component {
      * datos y mostrar en la aplicación Web.
      * @param msgId : Id del mensaje que acaba de actualizarse
      */
-    public void updateMesg(char msgId){
+    public void updateMsg(char msgId){
         MessagesWithIndexes m = myMessages.get(msgId);
         byte[] newBytes = m.message.getBytes();     // Get new bytes
-        int position = getPosition(m.mi_inicio);    // Indice de bitRange y My Values
-        int end = m.fin - m.inicio + m.mi_inicio;
+        int position = getPosition(m.myBitSig_inicio);    // Indice de bitRange y My Values
+        int end = m.raw_fin - m.raw_inicio + m.myBitSig_inicio;
         // Mientras hayan bits que consumir
         while(end > 0){
             // TODO: Hacer update de myRawBytes con newBytes,
