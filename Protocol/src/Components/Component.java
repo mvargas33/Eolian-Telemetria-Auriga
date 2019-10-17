@@ -2,7 +2,9 @@ package Components;
 
 import LocalSystems.LocalMasterAdmin;
 import Protocol.Messages.Message;
+import Protocol.Sending.SenderAdmin;
 import SensorReading.DataAdmin;
+import Utilities.BitOperations;
 
 import java.util.HashMap;
 
@@ -31,16 +33,18 @@ public abstract class Component {
 
     public String ID; // Component ID, can be the name
     private int[] myValues;     // True values
-    private int[] bitRange;     // Bits significativos, MUST match myvalues[] lenght
+    private int[] bitSig;     // Bits significativos, MUST match myvalues[] lenght
     private LocalMasterAdmin myAdmin;           // Queue admin que entrega info a DatabaseADmin y ServerAdmin
     private HashMap<Character, MessagesWithIndexes> myMessages; // Los mensajes que contienen información de mi componente
     private DataAdmin myadmin;                  // Quien me actualiza directamente, para luego avisarle a mis mensajes que se actualices, y encvíen.
 
-    public Component(int[] valores, int[] bitsSignificativos) {
-        this.myValues = valores;
-        this.bitRange = bitsSignificativos;
-    }
+    private SenderAdmin mySenderAdmin;
 
+    public Component(SenderAdmin mySenderAdmin, int[] valores, int[] bitsSignificativos) {
+        this.myValues = valores;
+        this.bitSig = bitsSignificativos;
+        this.mySenderAdmin = mySenderAdmin; // Thread de Sender Admin debe ser creado antes que todos los componentes.
+    }
 
 
     /**
@@ -54,38 +58,19 @@ public abstract class Component {
     /* Test */
     /**
      * Recibe un Id de mensaje porque ese mensaje ha actualizado sus valores. El componente debe tomar el objeto mensaje,
-     * buscando en su Map con el id, xtraer los valores que le conciernen y hacer update de 'myRawBytes y 'myValues'.
-     * Luego debe avisar a 'LocalMasterAdmin' que lo revise para extraer todos sus valores y guardarlos en la base de
+     * buscando en su Map con el id, extraer los valores que le conciernen y hacer update de 'myRawBytes y 'myValues'.
+     * Luego debe avisar a 'SenderAdmin' que lo revise para extraer todos sus valores y guardarlos en la base de
      * datos y mostrar en la aplicación Web.
      * @param msgId : Id del mensaje que acaba de actualizarse
      */
     public void updateMsg(char msgId){
-        MessagesWithIndexes m = myMessages.get(msgId);
-        byte[] newBytes = m.message.getBytes();     // Get new bytes
-        int position = getPosition(m.myBitSig_inicio);    // Indice de bitRange y My Values
-        int end = m.raw_fin - m.raw_inicio + m.myBitSig_inicio;
-        // Mientras hayan bits que consumir
-        while(end > 0){
-            // TODO: Hacer update de myRawBytes con newBytes,
-            end -= this.bitRange[position];
-            position++;
-        }
+        MessagesWithIndexes m = myMessages.get(msgId); // Get MessageWithIndexes
+        byte[] bytes = m.message.getBytes();           // Get old bytes from Message
+        BitOperations.updateByteArrayFromValues(myValues, bytes, bitSig, m.myBitSig_inicio,  m.raw_inicio, m.raw_fin); // Update Messsage con lo que me corresponde
+        m.message.replaceBytes(bytes); // TODO: Ver si esta linea es necesaria | Reemplazo directo de bytes de mensaje
+        this.mySenderAdmin.putMessageInQueue(m.message);
     }
 
-    /**
-     * Recibe un bit de inicio y retorna la posicion del valor correspondiente
-     * @param bitInicio : bit de Inicio
-     * @return Posición del valor correspondiente a ese bit de inicio
-     */
-    private int getPosition(int bitInicio){
-        int i = 0;
-        int pos = 0;
-        while(i < bitInicio){
-            i += this.bitRange[i]; // Avanzo hasta alcanzar el bitDeInicio
-            pos++;
-        }
-        return pos;
-    }
 
     /**
      * Añade un Mensaje e informacion extra a este Componente. Para que luego sepa como actualizarse, sabiendo que

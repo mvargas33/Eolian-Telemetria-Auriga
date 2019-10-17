@@ -31,7 +31,7 @@ public class Message {
         this.components.add(c);
     }
 
-    public void updateMyBytes(byte[] newBytes){
+    public void replaceBytes(byte[] newBytes){
         this.bytes = newBytes; // Update myself
         // Notify my components to check at my values
     }
