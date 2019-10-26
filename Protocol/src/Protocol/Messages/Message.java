@@ -1,6 +1,7 @@
 package Protocol.Messages;
 
 import Components.Component;
+import Utilities.BitOperations;
 
 import java.util.LinkedList;
 
@@ -50,11 +51,33 @@ public class Message {
         }
     }
 
+    /*--------------------------------------------------- RESOURCES ---------------------------------------------------*/
+
+    /**
+     * Retorna el header del Message
+     * @return : Header del message
+     */
     public char getHeader() {
         return header;
     }
 
+    /**
+     * Retorna los bytes[] del mensaje
+     * @return : bytes[] del mensaje
+     */
     public byte[] getBytes() {
         return bytes;
+    }
+
+    /**
+     * Imprime el contenido del mensaje
+     * @return : Print del Message
+     */
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.header);sb.append(" | ");
+        sb.append(BitOperations.ArraytoString(this.bytes));
+        return sb.toString();
     }
 }
