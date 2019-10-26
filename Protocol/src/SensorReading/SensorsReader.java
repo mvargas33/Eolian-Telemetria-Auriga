@@ -13,6 +13,11 @@ public class SensorsReader {
         this.allComponents = allComponents;
     }
 
+    /**
+     * Actualiza el array de enteros de un componente por el array de 'newValues'
+     * @param componentName : Componente a actualizar
+     * @param newValues : Nuevos valores a poner en array de componente
+     */
     public void updateDirectly(String componentName, int[] newValues){
         allComponents.get(componentName).replaceMyValues(newValues);
     }

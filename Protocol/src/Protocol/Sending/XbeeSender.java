@@ -1,5 +1,7 @@
 package Protocol.Sending;
 
+import Protocol.Receiving.XbeeReceiver;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -9,12 +11,14 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class XbeeSender implements Runnable{
      private BlockingQueue<byte[]> bytesToSend; // Queue de bytes[] para enviar por Xbee
+    private XbeeReceiver myReceiver; // TODO: ONLY FOR TESTING, DELETE AFTER REAL TESING
 
     /**
      * Constructor sólo se encarga de iniciar cola con implementación de LinkedBlockingQueue()
      */
-    XbeeSender(){
+    XbeeSender(XbeeReceiver xbeeReceiver){
         this.bytesToSend = new LinkedBlockingQueue<>();
+        this.myReceiver = xbeeReceiver; // TODO: ONLY FOR TESTING, DELETE AFTER REAL TESING
     }
 
     /**
@@ -28,9 +32,10 @@ public class XbeeSender implements Runnable{
     /**
      * Toma un byte[] array de la Queue y lo envía a través de las Xbees
      */
-    public void sendByte(){
+    public void sendByte() throws Exception{
         byte[] b = this.bytesToSend.poll(); // Get byte array from queue
         // TODO: SEND THROW XBEE()
+        this.myReceiver.receiveByte(b); // TODO: ONLY FOR TESTING, DELETE AFTER REAL TESING
     }
 
     /**
@@ -40,7 +45,12 @@ public class XbeeSender implements Runnable{
     @Override
     public void run() {
         while(true){
-            sendByte(); // Sacar byte[] de la cola y enviarlo
+            try{
+                sendByte(); // Sacar byte[] de la cola y enviarlo
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }
     }
 }

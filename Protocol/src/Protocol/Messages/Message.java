@@ -13,27 +13,41 @@ public class Message {
     private char header;
     private int largoEnBytes;
     private byte[] bytes;
-    private LinkedList<Component> components;
+    private LinkedList<Component> myComponents;
 
     public void Message(char header, int largoEnBytes, byte[] myBytes){
         this.header = header;
         this.largoEnBytes = largoEnBytes;
         this.bytes = myBytes;
-        this.components = new LinkedList<>();
+        this.myComponents = new LinkedList<>();
     }
 
     public void Message(char header, int largoEnBytes, byte[] myBytes, LinkedList<Component> components){
         this.Message(header, largoEnBytes, myBytes);
-        this.components = components;
+        this.myComponents = components;
     }
+
+    /*-------------------------------------------------- INITIALIZING -------------------------------------------------*/
 
     public void addComponent(Component c){
-        this.components.add(c);
+        this.myComponents.add(c);
     }
 
-    public void replaceBytes(byte[] newBytes){
+
+    /*--------------------------------------------------- RECEIVING ---------------------------------------------------*/
+
+    /**
+     * Actualiza los bytes del Mensaje por los actualizados. Luego llama a uno a uno todos los componentes que le corresponden
+     * para que miren el mensaje y estos extraigan los bits que necesiten.
+     * @param newBytes : Valores actualizados de los bytes del mensaje
+     */
+    public void updateRawBytes(byte[] newBytes){
         this.bytes = newBytes; // Update myself
         // Notify my components to check at my values
+        for (Component c: this.myComponents
+             ) {
+            c.updateMyValues(this.header); // Mírame! Me actualicé
+        }
     }
 
     public char getHeader() {
