@@ -32,7 +32,7 @@ public abstract class Component {
         }
     }
 
-    public String ID; // Component ID, can be the name
+    private String ID; // Component ID, can be the name
     private int[] myValues;     // True values
     private int[] bitSig;     // Bits significativos, MUST match myvalues[] lenght
 
@@ -49,7 +49,8 @@ public abstract class Component {
      * @param valores : Array de valores del componente
      * @param bitsSignificativos : Array de bits significativos de cada valor en valores[]
      */
-    public Component(SenderAdmin mySenderAdmin, int[] valores, int[] bitsSignificativos) {
+    public Component(SenderAdmin mySenderAdmin, int[] valores, int[] bitsSignificativos, String ID) {
+        this.ID = ID;
         this.myValues = valores;
         this.bitSig = bitsSignificativos;
         this.mySenderAdmin = mySenderAdmin; // Thread de Sender Admin debe ser creado antes que todos los componentes.
@@ -61,7 +62,8 @@ public abstract class Component {
      * @param valores : Array de valores del componente
      * @param bitsSignificativos : Array de bits significativos de cada valor en valores[]
      */
-    public Component(LocalMasterAdmin myLocalMasterAdmin, int[] valores, int[] bitsSignificativos) {
+    public Component(LocalMasterAdmin myLocalMasterAdmin, int[] valores, int[] bitsSignificativos, String ID) {
+        this.ID = ID;
         this.myValues = valores;
         this.bitSig = bitsSignificativos;
         this.myLocalMasterAdmin = myLocalMasterAdmin; // Thread de myLocalMasterAdmin debe ser creado antes que todos los componentes.
@@ -73,13 +75,13 @@ public abstract class Component {
      * Añade un Mensaje e informacion extra a este Componente. Para que luego sepa como actualizarse, sabiendo que
      * bit le corresponden. Se añade como MessageWithHeader en un Map para tener coste O(1).
      * @param m Message
-     * @param inicio Bit de inicio en Mensaje
-     * @param fin Bit de fin en Mensaje
-     * @param myInicio Bit de inicio en componente
+     * @param raw_inicio Bit de inicio en Mensaje
+     * @param raw_fin Bit de fin en Mensaje
+     * @param bitSigInicio Bit de inicio en componente
      */
-    public void addNewMessage(Message m, int inicio, int fin, int myInicio){
-        this.listOfMyMessagesWithIndexes.add(new MessagesWithIndexes(m,inicio, fin,myInicio));
-        this.hashOfMyMessagesWithIndexes.put(m.getHeader(), new MessagesWithIndexes(m,inicio, fin,myInicio));
+    public void addNewMessage(Message m, int raw_inicio, int raw_fin, int bitSigInicio){
+        this.listOfMyMessagesWithIndexes.add(new MessagesWithIndexes(m,raw_inicio, raw_fin,bitSigInicio));
+        this.hashOfMyMessagesWithIndexes.put(m.getHeader(), new MessagesWithIndexes(m,raw_inicio, raw_fin,bitSigInicio));
     }
 
     /*---------------------------------------------------- SENDING ----------------------------------------------------*/
@@ -136,6 +138,18 @@ public abstract class Component {
     }
 
     /**
+     * Retorna int[] de values
+     * @return : Array de valores reales
+     */
+    public int[] getMyValues(){return this.myValues;}
+
+    /**
+     * Retorna int[] de bitSig
+     * @return : Retorna array de bits significativos
+     */
+    public int[] getBitSig(){return this.bitSig;}
+
+    /**
      * Retorna el array de valores como String
      * @return : Array de valores como String
      */
@@ -148,6 +162,35 @@ public abstract class Component {
             sb.append(" ");
         }
         sb.append("]");
+        return sb.toString();
+    }
+
+    /**
+     * Retorna el array de bits significativos como String
+     * @return : Array de bits significativos como String
+     */
+    public String bitSigToString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("[ ");
+        for (int valor: this.bitSig
+        ) {
+            sb.append(valor);
+            sb.append(" ");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    /**
+     * Retorna visualización de Componente como String
+     * @return : Componente como String
+     */
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Component ID       : ");sb.append(this.ID);sb.append("\n");
+        sb.append("Valores            : ");sb.append(valuesToString());sb.append("\n");
+        sb.append("Bits significativos: ");sb.append(bitSigToString());sb.append("\n");
         return sb.toString();
     }
 }

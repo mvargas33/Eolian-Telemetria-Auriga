@@ -15,18 +15,18 @@ public class Message {
     private byte[] bytes;
     private LinkedList<Component> myComponents;
 
-    public void Message(char header, int largoEnBytes, byte[] myBytes){
+    public Message(char header, int largoEnBytes){
         this.header = header;
         this.largoEnBytes = largoEnBytes;
-        this.bytes = myBytes;
+        this.bytes = new byte[largoEnBytes];
         this.myComponents = new LinkedList<>();
     }
-
-    public void Message(char header, int largoEnBytes, byte[] myBytes, LinkedList<Component> components){
-        this.Message(header, largoEnBytes, myBytes);
+/*
+    public Message(char header, int largoEnBytes, LinkedList<Component> components){
+        this.Message(header, largoEnBytes);
         this.myComponents = components;
     }
-
+*/
     /*-------------------------------------------------- INITIALIZING -------------------------------------------------*/
 
     public void addComponent(Component c){

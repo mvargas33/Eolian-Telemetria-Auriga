@@ -1,8 +1,6 @@
 package Components;
 
-public class BMS extends Component {
+public class BMS {
 
-    public BMS(int[] valores, int[] bitsSignificativos) {
-        super(valores, bitsSignificativos);
-    }
+
 }

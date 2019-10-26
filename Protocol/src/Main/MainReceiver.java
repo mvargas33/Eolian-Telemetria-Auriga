@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class MainEscolta {
+public class MainReceiver {
     public static void main(String args[]) {
         int consumers = 50;
         BlockingQueue<byte[]> sharedQueue = new LinkedBlockingQueue<>();     // Buffer
