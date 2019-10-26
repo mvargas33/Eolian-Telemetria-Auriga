@@ -45,9 +45,9 @@ public class Initializer {
         ArrayList<Message> messages = new ArrayList<>();            // For debugging purposes
 
         int iCompActual = 0;                                        // Indice de componentes
-        Component compAtual = allComponents.get(iCompActual);       // Componente actual
+        Component compActual = allComponents.get(iCompActual);       // Componente actual
         int iValorAtual = 0;                                        // Indice en array de bitSig[]
-        int[] arrayBitSigActual = compAtual.getBitSig();                 // Bits significativos actuales
+        int[] arrayBitSigActual = compActual.getBitSig();                 // Bits significativos actuales
         int tamanoBitSig = arrayBitSigActual.length;                     // Cantidad de valores del Componente, para no recalcular
 
         int bitSigInicio = 0;                                      // Desde que bit en bitSig me corresponde mensaje
@@ -57,7 +57,7 @@ public class Initializer {
         Message mensajeActual = new Message(header, msgLimitSize);  // Mensaje Actual
         int tamanoMsgActual = 0;                                    // Cuenta de bits que ya llevamos en mensaje
 
-        mensajeActual.addComponent(compAtual);                      // Añadimos primer componente
+        mensajeActual.addComponent(compActual);                      // Añadimos primer componente
 
         while(iCompActual < allComponents.size()){ // Mientras tenga componentes por revisar
 
@@ -66,7 +66,7 @@ public class Initializer {
                 // Si puedo poner un valor más
                 if(tamanoMsgActual + arrayBitSigActual[iValorAtual] <= msgLimitSize){
                     tamanoMsgActual += arrayBitSigActual[iValorAtual]; // Aumento tamaño del mensaje actual
-                    bitSigInicio += arrayBitSigActual[iValorAtual];  // Sumo los bits que llevo
+                    iValorAtual++; // Avanzo al siguiente
                 }else{
                     break; // Cambio de Mensaje o Componente
                 }
@@ -79,22 +79,22 @@ public class Initializer {
                 raw_fin = tamanoMsgActual - 1; // Bit de final en Mensaje actual para componente en indice iCompActual
 
                 // Le digo al Componente que tiene un nuevo mensaje, y los bits que le corresponden
-                compAtual.addNewMessage(mensajeActual, raw_inicio, raw_fin, bitSigInicio);
+                compActual.addNewMessage(mensajeActual, raw_inicio, raw_fin, bitSigInicio);
 
                 iCompActual++; // Siguiente componente
 
                 if(iCompActual < allComponents.size()){ // Si me queda otro componente por revisar
 
-                    compAtual = allComponents.get(iCompActual); // Paso al siguiente componente
+                    compActual = allComponents.get(iCompActual); // Paso al siguiente componente
                     iValorAtual = 0; // Parto del indice 0
-                    arrayBitSigActual = compAtual.getBitSig(); // Extraigo array de bits significativos
+                    arrayBitSigActual = compActual.getBitSig(); // Extraigo array de bits significativos
                     tamanoBitSig = arrayBitSigActual.length; // Para no recalcular
                     bitSigInicio = 0; // Desde primer índice del nuevo componente
 
                     // Si puedo calzar al menos un valor más en el mensaje
                     if(tamanoMsgActual + arrayBitSigActual[iValorAtual] <= msgLimitSize){
                         raw_inicio = tamanoMsgActual; // Desde bit siguiente al componente anterior
-                        mensajeActual.addComponent(compAtual); // Agrego nuevo componente al mensaje
+                        mensajeActual.addComponent(compActual); // Agrego nuevo componente al mensaje
                     }
                     // Acá voy a while de inicio y voy poniendo mas bits en el mensaje actual
                 }
@@ -102,99 +102,31 @@ public class Initializer {
 
             }
             // CAMBIO DE MENSAJE
-            // No puedo poner nada más en el mensaje actual (teniendo un valor en mano)
+            // No puedo poner nada más en el mensaje actual (teniendo un valor en mano i.e. no aumento iValorActual)
             else if (tamanoMsgActual + arrayBitSigActual[iValorAtual] > msgLimitSize){
-                raw_fin = tamanoMsgActual - 1;
-                compAtual.addNewMessage(mensajeActual, raw_inicio, raw_fin, bitSigInicio);
+                raw_fin = tamanoMsgActual - 1; // Fin de bits en este mensaje
+                compActual.addNewMessage(mensajeActual, raw_inicio, raw_fin, bitSigInicio);
+                bitSigInicio += (raw_fin - raw_inicio) + 1; // Nuevo inicio en bitSig para siguiente mensaje: Los que puse + 1
 
-            }
-
-
-        }
-    }
-
-
-    public static ArrayList<Message> genMessagesV2(int limit, ArrayList<Component> c, String compression) throws Exception {
-
-        while (iCompActual < c.size()) { // Si estoy en un componente real
-
-            // Si tentativamente puedo poner algo & Estoy en un valor real
-            while (tamanoMsgActual < limit && iValorActual < bitsSignificativos.length) {
-                // Si efectivamente puedo poner un valor más
-                if (tamanoMsgActual + bitsSignificativos[iValorActual] <= limit) {
-                    tamanoMsgActual += bitsSignificativos[iValorActual];
-                    iValorActual++;
-                } else {
-                    break;
-                }
-
-            }
-
-            // CAMBIO DE COMPONENTE
-            // Si se me acabaron los valores en componente actual
-            if (iValorActual >= bitsSignificativos.length) {
-
-                if (tamanoMsgActual == limit) { // Y además tengo que cambiar de mensaje porque calzé justo
-                    mensajeActual.setLastComponentValueIndex(iValorActual - 1); // Marco el fin en el índice actual
-                    mensajes.add(mensajeActual); // Añadir a lista general antes de pasar ak siguiente componente
-                    //System.out.print(mensajeActual.toString());
-
-                }
-
-                iCompActual++; // Paso al siguiente componente
-                iValorActual = 0; // Parto desde el primer valor del nuevo componente
-
-                if (iCompActual < c.size()) { // Si realmente me quedan componentes
-                    compActual = c.get(iCompActual);
-                    bitsSignificativos = compActual.getSizes(compression);    // Extraigo largos de bits en componente actual
-
-                    if (tamanoMsgActual + bitsSignificativos[iValorActual] <= limit) { // Y puedo calzar al menos un valor del nuevo componente
-                        mensajeActual.addComponent(compActual); // Lo añado al mensaje actual
-                    }
-                }
-
-            }
-
-            // CAMBIO DE MENSAJE
-            // Si no puedo poner nada más en el mensaje actual (teniendo un valor en mano)
-            else if (tamanoMsgActual + bitsSignificativos[iValorActual] > limit) {
-                if (iValorActual != 0) { // Si no estoy en un nuevo componente => Sólo no puedo poner el valor que tengo en la mano ahora
-                    mensajeActual.setLastComponentValueIndex(iValorActual - 1); // Marco el fin hasta antes del valor que tengo en mano
-                    //mensajes.add(mensajeActual); // Añadir a lista general
-
-                    // Sino es que no puedo calzar el primer valor de este nuevo componente, marco el fin con el ultimo componente en el mensaje porque ya avancé
-                } else {
-                    mensajeActual.setLastComponentValueIndex(mensajeActual.getComponents().get(mensajeActual.getComponents().size() - 1).totalValues() - 1);
-                }
-
-
-                mensajes.add(mensajeActual);
-                System.out.print(mensajeActual.toString());
+                messages.add(mensajeActual); // Debug
+                System.out.println(mensajeActual.toString()); // Debug
 
                 // Crear nuevo mensaje
                 tamanoMsgActual = 0;
-                baseHeader++;
-                h = baseHeader & 0xFF;
-                mensajeActual = new Message((char) h, compression, iValorActual); // Pongo el índice del valor que tengo en mano que no pude poner antes
-                mensajeActual.addComponent(compActual); // Pongo el mismo componente de antes, porque al menos puedo poner un valor
-
-
-            }
-
-
-        }
-        // En este punto no me quedan más componentes pero me queda un último mensaje al aire
-
-        if (iCompActual >= c.size()) { // Si se me acabaron los componentes,
-            if (tamanoMsgActual > 0) { // Y mi mensaje actual tenía valores, quizás no hasta el final (Esto por el caso de que el [ultimo mensaje hecho calce justo con el largo solicitado)
-                mensajeActual.setLastComponentValueIndex(mensajeActual.getComponents().get(mensajeActual.getComponents().size() - 1).totalValues() - 1);
-                mensajes.add(mensajeActual); // Añadir a lista general
-                System.out.print(mensajeActual.toString());
+                raw_inicio = 0;
+                header++;
+                mensajeActual = new Message(header, msgLimitSize);
+                mensajeActual.addComponent(compActual); // Añado componente actual, [porque al menos tengo que poner otro valor, el que tengo en mano]
             }
         }
-        if (checkMessagesSize(mensajes, limit, compression)) {
-            return mensajes;
+        // Ya no me quedan más componentes por revisar, pero tengo mensaje en la mano
+
+        if(tamanoMsgActual > 0){ // Si mi mensaje tenía valores, no estaba vacío (necesario por si cambie de mensaje y componente en última iteración)
+            raw_fin = tamanoMsgActual - 1;
+            compActual.addNewMessage(mensajeActual, raw_inicio, raw_fin, bitSigInicio);
+
+            messages.add(mensajeActual); // Debug
+            System.out.println(mensajeActual.toString()); // Debug
         }
-        throw new Exception();
     }
 }
