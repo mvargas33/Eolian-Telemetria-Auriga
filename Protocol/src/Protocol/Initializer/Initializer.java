@@ -123,8 +123,8 @@ public class Initializer {
         // Ya no me quedan más componentes por revisar, pero tengo mensaje en la mano
 
         if(tamanoMsgActual > 0){ // Si mi mensaje tenía valores, no estaba vacío (necesario por si cambie de mensaje y componente en última iteración)
-            raw_fin = tamanoMsgActual - 1;
-            compActual.addNewMessage(mensajeActual, raw_inicio, raw_fin, bitSigInicio);
+            //raw_fin = tamanoMsgActual - 1;
+            //compActual.addNewMessage(mensajeActual, raw_inicio, raw_fin, bitSigInicio);
 
             messages.add(mensajeActual); // Debug
             System.out.println(mensajeActual.toString()); // Debug
