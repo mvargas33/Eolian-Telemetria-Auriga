@@ -9,14 +9,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class MainReceiver {
-    public static void main(String args[]) {
+    /*public static void main(String args[]) {
         int consumers = 50;
         BlockingQueue<byte[]> sharedQueue = new LinkedBlockingQueue<>();     // Buffer
 
         ExecutorService pes = Executors.newFixedThreadPool(1);      // One producer only: XbeeReceiver
         ExecutorService ces = Executors.newFixedThreadPool(consumers);       // Multiple consumers: ReceiverAdmin
 
-        XbeeReceiver xbeeReceiver = new XbeeReceiver(sharedQueue);           // Main producer
+        XbeeReceiver xbeeReceiver = new XbeeReceiver();           // Main producer
         pes.submit(xbeeReceiver);                                            // Submit task .run()
         for(int i = 0; i < consumers; i++){
             ces.submit(new ReceiverAdmin(sharedQueue, i));                      // Consumers & submit task .run()
@@ -26,5 +26,5 @@ public class MainReceiver {
         pes.shutdown();
         ces.shutdown();
 
-    }
+    }*/
 }

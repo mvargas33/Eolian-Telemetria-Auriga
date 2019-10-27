@@ -9,7 +9,7 @@ import java.util.Random;
 public class SensorsReader {
     private HashMap<String, Component> allComponents;
 
-    SensorsReader(HashMap<String, Component> allComponents){
+    public SensorsReader(HashMap<String, Component> allComponents){
         this.allComponents = allComponents;
     }
 

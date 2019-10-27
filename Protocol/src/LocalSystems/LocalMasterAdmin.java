@@ -12,7 +12,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 public class LocalMasterAdmin {
     private BlockingQueue<Component> componentsToBeChecked;
 
-    LocalMasterAdmin(){
+    public LocalMasterAdmin(){
         this.componentsToBeChecked = new LinkedBlockingDeque<>();
     }
 

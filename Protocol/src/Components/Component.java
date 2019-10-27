@@ -54,6 +54,8 @@ public abstract class Component {
         this.myValues = valores;
         this.bitSig = bitsSignificativos;
         this.mySenderAdmin = mySenderAdmin; // Thread de Sender Admin debe ser creado antes que todos los componentes.
+        this.listOfMyMessagesWithIndexes = new LinkedList<>();
+        this.hashOfMyMessagesWithIndexes = new HashMap<>();
     }
 
     /**
@@ -67,6 +69,8 @@ public abstract class Component {
         this.myValues = valores;
         this.bitSig = bitsSignificativos;
         this.myLocalMasterAdmin = myLocalMasterAdmin; // Thread de myLocalMasterAdmin debe ser creado antes que todos los componentes.
+        this.listOfMyMessagesWithIndexes = new LinkedList<>();
+        this.hashOfMyMessagesWithIndexes = new HashMap<>();
     }
 
 
@@ -191,6 +195,24 @@ public abstract class Component {
         sb.append("Component ID       : ");sb.append(this.ID);sb.append("\n");
         sb.append("Valores            : ");sb.append(valuesToString());sb.append("\n");
         sb.append("Bits significativos: ");sb.append(bitSigToString());sb.append("\n");
+        return sb.toString();
+    }
+
+    /**
+     * Retorna la representación en String de los mensajes que tiene este componente
+     * @return : String de mensajes con indices del componente actual
+     */
+    public String printMessagesWithIndexes(){
+        StringBuilder sb = new StringBuilder();
+        Message m;
+        for (MessagesWithIndexes mi: listOfMyMessagesWithIndexes
+             ) {
+            m = mi.message;
+            sb.append("Message: ");sb.append(m.toString());
+            sb.append("BitSig_inicio: ");sb.append(mi.myBitSig_inicio);
+            sb.append(" | Raw_inicio: ");sb.append(mi.raw_inicio);
+            sb.append(" | Raw_fin:    ");sb.append(mi.raw_fin);sb.append("\n");
+        }
         return sb.toString();
     }
 }

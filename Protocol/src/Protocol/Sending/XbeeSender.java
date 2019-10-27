@@ -16,7 +16,7 @@ public class XbeeSender implements Runnable{
     /**
      * Constructor sólo se encarga de iniciar cola con implementación de LinkedBlockingQueue()
      */
-    XbeeSender(XbeeReceiver xbeeReceiver){
+    public XbeeSender(XbeeReceiver xbeeReceiver){
         this.bytesToSend = new LinkedBlockingQueue<>();
         this.myReceiver = xbeeReceiver; // TODO: ONLY FOR TESTING, DELETE AFTER REAL TESING
     }

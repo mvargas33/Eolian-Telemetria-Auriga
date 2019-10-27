@@ -10,7 +10,7 @@ public class SenderAdmin implements Runnable{
     private BlockingQueue<Message> messagesToSend;
     private XbeeSender myXbeeSender;
 
-    SenderAdmin(XbeeSender xbeeSender){
+    public SenderAdmin(XbeeSender xbeeSender){
         this.messagesToSend = new LinkedBlockingQueue<>();
         this.myXbeeSender = xbeeSender; // Thread de xbeeSender debe ser creado antes que SenderAdmin
     }

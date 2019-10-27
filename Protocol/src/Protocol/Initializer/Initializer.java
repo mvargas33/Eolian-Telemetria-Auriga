@@ -4,16 +4,17 @@ import Components.Component;
 import Protocol.Messages.Message;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Clase que se encarga sólo de genrar los Menssages para cada Componente según los parámetros de la red
  */
 public class Initializer {
-    private final ArrayList<Component> allComponents; // Components que son parte del sistema actual de telemetría
+    private final LinkedList<Component> allComponents; // Components que son parte del sistema actual de telemetría
     private final int msgLimitSize; // Parámetro de red: Límite del tamaño del mensaje
     private final char baseHeader; // Parámetro de red: Header de inicio de mensajes
 
-    public Initializer(ArrayList<Component> allComponents, int msgLimitSize, int baseHeader){
+    public Initializer(LinkedList<Component> allComponents, int msgLimitSize, int baseHeader){
         this.allComponents = allComponents;
         this.msgLimitSize = msgLimitSize;
         this.baseHeader = (char) (baseHeader & 0x00FF);
