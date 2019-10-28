@@ -69,6 +69,7 @@ class NoXbeeSystemTest {
 
         sensorsReader.readBMSTest("BMS_ORIGEN", valores.length); // Lee, actualiza y deja en queue de sender admin
 
+
         System.out.println("Mensajes en cola de SenderAdmin: " + senderAdmin.messageQueueSize());
 
         while(!senderAdmin.isMessageQueueEmpty()){
@@ -79,6 +80,7 @@ class NoXbeeSystemTest {
             receiverAdmin.consumeByteArrayFromQueue(); // Consume un Byte de la queue del xbeeReceiver, se ponen componentes actualizado en la queue de localmasteradmin
             localMasterAdmin.consumeComponent(); // Se muestra componente como llega
         }
+        assertArrayEquals(BMS_origen.getMyValues(), BMS_destino.getMyValues()); // Origen y destino con mismos valores
 
     }
 
