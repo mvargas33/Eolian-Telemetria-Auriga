@@ -20,6 +20,8 @@ public class Message {
         this.header = header;
         this.largoEnBytes = largoEnBytes;
         this.bytes = new byte[largoEnBytes];
+        this.bytes[0] = (byte) header;          // Primer byte es el header
+        this.bytes[largoEnBytes - 1] = 0;       // Último byte es el CRC-8
         this.myComponents = new LinkedList<>();
     }
 /*

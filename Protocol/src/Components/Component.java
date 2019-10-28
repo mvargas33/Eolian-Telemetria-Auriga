@@ -112,7 +112,8 @@ public abstract class Component {
     public void updateMsg( MessagesWithIndexes m ){
         byte[] bytes = m.message.getBytes();           // Get old bytes from Message
         BitOperations.updateByteArrayFromValues(myValues, bytes, bitSig, m.myBitSig_inicio,  m.raw_inicio, m.raw_fin); // Update Messsage con lo que me corresponde
-        m.message.updateRawBytes(bytes); // TODO: Ver si esta linea es necesaria | Reemplazo directo de bytes de mensaje
+        //m.message.updateRawBytes(bytes); // TODO: Ver si esta linea es necesaria | Reemplazo directo de bytes de mensaje
+        //m.message.bytes = bytes; // Update myself
         this.mySenderAdmin.putMessageInQueue(m.message); // Poner en Queue de Sender Admin
     }
 

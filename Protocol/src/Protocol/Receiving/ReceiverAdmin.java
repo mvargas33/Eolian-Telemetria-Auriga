@@ -26,9 +26,11 @@ public class ReceiverAdmin implements Runnable{
     /**
      * Consume un byte[] de la Queue del XbeeReceiver. Luego ve a qué mensaje le corresponden estos bytes, y extrae el mensaje.
      * Hace update de bytes[] del mensaje y luego ejecuta cadena de llamados para actualización de los componentes correspondientes.
+     * DEBE CHECKEAR CRC DEL MENSAJE
      */
     public void consumeByteArrayFromQueue(){
         byte[] b = this.xbeeReceiver.consumeByteFromQueue();
+        //TODO: Check CRC-8
         char header = (char) b[0];
         Message m = this.allMessages.get(header);
         m.updateRawBytes(b); // Esto hace llamada en cadena hasta que todos los componentes que se actualizaron queden en la Queue de LocalMasterAdmin

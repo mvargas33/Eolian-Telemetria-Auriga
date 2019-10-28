@@ -31,6 +31,6 @@ public class LocalMasterAdmin {
     public void consumeComponent(){
         Component c = this.componentsToBeChecked.poll();
         // TODO: Procesar valores del componente
-        System.out.println("Componente leído: " + c.getID() + " | Valores: " + c.valuesToString());
+        System.out.println(c.toString());
     }
 }

@@ -23,16 +23,19 @@ public class SensorsReader {
     }
 
     /**
+     * Método para testing
      * Lectura directa del BMS, luego reemplaza valores int[] en Component BMS.
      */
-    private void readBMS(){
+    public void readBMSTest(String bmsName, int sizeOfValues){
         Random r = new Random();
-        int[] up = new int[10]; // Debe ser el orden exacto que hay en el Componente
-        for (int val: up
-             ) {
-            val = r.nextInt(255);
+        int[] up = new int[sizeOfValues]; // Debe ser el orden exacto que hay en el Componente
+        System.out.print("Array random generado : [ ");
+        for (int i = 0; i < up.length; i++){
+            up[i] = r.nextInt(255);
+            System.out.print(up[i] + " ");
         }
-        updateDirectly("BMS", up);
+        System.out.println("]");
+        updateDirectly(bmsName, up);
     }
 
 }

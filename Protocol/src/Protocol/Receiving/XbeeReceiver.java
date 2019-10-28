@@ -29,6 +29,13 @@ public class XbeeReceiver implements Runnable{
         return bytesReceived.poll();
     }
 
+    /**
+     * Retorna true si la queue no tiene más bytes
+     * @return : true si queue no tiene más bytes
+     */
+    public boolean isQueueEmpty(){
+        return bytesReceived.isEmpty();
+    }
 
     /**
      * Pruduce() : Lee bytes de la Xbee y los pone en el buffer compartido

@@ -29,11 +29,27 @@ public class SenderAdmin implements Runnable{
      * Saca mensajes de la Queue de Mensajes, saca el byte[] del mensaje y le hace append de CRC.
      * Luego pone el byte[] con CRC en la Queue de envío del XbeeSender
      */
-    private void putMessageInByteQueue(){
+    public void putMessageInByteQueue(){
         Message m = this.messagesToSend.poll(); // Saco mensaje
         byte[] b = m.getBytes(); // Saco sus bytes
-        BitOperations.appendCRC(b); // Append de CRC
+        //BitOperations.appendCRC(b); // Append de CRC
         myXbeeSender.putByteInQueue(b); // Lo pongo en la Queue de envío
+    }
+
+    /**
+     * Retorna cuantos mensajes estan en cola
+     * @return : Cantidad de mensajes en cola
+     */
+    public int messageQueueSize(){
+        return messagesToSend.size();
+    }
+
+    /**
+     * Retorna true si la queue de mensajes está vacía
+     * @return : true si cola no tiene mensajes
+     */
+    public boolean isMessageQueueEmpty(){
+        return messagesToSend.isEmpty();
     }
 
     /**
