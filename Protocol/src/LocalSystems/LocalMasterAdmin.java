@@ -29,8 +29,10 @@ public class LocalMasterAdmin {
      * Consume y procesa un Componente de la Queue. Deben visualizar sus valores y guardarse en la base de datos
      */
     public void consumeComponent(){
-        Component c = this.componentsToBeChecked.poll();
-        // TODO: Procesar valores del componente
-        System.out.println(c.toString());
+        while(!componentsToBeChecked.isEmpty()){
+            Component c = this.componentsToBeChecked.poll();
+            // TODO: Procesar valores del componente
+            System.out.println(c.toString());
+        }
     }
 }
