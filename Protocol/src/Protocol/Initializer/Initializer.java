@@ -59,6 +59,8 @@ public class Initializer {
         int raw_inicio = 8;                                         // Desde que bit en byte[] del Message me corresponde, 8 bits iniciales para header
         int raw_fin = 0;                                            // Hasta que bit en byte[] del Message me corresponde
 
+        int componentNumber = 0;                                    // Para indicar el bit que se asigna a este componente para marcar 'ready' al enviar mensajes
+
         Message mensajeActual = new Message(header, msgLimitSizeInBytes);  // Mensaje Actual
         int tamanoMsgActual = 8;                                    // Cuenta de bits que ya llevamos en mensaje, 8 bits iniciales para header
 
@@ -84,9 +86,10 @@ public class Initializer {
                 raw_fin = tamanoMsgActual - 1; // Bit de final en Mensaje actual para componente en indice iCompActual
 
                 // Le digo al Componente que tiene un nuevo mensaje, y los bits que le corresponden
-                compActual.addNewMessage(mensajeActual, raw_inicio, raw_fin, bitSigInicio);
+                compActual.addNewMessage(mensajeActual, raw_inicio, raw_fin, bitSigInicio, componentNumber);
 
                 iCompActual++; // Siguiente componente
+                componentNumber++; // Avanzo en comp number
 
                 if(iCompActual < allComponents.size()){ // Si me queda otro componente por revisar
 
@@ -110,8 +113,9 @@ public class Initializer {
             // No puedo poner nada más en el mensaje actual (teniendo un valor en mano i.e. no aumento iValorActual)
             else if (tamanoMsgActual + arrayBitSigActual[iValorAtual] > msgLimitSize - 8){
                 raw_fin = tamanoMsgActual - 1; // Fin de bits en este mensaje
-                compActual.addNewMessage(mensajeActual, raw_inicio, raw_fin, bitSigInicio);
+                compActual.addNewMessage(mensajeActual, raw_inicio, raw_fin, bitSigInicio, componentNumber);
                 bitSigInicio += (raw_fin - raw_inicio) + 1; // Nuevo inicio en bitSig para siguiente mensaje: Los que puse + 1
+                componentNumber = 0; // Vuelvo a contador en 1 para componente en este mensaje
 
                 messages.put(header, mensajeActual); // Para el HashMap del receiver
                 //messages.add(mensajeActual); // Debug

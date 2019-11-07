@@ -23,12 +23,14 @@ public abstract class Component {
         int raw_inicio; // De donde este componente inicia sus bits en mensaje
         int raw_fin; // Donde este componente termina sus bits en mensaje
         int myBitSig_inicio; // Desde que bit en mi array tengo que poner en mensaje
+        int componentNumber; // Para indicar el bit que se asigna en mensaje para marcar el 'ready'
 
-        private MessagesWithIndexes(Message m, int raw_inicio, int raw_fin, int myBitSig_inicio) {
+        private MessagesWithIndexes(Message m, int raw_inicio, int raw_fin, int myBitSig_inicio, int componentNumber) {
             this.message = m;
             this.raw_inicio = raw_inicio;
             this.raw_fin = raw_fin;
             this.myBitSig_inicio = myBitSig_inicio;
+            this.componentNumber = componentNumber;
         }
     }
 
@@ -83,9 +85,9 @@ public abstract class Component {
      * @param raw_fin Bit de fin en Mensaje
      * @param bitSigInicio Bit de inicio en componente
      */
-    public void addNewMessage(Message m, int raw_inicio, int raw_fin, int bitSigInicio){
-        this.listOfMyMessagesWithIndexes.add(new MessagesWithIndexes(m,raw_inicio, raw_fin,bitSigInicio));
-        this.hashOfMyMessagesWithIndexes.put(m.getHeader(), new MessagesWithIndexes(m,raw_inicio, raw_fin,bitSigInicio));
+    public void addNewMessage(Message m, int raw_inicio, int raw_fin, int bitSigInicio, int componentNumber){
+        this.listOfMyMessagesWithIndexes.add(new MessagesWithIndexes(m,raw_inicio, raw_fin,bitSigInicio, componentNumber));
+        this.hashOfMyMessagesWithIndexes.put(m.getHeader(), new MessagesWithIndexes(m,raw_inicio, raw_fin,bitSigInicio, componentNumber));
     }
 
     /*---------------------------------------------------- SENDING ----------------------------------------------------*/
@@ -115,7 +117,10 @@ public abstract class Component {
         BitOperations.updateByteArrayFromValues(myValues, bytes, bitSig, m.myBitSig_inicio,  m.raw_inicio, m.raw_fin); // Update Messsage con lo que me corresponde
         //m.message.updateRawBytes(bytes); // TODO: Ver si esta linea es necesaria | Reemplazo directo de bytes de mensaje
         //m.message.bytes = bytes; // Update myself
-        this.mySenderAdmin.putMessageInQueue(m.message); // Poner en Queue de Sender Admin
+        m.message.marcarActualizacionDeComponente(m.componentNumber); // Marcar que este componente esta rdy en mensaje
+        if(m.message.isReadyToSend()){ // Si yo fui el último que faltaba para enviar el mensaje, lo pongo en la queue
+            this.mySenderAdmin.putMessageInQueue(m.message); // Poner en Queue de Sender Admin
+        }
     }
 
     /*--------------------------------------------------- RECEIVING ---------------------------------------------------*/

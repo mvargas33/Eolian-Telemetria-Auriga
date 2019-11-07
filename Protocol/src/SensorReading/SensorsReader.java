@@ -29,13 +29,40 @@ public class SensorsReader {
     public void readBMSTest(String bmsName, int sizeOfValues){
         Random r = new Random();
         int[] up = new int[sizeOfValues]; // Debe ser el orden exacto que hay en el Componente
+        int[] bitsig = allComponents.get(bmsName).getBitSig();
+
+         do{ // Generar hasta que todos los valores sen representables
+            for (int i = 0; i < up.length; i++) {
+                up[i] = Math.abs(r.nextInt((int) Math.pow(2, bitsig[i]))); // Generar con límites de BitSig
+            }
+        } while(!readingsAreCorrect(up, bitsig));
+
         System.out.print("Array random generado : [ ");
         for (int i = 0; i < up.length; i++){
-            up[i] = r.nextInt(255);
             System.out.print(up[i] + " ");
         }
         System.out.println("]");
         updateDirectly(bmsName, up);
+    }
+
+    /**
+     * Retorna true, si los valores pueden ser representados por la cantidad de bits indicada
+     * @param values : array de valores
+     * @param bitSig : array de bits significativos para cada valor
+     * @return : true si todos los valores pueden ser representados
+     */
+    public boolean readingsAreCorrect(int[] values, int[] bitSig){
+        int val;
+        int bits;
+        boolean correct = true;
+        for(int i = 0; i < values.length; i++){
+            val = values[i];
+            bits = bitSig[i];
+            if(!(val < Math.pow(2, bits))){ // El valor no puede ser representado por la cantidad de bits que se asignaron
+               correct = false;
+            }
+        }
+        return correct;
     }
 
 }

@@ -35,7 +35,9 @@ public class XbeeSender implements Runnable{
     public void sendByte() throws Exception{
         byte[] b = this.bytesToSend.poll(); // Get byte array from queue
         // TODO: SEND THROW XBEE()
-        this.myReceiver.receiveByte(b); // TODO: ONLY FOR TESTING, DELETE AFTER REAL TESING
+        if(b != null){
+            this.myReceiver.receiveByte(b); // TODO: ONLY FOR TESTING, DELETE AFTER REAL TESING
+        }
     }
 
     /**
