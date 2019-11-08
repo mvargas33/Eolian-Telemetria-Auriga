@@ -1,8 +1,3 @@
-
-import Components.Component;
-
-import java.util.ArrayList;
-
 public class OldMessage {/*
     private char header;
     private ArrayList<Component> components;    // Values and Sizes available

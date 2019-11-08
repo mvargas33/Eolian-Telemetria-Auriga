@@ -62,6 +62,7 @@ public class XbeeSandBox {
     private static final String PORT_SEND = "COM4";
 
     private static final String DATA_TO_SEND = "012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567";
+
     private static final String REMOTE_NODE_IDENTIFIER = "EOLIAN FENIX";
 
     /**
@@ -75,7 +76,8 @@ public class XbeeSandBox {
         System.out.println(" +--------------------------------------+\n");
 
         XBeeDevice myDevice = new XBeeDevice(PORT_SEND, BAUD_RATE);
-        byte[] dataToSend = DATA_TO_SEND.getBytes();
+        //byte[] dataToSend = DATA_TO_SEND.getBytes();
+        byte[] dataToSend = {0,1,2,3,4,5};
 
         try {
             /*----------- RECEIVER -------------*/

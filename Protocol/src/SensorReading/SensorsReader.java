@@ -3,7 +3,6 @@ package SensorReading;
 import Components.Component;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 public class SensorsReader {

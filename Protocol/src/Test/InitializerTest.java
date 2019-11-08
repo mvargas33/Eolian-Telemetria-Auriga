@@ -1,20 +1,15 @@
 package Test;
 
-import Components.BMS;
 import Components.Component;
 import LocalSystems.LocalMasterAdmin;
 import Protocol.Initializer.Initializer;
-import Protocol.Receiving.ReceiverAdmin;
 import Protocol.Receiving.XbeeReceiver;
 import Protocol.Sending.SenderAdmin;
 import Protocol.Sending.XbeeSender;
 import SensorReading.SensorsReader;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class InitializerTest {
 
@@ -29,10 +24,10 @@ class InitializerTest {
         // 1 2 3 4  5  6  7   8   9   10   11
         int[] valores = {200, 189, 0, 111, 30};
         int[] bitSig = {8, 8, 2, 8, 5};
-        Component BMS_origen = new BMS(senderAdmin, valores, bitSig, "BMS_ORIGEN");
+        Component BMS_origen = new Component(senderAdmin, valores, bitSig, "BMS_ORIGEN");
 
         int[] valores_0 = {0, 0, 0, 0, 0};
-        Component BMS_destino = new BMS(localMasterAdmin, valores_0, bitSig, "BMS_DESTINO");
+        Component BMS_destino = new Component(localMasterAdmin, valores_0, bitSig, "BMS_DESTINO");
 
         HashMap<String, Component> allComponents = new HashMap<>();
         allComponents.put(BMS_origen.getID(), BMS_origen);
@@ -63,15 +58,15 @@ class InitializerTest {
         // 1 2 3 4  5  6  7   8   9   10   11
         int[] valores = {200, 189, 0, 111, 30};
         int[] bitSig = {8, 8, 2, 8, 5};
-        Component BMS_origen = new BMS(senderAdmin, valores, bitSig, "BMS_ORIGEN");
+        Component BMS_origen = new Component(senderAdmin, valores, bitSig, "BMS_ORIGEN");
 
         int[] valores1 = {30,26,34};
         int[] bitSig1 = {5,6,6};
-        Component MPPT1_origen = new BMS(senderAdmin, valores1, bitSig1, "MPPT1");
+        Component MPPT1_origen = new Component(senderAdmin, valores1, bitSig1, "MPPT1");
 
         int[] valores2 = {10, 20, 30};
         int[] bitSig2 = {5,6,6};
-        Component MPPT2_origen = new BMS(senderAdmin, valores2, bitSig2, "MPPT2");
+        Component MPPT2_origen = new Component(senderAdmin, valores2, bitSig2, "MPPT2");
 
 
         LinkedList<Component> listAllComponents = new LinkedList<>();

@@ -1,6 +1,5 @@
 package Test;
 
-import Components.BMS;
 import Components.Component;
 import LocalSystems.LocalMasterAdmin;
 import Protocol.Initializer.Initializer;
@@ -14,7 +13,7 @@ import SensorReading.SensorsReader;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class NoXbeeSystemTest {
 
@@ -29,7 +28,7 @@ class NoXbeeSystemTest {
         // 1 2 3 4  5  6  7   8   9   10   11
         int[] valores = {200, 189, 0, 111, 30};
         int[] bitSig = {8, 8, 2, 8, 5};
-        Component BMS_origen = new BMS(senderAdmin, valores, bitSig, "BMS_ORIGEN");
+        Component BMS_origen = new Component(senderAdmin, valores, bitSig, "BMS_ORIGEN");
 
         HashMap<String, Component> allComponents = new HashMap<>();
         allComponents.put(BMS_origen.getID(), BMS_origen);
@@ -52,7 +51,7 @@ class NoXbeeSystemTest {
 
         int[] valores_0 = {0, 0, 0, 0, 0};
         int[] bitSig_0 = {8, 8, 2, 8, 5};
-        Component BMS_destino = new BMS(localMasterAdmin, valores_0, bitSig_0, "BMS_DESTINO");
+        Component BMS_destino = new Component(localMasterAdmin, valores_0, bitSig_0, "BMS_DESTINO");
 
         LinkedList<Component> listAllComponents_destino = new LinkedList<>();
         listAllComponents_destino.add(BMS_destino);
@@ -74,7 +73,7 @@ class NoXbeeSystemTest {
 
         while(!senderAdmin.isMessageQueueEmpty()){
             senderAdmin.putMessageInByteQueue(); // Saca de queue de Message y pone en queue de byte[] de Xbee Sender
-            xbeeSender.sendByte(); // Envia byte[] a xbeeRecevier y queda en la queue de byte[] del xBeeReceiver
+            xbeeSender.sendByteOffline(); // Envia byte[] a xbeeRecevier y queda en la queue de byte[] del xBeeReceiver
         }
         while(!xbeeReceiver.isQueueEmpty()) {
             receiverAdmin.consumeByteArrayFromQueue(); // Consume un Byte de la queue del xbeeReceiver, se ponen componentes actualizado en la queue de localmasteradmin
@@ -95,23 +94,23 @@ class NoXbeeSystemTest {
         // 1 2 3 4  5  6  7   8   9   10   11 12
         int[] bitSig0 = {8, 8, 2, 8, 5, 21, 21, 21, 11, 22, 9};
         int[] valores0 = new int[bitSig0.length];
-        Component BMS_origen = new BMS(senderAdmin, valores0, bitSig0, "BMS_ORIGEN");
+        Component BMS_origen = new Component(senderAdmin, valores0, bitSig0, "BMS_ORIGEN");
 
         int[] bitSig1 = {1, 1, 1, 1, 1, 2, 3, 11, 8, 9};
         int[] valores1 = new int[bitSig1.length];
-        Component MPPT1_origen = new BMS(senderAdmin, valores1, bitSig1, "MPPT1_ORIGEN");
+        Component MPPT1_origen = new Component(senderAdmin, valores1, bitSig1, "MPPT1_ORIGEN");
 
         int[] bitSig2 = {1, 1, 1, 1, 1, 2, 3, 11, 8, 9};
         int[] valores2 = new int[bitSig2.length];
-        Component MPPT2_origen = new BMS(senderAdmin, valores2, bitSig2, "MPPT2_ORIGEN");
+        Component MPPT2_origen = new Component(senderAdmin, valores2, bitSig2, "MPPT2_ORIGEN");
 
         int[] bitSig3 = {1, 1, 1, 1, 1, 2, 3, 11, 8, 9};
         int[] valores3 = new int[bitSig3.length];
-        Component MPPT3_origen = new BMS(senderAdmin, valores3, bitSig3, "MPPT3_ORIGEN");
+        Component MPPT3_origen = new Component(senderAdmin, valores3, bitSig3, "MPPT3_ORIGEN");
 
         int[] bitSig4 = {12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12};
         int[] valores4 = new int[bitSig4.length];
-        Component BMS_TEMP_origen = new BMS(senderAdmin, valores4, bitSig4, "BMS_TEMP_ORIGEN");
+        Component BMS_TEMP_origen = new Component(senderAdmin, valores4, bitSig4, "BMS_TEMP_ORIGEN");
 
         HashMap<String, Component> allComponents = new HashMap<>();
         allComponents.put(BMS_origen.getID(), BMS_origen);
@@ -146,23 +145,23 @@ class NoXbeeSystemTest {
 
         int[] bitSig00 = {8, 8, 2, 8, 5, 21, 21, 21, 11, 22, 9};
         int[] valores00 = new int[bitSig0.length];
-        Component BMS_destino = new BMS(localMasterAdmin, valores00, bitSig00, "BMS_DESTINO");
+        Component BMS_destino = new Component(localMasterAdmin, valores00, bitSig00, "BMS_DESTINO");
 
         int[] bitSig11 = {1, 1, 1, 1, 1, 2, 3, 11, 8, 9};
         int[] valores11 = new int[bitSig11.length];
-        Component MPPT1_destino = new BMS(localMasterAdmin, valores11, bitSig11, "MPPT1_DESTINO");
+        Component MPPT1_destino = new Component(localMasterAdmin, valores11, bitSig11, "MPPT1_DESTINO");
 
         int[] bitSig22 = {1, 1, 1, 1, 1, 2, 3, 11, 8, 9};
         int[] valores22 = new int[bitSig22.length];
-        Component MPPT2_destino = new BMS(localMasterAdmin, valores22, bitSig22, "MPPT2_DESTINO");
+        Component MPPT2_destino = new Component(localMasterAdmin, valores22, bitSig22, "MPPT2_DESTINO");
 
         int[] bitSig33 = {1, 1, 1, 1, 1, 2, 3, 11, 8, 9};
         int[] valores33 = new int[bitSig33.length];
-        Component MPPT3_destino = new BMS(localMasterAdmin, valores33, bitSig33, "MPPT3_DESTINO");
+        Component MPPT3_destino = new Component(localMasterAdmin, valores33, bitSig33, "MPPT3_DESTINO");
 
         int[] bitSig44 = {12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12};
         int[] valores44 = new int[bitSig44.length];
-        Component BMS_TEMP_destino = new BMS(localMasterAdmin, valores44, bitSig44, "BMS_TEMP_DESTINO");
+        Component BMS_TEMP_destino = new Component(localMasterAdmin, valores44, bitSig44, "BMS_TEMP_DESTINO");
 
         LinkedList<Component> listAllComponents_destino = new LinkedList<>();
         listAllComponents_destino.add(BMS_destino);
@@ -196,7 +195,7 @@ class NoXbeeSystemTest {
 
         while(!senderAdmin.isMessageQueueEmpty()){
             senderAdmin.putMessageInByteQueue(); // Saca de queue de Message y pone en queue de byte[] de Xbee Sender
-            xbeeSender.sendByte(); // Envia byte[] a xbeeRecevier y queda en la queue de byte[] del xBeeReceiver
+            xbeeSender.sendByteOffline(); // Envia byte[] a xbeeRecevier y queda en la queue de byte[] del xBeeReceiver
         }
         while(!xbeeReceiver.isQueueEmpty()) {
             receiverAdmin.consumeByteArrayFromQueue(); // Consume un Byte de la queue del xbeeReceiver, se ponen componentes actualizado en la queue de localmasteradmin

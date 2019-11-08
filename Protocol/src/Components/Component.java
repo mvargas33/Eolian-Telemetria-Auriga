@@ -16,7 +16,7 @@ import java.util.LinkedList;
     Sending:    Recive información directa del DataAdmin (lecturals locales). Luego avisa a sus mensajes que se actualicen.
                 Luego ellos se ponen en contacto con QueueAdmin para ser enviados.
  */
-public abstract class Component {
+public class Component {
     /* Estructura necesaria para guardar correlación mensage-componente, guarda que intervalos de bits de un mensaje le conciernen a qué intervalos de bits en este componente */
     public class MessagesWithIndexes {
         Message message; // RAW bits

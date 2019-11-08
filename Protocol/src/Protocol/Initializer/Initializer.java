@@ -3,7 +3,6 @@ package Protocol.Initializer;
 import Components.Component;
 import Protocol.Messages.Message;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 

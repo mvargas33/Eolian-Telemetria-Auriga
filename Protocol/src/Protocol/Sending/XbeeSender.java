@@ -1,6 +1,12 @@
 package Protocol.Sending;
 
 import Protocol.Receiving.XbeeReceiver;
+import Utilities.BitOperations;
+import com.digi.xbee.api.RemoteXBeeDevice;
+import com.digi.xbee.api.XBeeDevice;
+import com.digi.xbee.api.XBeeNetwork;
+import com.digi.xbee.api.exceptions.XBeeException;
+import com.digi.xbee.api.utils.HexUtils;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -10,15 +16,27 @@ import java.util.concurrent.LinkedBlockingQueue;
  * SenderAdmin es quien pone bytes[] en la cola.
  */
 public class XbeeSender implements Runnable{
-     private BlockingQueue<byte[]> bytesToSend; // Queue de bytes[] para enviar por Xbee
-    private XbeeReceiver myReceiver; // TODO: ONLY FOR TESTING, DELETE AFTER REAL TESING
+    private BlockingQueue<byte[]> bytesToSend; // Queue de bytes[] para enviar por Xbee
+    private XbeeReceiver myReceiver; // ONLY FOR TESTING, DELETE AFTER REAL TESING
+    private XBeeDevice myDevice; // Xbee para envío de bytes
+    private String REMOTE_NODE_IDENTIFIER; // Dirección de Xbee destino
 
     /**
      * Constructor sólo se encarga de iniciar cola con implementación de LinkedBlockingQueue()
+     * Constructor tipo TEST
      */
     public XbeeSender(XbeeReceiver xbeeReceiver){
         this.bytesToSend = new LinkedBlockingQueue<>();
-        this.myReceiver = xbeeReceiver; // TODO: ONLY FOR TESTING, DELETE AFTER REAL TESING
+        this.myReceiver = xbeeReceiver;
+    }
+
+    /**
+     * Constructor de XbeeSender real
+     */
+    public XbeeSender(int BAUD_RATE, String PORT_SEND, String REMOTE_NODE_IDENTIFIER){
+        this.bytesToSend = new LinkedBlockingQueue<>();
+        this.myDevice = new XBeeDevice(PORT_SEND, BAUD_RATE);
+        this.REMOTE_NODE_IDENTIFIER = REMOTE_NODE_IDENTIFIER;
     }
 
     /**
@@ -30,13 +48,46 @@ public class XbeeSender implements Runnable{
     }
 
     /**
+     * Método de TEST, para cuando no ha Xbees
      * Toma un byte[] array de la Queue y lo envía a través de las Xbees
      */
-    public void sendByte() throws Exception{
+    public void sendByteOffline() throws Exception{
         byte[] b = this.bytesToSend.poll(); // Get byte array from queue
         // TODO: SEND THROW XBEE()
         if(b != null){
-            this.myReceiver.receiveByte(b); // TODO: ONLY FOR TESTING, DELETE AFTER REAL TESING
+            this.myReceiver.receiveByteOffline(b); // TODO: ONLY FOR TESTING, DELETE AFTER REAL TESING
+        }
+    }
+
+    /**
+     * Toma un byte[] array de la Queue y lo envía a través de las Xbees
+     */
+    public void sendByte() throws Exception{
+        byte[] data = this.bytesToSend.poll(); // Sacar byte[] de la Queue
+
+        if(data != null){
+            try {
+                myDevice.open();
+
+                // Obtain the remote XBee device from the XBee network.
+                XBeeNetwork xbeeNetwork = myDevice.getNetwork();
+                RemoteXBeeDevice remoteDevice = xbeeNetwork.discoverDevice(REMOTE_NODE_IDENTIFIER);
+                if (remoteDevice == null) {
+                    System.out.println("No se encuentra Xbee destino con identificador :" + REMOTE_NODE_IDENTIFIER);
+                    System.exit(1);
+                }
+
+                System.out.println("Enviando datos a Xbee Destino: " + BitOperations.ArraytoString(data));
+                myDevice.sendData(remoteDevice, data);
+                System.out.println("Enviado.");
+
+            } catch (XBeeException e) {
+                System.out.println("Error al enviar mensaje a Xbee Destino");
+                e.printStackTrace();
+                System.exit(1);
+            } finally {
+                myDevice.close();
+            }
         }
     }
 
