@@ -118,7 +118,9 @@ public abstract class Component {
         //m.message.updateRawBytes(bytes); // TODO: Ver si esta linea es necesaria | Reemplazo directo de bytes de mensaje
         //m.message.bytes = bytes; // Update myself
         m.message.marcarActualizacionDeComponente(m.componentNumber); // Marcar que este componente esta rdy en mensaje
-        if(m.message.isReadyToSend()){ // Si yo fui el último que faltaba para enviar el mensaje, lo pongo en la queue
+        if(m.message.isReadyToSend()){ // Si yo fui el último que faltaba para enviar el mensaje, calculo CRC8 y lo pongo en la queue
+            byte crc = BitOperations.calcCRC8(m.message.getBytes(), m.message.getLargoEnBytes() - 2); // Se calcula hasta antes del ultimo byte
+            m.message.getBytes()[m.message.getLargoEnBytes() - 1] = crc; // Update del CRC
             this.mySenderAdmin.putMessageInQueue(m.message); // Poner en Queue de Sender Admin
         }
     }

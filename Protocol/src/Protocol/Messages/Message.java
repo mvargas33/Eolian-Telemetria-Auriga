@@ -56,7 +56,7 @@ public class Message {
      */
     public void marcarActualizacionDeComponente(int bitAsignado){
         int mask = 1 << bitAsignado;
-        allComponentsUpdated |= mask;
+        allComponentsUpdated |= mask; // Se hace OR con el bit señalado, que representa el componente bit-ésimo del mensaje
     }
 
 
@@ -109,6 +109,11 @@ public class Message {
         return bytes;
     }
 
+    /**
+     * Retorna el largo en bytes del mensaje, se usa para calcuo de CRC
+     * @return
+     */
+    public int getLargoEnBytes(){return largoEnBytes;}
     /**
      * Imprime el contenido del mensaje
      * @return : Print del Message
