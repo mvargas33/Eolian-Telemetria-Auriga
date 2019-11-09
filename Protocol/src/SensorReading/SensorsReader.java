@@ -90,7 +90,7 @@ public class SensorsReader implements Runnable{
                 for (Component c : componentLinkedList
                 ) {
                     randomData(c.getID());
-                    Thread.sleep(10000); // Dormir 10 segundos
+                    Thread.sleep(75); // Límite entre 70-75 ms antes que Queue de XbeeSender cresca sin fin
                 }
             }catch (Exception e){
                 e.printStackTrace();

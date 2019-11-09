@@ -80,7 +80,7 @@ public class XbeeSender implements Runnable{
                     System.exit(1);
                 }
 
-                System.out.println("Enviando datos a Xbee Destino: " + BitOperations.ArraytoString(data));
+                System.out.print("Enviando datos a Xbee Destino: " + BitOperations.ArraytoString(data));
                 myDevice.sendData(remoteDevice, data);
                 System.out.println("Enviado.");
 
