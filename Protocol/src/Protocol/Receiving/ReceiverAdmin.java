@@ -30,14 +30,16 @@ public class ReceiverAdmin implements Runnable{
      * DEBE CHECKEAR CRC DEL MENSAJE
      */
     public void consumeByteArrayFromQueue(){
-        byte[] b = this.xbeeReceiver.consumeByteFromQueue();
-        int largo = b.length;
-        byte crc = BitOperations.calcCRC8(b, largo - 2); // Hasta antes del CRC que viene en mensaje
+        while(!this.xbeeReceiver.isQueueEmpty()){
+            byte[] b = this.xbeeReceiver.consumeByteFromQueue();
+            int largo = b.length;
+            byte crc = BitOperations.calcCRC8(b, largo - 2); // Hasta antes del CRC que viene en mensaje
 
-        if(crc == b[largo - 1]){ // Check CRC
-            char header = (char) b[0];
-            Message m = this.allMessages.get(header);
-            m.updateRawBytes(b); // Esto hace llamada en cadena hasta que todos los componentes que se actualizaron queden en la Queue de LocalMasterAdmin
+            if(crc == b[largo - 1]){ // Check CRC
+                char header = (char) b[0];
+                Message m = this.allMessages.get(header);
+                m.updateRawBytes(b); // Esto hace llamada en cadena hasta que todos los componentes que se actualizaron queden en la Queue de LocalMasterAdmin
+            }
         }
     }
 
@@ -49,6 +51,13 @@ public class ReceiverAdmin implements Runnable{
      */
     @Override
     public void run() {
+        while (true){
+            try {
+                consumeByteArrayFromQueue();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
 
     }
 }

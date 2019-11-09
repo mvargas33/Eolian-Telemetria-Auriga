@@ -19,7 +19,7 @@ class NoXbeeSystemTest {
 
     @org.junit.jupiter.api.Test
     void noXbeeSendReceiveLinearTest() throws Exception{
-        XbeeReceiver xbeeReceiver = new XbeeReceiver();
+        XbeeReceiver xbeeReceiver = new XbeeReceiver(); // Constructor especial para este Test
         XbeeSender xbeeSender = new XbeeSender(xbeeReceiver); // TODO: DELETE DESPUES DE TEST EXITOSO, ESTE ES EL PUENTE
 
         SenderAdmin senderAdmin = new SenderAdmin(xbeeSender);
@@ -66,7 +66,7 @@ class NoXbeeSystemTest {
 
         /* ----------------------------- TESTING -----------------------------*/
 
-        sensorsReader.readBMSTest("BMS_ORIGEN", valores.length); // Lee, actualiza y deja en queue de sender admin
+        sensorsReader.randomData("BMS_ORIGEN"); // Lee, actualiza y deja en queue de sender admin
 
 
         System.out.println("Mensajes en cola de SenderAdmin: " + senderAdmin.messageQueueSize());
@@ -184,11 +184,11 @@ class NoXbeeSystemTest {
 
         /* ----------------------------- TESTING -----------------------------*/
 
-        sensorsReader.readBMSTest("BMS_ORIGEN", valores0.length); // Lee, actualiza y deja en queue de sender admin
-        sensorsReader.readBMSTest("MPPT1_ORIGEN", valores1.length); // Lee, actualiza y deja en queue de sender admin
-        sensorsReader.readBMSTest("MPPT2_ORIGEN", valores2.length); // Lee, actualiza y deja en queue de sender admin
-        sensorsReader.readBMSTest("MPPT3_ORIGEN", valores3.length); // Lee, actualiza y deja en queue de sender admin
-        sensorsReader.readBMSTest("BMS_TEMP_ORIGEN", valores4.length); // Lee, actualiza y deja en queue de sender admin
+        sensorsReader.randomData("BMS_ORIGEN"); // Lee, actualiza y deja en queue de sender admin
+        sensorsReader.randomData("MPPT1_ORIGEN"); // Lee, actualiza y deja en queue de sender admin
+        sensorsReader.randomData("MPPT2_ORIGEN"); // Lee, actualiza y deja en queue de sender admin
+        sensorsReader.randomData("MPPT3_ORIGEN"); // Lee, actualiza y deja en queue de sender admin
+        sensorsReader.randomData("BMS_TEMP_ORIGEN"); // Lee, actualiza y deja en queue de sender admin
 
 
         System.out.println("Mensajes en cola de SenderAdmin: " + senderAdmin.messageQueueSize());

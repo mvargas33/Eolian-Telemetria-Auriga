@@ -3,14 +3,30 @@ package SensorReading;
 import Components.Component;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Random;
 
-public class SensorsReader {
+public class SensorsReader implements Runnable{
     private HashMap<String, Component> allComponents;
+    private LinkedList<Component> componentLinkedList;
 
+    /**
+     * Constructor para Testing
+     * @param allComponents : HashMap de componentes
+     */
     public SensorsReader(HashMap<String, Component> allComponents){
         this.allComponents = allComponents;
     }
+
+    /**
+     * Constructor para caso de uso
+     * @param allComponents
+     */
+    public SensorsReader(HashMap<String, Component> allComponents, LinkedList<Component> componentLinkedList){
+        this.allComponents = allComponents;
+        this.componentLinkedList = componentLinkedList;
+    }
+
 
     /**
      * Actualiza el array de enteros de un componente por el array de 'newValues'
@@ -25,10 +41,10 @@ public class SensorsReader {
      * Método para testing
      * Lectura directa del BMS, luego reemplaza valores int[] en Component BMS.
      */
-    public void readBMSTest(String bmsName, int sizeOfValues){
+    public void randomData(String componentName){
         Random r = new Random();
-        int[] up = new int[sizeOfValues]; // Debe ser el orden exacto que hay en el Componente
-        int[] bitsig = allComponents.get(bmsName).getBitSig();
+        int[] up = new int[allComponents.get(componentName).getMyValues().length]; // Debe ser el orden exacto que hay en el Componente
+        int[] bitsig = allComponents.get(componentName).getBitSig();
 
          do{ // Generar hasta que todos los valores sen representables
             for (int i = 0; i < up.length; i++) {
@@ -41,7 +57,7 @@ public class SensorsReader {
             System.out.print(up[i] + " ");
         }
         System.out.println("]");
-        updateDirectly(bmsName, up);
+        updateDirectly(componentName, up);
     }
 
     /**
@@ -64,4 +80,21 @@ public class SensorsReader {
         return correct;
     }
 
+    /**
+     * Debe leer contantemente los sensores indicados
+     */
+    @Override
+    public void run() {
+        while(true){
+            try {
+                for (Component c : componentLinkedList
+                ) {
+                    randomData(c.getID());
+                    Thread.sleep(500); // Dormir 10 segundos
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
 }

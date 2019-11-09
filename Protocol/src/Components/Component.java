@@ -98,7 +98,7 @@ public class Component {
      */
     public void replaceMyValues(int[] newValues){
         this.myValues = newValues; // Reemplaza valores directamente
-        // TODO: Verificar que el valor leído está dentro del intervalo de bits significativos
+
         for (MessagesWithIndexes mi : this.listOfMyMessagesWithIndexes
              ) {
             this.updateMsg(mi); // Actualizar valores en mensaje y ponerlo en cola de envío

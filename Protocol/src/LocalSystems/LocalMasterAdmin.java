@@ -9,7 +9,7 @@ import java.util.concurrent.LinkedBlockingDeque;
     Administra a los encargados de base de datos y servidor con nueva información. Actúa como productor de información.
     Posee una Queue
  */
-public class LocalMasterAdmin {
+public class LocalMasterAdmin implements Runnable{
     private BlockingQueue<Component> componentsToBeChecked;
 
     public LocalMasterAdmin(){
@@ -33,6 +33,20 @@ public class LocalMasterAdmin {
             Component c = this.componentsToBeChecked.poll();
             // TODO: Procesar valores del componente
             System.out.println(c.toString());
+        }
+    }
+
+    /**
+     * Debe sacar los componentes pendientes de su lista, si esta vacía no entra
+     */
+    @Override
+    public void run() {
+        while(true){
+            try {
+                consumeComponent();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 }

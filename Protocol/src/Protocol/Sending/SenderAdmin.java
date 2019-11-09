@@ -22,6 +22,7 @@ public class SenderAdmin implements Runnable{
      * @param m : Message nuevo a poner en la Queue (Message actualizado)
      */
     public void putMessageInQueue(Message m){
+        System.out.println("Mensaje puesto en Queue de Sender Admin: " + m.toString() + " Tamaño de Queue: " + this.messagesToSend.size());
         this.messagesToSend.add(m);
     }
 
@@ -30,10 +31,12 @@ public class SenderAdmin implements Runnable{
      * Luego pone el byte[] con CRC en la Queue de envío del XbeeSender
      */
     public void putMessageInByteQueue(){
-        Message m = this.messagesToSend.poll(); // Saco mensaje
-        byte[] b = m.getBytes(); // Saco sus bytes
-        //BitOperations.appendCRC(b); // Append de CRC
-        myXbeeSender.putByteInQueue(b); // Lo pongo en la Queue de envío
+        while(!this.messagesToSend.isEmpty()) {
+            Message m = this.messagesToSend.poll(); // Saco mensaje
+            byte[] b = m.getBytes(); // Saco sus bytes
+            //BitOperations.appendCRC(b); // Append de CRC
+            myXbeeSender.putByteInQueue(b); // Lo pongo en la Queue de envío
+        }
     }
 
     /**
@@ -58,8 +61,15 @@ public class SenderAdmin implements Runnable{
      */
     @Override
     public void run() {
+        //System.out.println("Sender admin RUN");
         while(true){
-            putMessageInByteQueue(); // Sacar Message, calcular CRC y ponerlo en cola en evío
+            try {
+                //System.out.println("Mensajes en cola de SenderAdmin: " + this.messageQueueSize());
+                putMessageInByteQueue(); // Sacar Message, calcular CRC y ponerlo en cola en evío
+                //Thread.sleep(2000); // Para debug en tiempo real
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 }
