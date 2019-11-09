@@ -69,8 +69,8 @@ public class BitOperations {
      * @param bitsAPoner : bits significativos del valor a poner
      */
     public static void ponerValorEnArray(byte[] rawBytes, int rawBytes_inicio, int valorAponer, int bitsAPoner) {
-        int index = rawBytes_inicio / 8;
-        int subIndex = rawBytes_inicio % 8;
+        int index = rawBytes_inicio / 8; // Posición en array byte[]
+        int subIndex = rawBytes_inicio % 8; // Va de 0 a 7 y es subindice en Byte actual
 
         short mask;
         while(bitsAPoner != 0){
@@ -166,6 +166,41 @@ public class BitOperations {
         }
         //System.out.println(Integer.toBinaryString(valor));
         return valor;
+    }
+
+    /**
+     * Pone en 0 todos los bits en el rango señalado, esto para poder limpiar bits anteriores antes de poner los nuevos
+     * @param raw : Arreglo a intervenir
+     * @param desde : Bit de inicio
+     * @param hasta : Bit de fin
+     */
+    public static void resetToZeroBitRange(byte[] raw, int desde, int hasta){
+        int cantidad = hasta - desde + 1; // Si tengo desde 2 hasta 2, tengo que neutralizar ese bit
+        int index = desde / 8 ; // Índice en raw desde done comenzar a extraer
+        int subIndex = desde % 8;  // Sub-índice de inicio en byte, ej : 2. Valor entre 0-7
+        int zero = 0; // Valor final
+        short mask; // Máscara para extracciones
+
+        while( cantidad != 0 ){ // Mientras queden bits por poner en zero
+            if(cantidad > (8 - subIndex)){ // Si tengo que poner en zero hasta el final del byte actual
+                if(subIndex != 0){ // Si empiezo a extraer desde un punto al medio del byte hasta el final
+                    mask = genMask(subIndex, 8 - subIndex); // Desde donde toque hasta el final (que es mayor a 8)
+                    raw[index] &= ~ mask; // Nego la máscara para dejar vivos los bits a la izquierda mío, no los que tengo que borrar. Mascara del estilo 1111 1000
+                    cantidad -= 8 - subIndex; // Consumí lo que pude
+                    index++; // Avanzo en el arreglo de bytes
+                    subIndex = 0; // Para ingresar en else si cantidad es grande. Si cantidad < 8 en un principio, subIndex nunca cambia de desde % 8
+                }else{ // Extraigo 8 bits, porque parto de 0 y
+                    raw[index] = 0;
+                    cantidad -= 8; // Ya consumí 8 bits
+                    index++; // Avanzo
+                }
+            }else{ // No tengo que extraer hasta el final, sólo de subIndex a cantidad. Puede ser la extracción final luego de varias extracciones pervias, o una extraccion directa
+                mask = genMask(subIndex, cantidad); // Desde el sub-índice de inicio, hasta lo que tenga que sacar
+                raw[index] &= ~ mask; // Nego la máscara para dejar vivos los bits a la izquierda mío, no los que tengo que borrar. Mascara del estilo 1111 1000
+                cantidad = 0; // Termino while()
+            }
+        }
+
     }
 
     /**

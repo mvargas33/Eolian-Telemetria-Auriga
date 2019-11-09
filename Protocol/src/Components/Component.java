@@ -113,7 +113,11 @@ public class Component {
      * @param m : Mensaje que acaba de actualizarse
      */
     public void updateMsg( MessagesWithIndexes m ){
-        byte[] bytes = m.message.getBytes();           // Get old bytes from Message
+        byte[] bytes = m.message.getBytes();           // Bytes antiguos de Message
+        // Resetear a 0 los valores, porque si continuamos con antiguos, hacen conflicto con 'updateByteArrayFromValues'
+        // al usar OR como operando intermedio, i.e. los valores anterior preservan y hacen OR con nuevos, causando update erróneo
+        // Header se preserva
+        BitOperations.resetToZeroBitRange(bytes, m.raw_inicio, m.raw_fin);
         BitOperations.updateByteArrayFromValues(myValues, bytes, bitSig, m.myBitSig_inicio,  m.raw_inicio, m.raw_fin); // Update Messsage con lo que me corresponde
         //m.message.updateRawBytes(bytes); // TODO: Ver si esta linea es necesaria | Reemplazo directo de bytes de mensaje
         //m.message.bytes = bytes; // Update myself

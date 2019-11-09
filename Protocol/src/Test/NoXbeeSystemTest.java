@@ -193,14 +193,38 @@ class NoXbeeSystemTest {
 
         System.out.println("Mensajes en cola de SenderAdmin: " + senderAdmin.messageQueueSize());
 
-        while(!senderAdmin.isMessageQueueEmpty()){
-            senderAdmin.putMessageInByteQueue(); // Saca de queue de Message y pone en queue de byte[] de Xbee Sender
-            xbeeSender.sendByteOffline(); // Envia byte[] a xbeeRecevier y queda en la queue de byte[] del xBeeReceiver
-        }
-        while(!xbeeReceiver.isQueueEmpty()) {
-            receiverAdmin.consumeByteArrayFromQueue(); // Consume un Byte de la queue del xbeeReceiver, se ponen componentes actualizado en la queue de localmasteradmin
-            localMasterAdmin.consumeComponent(); // Se muestra componente como llega
-        }
+
+        senderAdmin.putMessageInByteQueue(); // Saca a TODOS de queue de Message y pone en queue de byte[] de Xbee Sender
+        xbeeSender.sendByteOffline(); // Envia TODOS los byte[] a xbeeRecevier y queda en la queue de byte[] del xBeeReceiver
+
+
+
+        receiverAdmin.consumeByteArrayFromQueue(); // Consume TODOS Byte de la queue del xbeeReceiver, se ponen componentes actualizado en la queue de localmasteradmin
+        localMasterAdmin.consumeComponent(); // Se muestra componente como llega
+
+        assertArrayEquals(BMS_origen.getMyValues(), BMS_destino.getMyValues()); // Origen y destino con mismos valores
+        assertArrayEquals(MPPT1_origen.getMyValues(), MPPT1_destino.getMyValues()); // Origen y destino con mismos valores
+        assertArrayEquals(MPPT2_origen.getMyValues(), MPPT2_destino.getMyValues()); // Origen y destino con mismos valores
+        assertArrayEquals(MPPT3_origen.getMyValues(), MPPT3_destino.getMyValues()); // Origen y destino con mismos valores
+        assertArrayEquals(BMS_TEMP_origen.getMyValues(), BMS_TEMP_destino.getMyValues()); // Origen y destino con mismos valores
+
+        /* -------------- SEGUNDO ROUND --------------*/
+        sensorsReader.randomData("BMS_ORIGEN"); // Lee, actualiza y deja en queue de sender admin
+        sensorsReader.randomData("MPPT1_ORIGEN"); // Lee, actualiza y deja en queue de sender admin
+        sensorsReader.randomData("MPPT2_ORIGEN"); // Lee, actualiza y deja en queue de sender admin
+        sensorsReader.randomData("MPPT3_ORIGEN"); // Lee, actualiza y deja en queue de sender admin
+        sensorsReader.randomData("BMS_TEMP_ORIGEN"); // Lee, actualiza y deja en queue de sender admin
+
+
+        System.out.println("Mensajes en cola de SenderAdmin: " + senderAdmin.messageQueueSize());
+
+
+        senderAdmin.putMessageInByteQueue(); // Saca a TODOS de queue de Message y pone en queue de byte[] de Xbee Sender
+        xbeeSender.sendByteOffline(); // Envia TODOS los byte[] a xbeeRecevier y queda en la queue de byte[] del xBeeReceiver
+
+        receiverAdmin.consumeByteArrayFromQueue(); // Consume TODOS los Byte de la queue del xbeeReceiver, se ponen componentes actualizado en la queue de localmasteradmin
+        localMasterAdmin.consumeComponent(); // Se muestraj TODOS componente como llega
+
         assertArrayEquals(BMS_origen.getMyValues(), BMS_destino.getMyValues()); // Origen y destino con mismos valores
         assertArrayEquals(MPPT1_origen.getMyValues(), MPPT1_destino.getMyValues()); // Origen y destino con mismos valores
         assertArrayEquals(MPPT2_origen.getMyValues(), MPPT2_destino.getMyValues()); // Origen y destino con mismos valores

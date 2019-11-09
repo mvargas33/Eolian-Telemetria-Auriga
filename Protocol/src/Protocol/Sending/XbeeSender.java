@@ -40,7 +40,7 @@ public class XbeeSender implements Runnable{
         this.bytesToSend = new LinkedBlockingQueue<>();
         this.myDevice = new XBeeDevice(PORT_SEND, BAUD_RATE);
         this.REMOTE_NODE_IDENTIFIER = REMOTE_NODE_IDENTIFIER;
-        this.myDevice.open();
+        this.myDevice.open(); // Esto se hace acá para hacerlo una sola vez, mejora la eficiencia de envío de mensajes
         this.xbeeNetwork = myDevice.getNetwork();
         this.remoteDevice = xbeeNetwork.discoverDevice(REMOTE_NODE_IDENTIFIER);
     }
@@ -58,10 +58,11 @@ public class XbeeSender implements Runnable{
      * Toma un byte[] array de la Queue y lo envía a través de las Xbees
      */
     public void sendByteOffline() throws Exception{
-        byte[] b = this.bytesToSend.poll(); // Get byte array from queue
-        if(b != null){
+        while(!this.bytesToSend.isEmpty()){
+            byte[] b = this.bytesToSend.poll(); // Get byte array from queue
             this.myReceiver.receiveByteOffline(b);
         }
+
     }
 
     /**
@@ -69,8 +70,8 @@ public class XbeeSender implements Runnable{
      */
     public void sendByte() throws Exception{
         while(!this.bytesToSend.isEmpty()){
-            byte[] data = this.bytesToSend.poll(); // Sacar byte[] de la Queue
             System.out.println("Tamaño de Queue de XbeeSender: " + this.bytesToSend.size());
+            byte[] data = this.bytesToSend.poll(); // Sacar byte[] de la Queue
             try {
                 // Obtain the remote XBee device from the XBee network.
 

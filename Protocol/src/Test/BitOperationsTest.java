@@ -89,4 +89,20 @@ class BitOperationsTest {
         res = BitOperations.extraerBits(raw, 10, 8); // desde segundo indice en byte[]
         assertEquals(168, res); // 10101000
     }
+
+    /**
+     * Verifica el funcionamiento del reset de bytes en un array, para actualizar vyteArray en envío
+     */
+    @org.junit.jupiter.api.Test
+    void TestDeResetDeBits(){
+        byte[] a = {0b01111111};
+        byte[] b = {0b01011111};
+        BitOperations.resetToZeroBitRange(a, 2, 2);
+        assertArrayEquals(a, b);
+
+        byte[] c = {0b00001111, 0b01111111};
+        byte[] d = {0b00001000, 0b00001111};
+        BitOperations.resetToZeroBitRange(c, 5, 11);
+        assertArrayEquals(c, d);
+    }
 }

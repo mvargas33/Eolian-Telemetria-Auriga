@@ -90,7 +90,7 @@ public class SensorsReader implements Runnable{
                 for (Component c : componentLinkedList
                 ) {
                     randomData(c.getID());
-                    Thread.sleep(500); // Dormir 10 segundos
+                    Thread.sleep(10000); // Dormir 10 segundos
                 }
             }catch (Exception e){
                 e.printStackTrace();

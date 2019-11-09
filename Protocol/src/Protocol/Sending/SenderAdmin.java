@@ -22,8 +22,9 @@ public class SenderAdmin implements Runnable{
      * @param m : Message nuevo a poner en la Queue (Message actualizado)
      */
     public void putMessageInQueue(Message m){
-        System.out.println("Mensaje puesto en Queue de Sender Admin: " + m.toString() + " Tamaño de Queue: " + this.messagesToSend.size());
         this.messagesToSend.add(m);
+        //System.out.print("Tamaño de Queue SenderAdmin: " + this.messagesToSend.size());
+        //System.out.println(" Mensaje puesto en Queue de Sender Admin: " + m.toString());
     }
 
     /**
