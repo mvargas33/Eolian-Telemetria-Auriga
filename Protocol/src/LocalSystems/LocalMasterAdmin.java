@@ -21,7 +21,9 @@ public class LocalMasterAdmin implements Runnable{
      * @param c : Componente a poner en la Queue
      */
     public void putComponentInQueue(Component c){
-        this.componentsToBeChecked.add(c);
+        if(!this.componentsToBeChecked.contains(c)){ // Sólo si no estoy, me agrego, esto toma a lo más O(largo lista) = O(número de Componentes) = O(5) ? = cte.
+            this.componentsToBeChecked.add(c);
+        }
     }
 
 
