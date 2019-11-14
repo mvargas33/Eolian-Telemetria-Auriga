@@ -41,8 +41,8 @@ public class XbeeSender implements Runnable{
         this.myDevice = new XBeeDevice(PORT_SEND, BAUD_RATE);
         this.REMOTE_NODE_IDENTIFIER = REMOTE_NODE_IDENTIFIER;
         this.myDevice.open(); // Esto se hace acá para hacerlo una sola vez, mejora la eficiencia de envío de mensajes
-        this.xbeeNetwork = myDevice.getNetwork();
-        this.remoteDevice = xbeeNetwork.discoverDevice(REMOTE_NODE_IDENTIFIER);
+        //this.xbeeNetwork = myDevice.getNetwork();
+        //this.remoteDevice = xbeeNetwork.discoverDevice(REMOTE_NODE_IDENTIFIER);
     }
 
     /**
@@ -75,14 +75,14 @@ public class XbeeSender implements Runnable{
             try {
                 // Obtain the remote XBee device from the XBee network.
 
-                if (remoteDevice == null) {
+                /*if (remoteDevice == null) {
                     System.out.println("No se encuentra Xbee destino con identificador :" + REMOTE_NODE_IDENTIFIER);
                     System.exit(1);
-                }
+                }*/
 
                 System.out.print("Enviando datos a Xbee Destino: " + BitOperations.ArraytoString(data));
-                //myDevice.sendBroadcastData(data); // TODO: VER SI FUNCINOA PARA EVITAR DEPENDER DE OYENTE, ASI SI NO HAY OYENTE, NO HACE FALTA REINICIAR TODO
-                myDevice.sendData(remoteDevice, data);
+                myDevice.sendBroadcastData(data);
+                //myDevice.sendData(remoteDevice, data);
                 System.out.println("Enviado.");
 
             } catch (XBeeException e) {

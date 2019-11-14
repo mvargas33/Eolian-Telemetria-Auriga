@@ -1,7 +1,9 @@
 package Test;
 
 import Components.Component;
+import LocalSystems.DatabaseAdmin.DatabaseAdmin;
 import LocalSystems.LocalMasterAdmin;
+import LocalSystems.ServerAdmin.ServerAdmin;
 import Main.MainReceiver;
 import Main.MainSender;
 import Protocol.Initializer.Initializer;
@@ -34,7 +36,9 @@ class LocalXbeeTest {
         /*------------------ Clases de recibir ------------------*/
 
         XbeeReceiver xbeeReceiver = new XbeeReceiver(BAUD_RATE, PORT_RECEIVER);
-        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(); // Todos los componentes lo deben conocer para ponerse en su Queue y que el LocalMasterAdmin los revise
+        ServerAdmin serverAdmin = new ServerAdmin("http://localhost:3000/update");
+        DatabaseAdmin databaseAdmin = new DatabaseAdmin();
+        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(serverAdmin, databaseAdmin); // Todos los componentes lo deben conocer para ponerse en su Queue y que el LocalMasterAdmin los revise
 
         /*--------------------- Componentes ---------------------*/
         int[] valores_0 = {0, 0, 0, 0, 0};

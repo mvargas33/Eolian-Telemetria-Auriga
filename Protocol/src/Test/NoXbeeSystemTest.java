@@ -1,7 +1,9 @@
 package Test;
 
 import Components.Component;
+import LocalSystems.DatabaseAdmin.DatabaseAdmin;
 import LocalSystems.LocalMasterAdmin;
+import LocalSystems.ServerAdmin.ServerAdmin;
 import Protocol.Initializer.Initializer;
 import Protocol.Messages.Message;
 import Protocol.Receiving.ReceiverAdmin;
@@ -141,7 +143,10 @@ class NoXbeeSystemTest {
         System.out.println(MPPT3_origen.printMessagesWithIndexes());
         System.out.println(BMS_TEMP_origen.printMessagesWithIndexes());
 
-        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin();
+        ServerAdmin serverAdmin = new ServerAdmin("http://localhost:3000/update");
+        DatabaseAdmin databaseAdmin = new DatabaseAdmin();
+        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(serverAdmin, databaseAdmin); // Todos los componentes lo deben conocer para ponerse en su Queue y que el LocalMasterAdmin los revise
+
 
         int[] bitSig00 = {8, 8, 2, 8, 5, 21, 21, 21, 11, 22, 9};
         int[] valores00 = new int[bitSig0.length];

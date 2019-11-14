@@ -1,7 +1,10 @@
 package LocalSystems;
 
 import Components.Component;
+import LocalSystems.DatabaseAdmin.DatabaseAdmin;
+import LocalSystems.ServerAdmin.ServerAdmin;
 
+import javax.xml.crypto.Data;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
@@ -11,9 +14,26 @@ import java.util.concurrent.LinkedBlockingDeque;
  */
 public class LocalMasterAdmin implements Runnable{
     private BlockingQueue<Component> componentsToBeChecked;
+    private ServerAdmin serverAdmin;        // Para visualizar información en AppWeb
+    private DatabaseAdmin databaseAdmin;    // Para almacenar información en Base de datos
 
+    /**
+     * Constructor para DEBUG
+     */
     public LocalMasterAdmin(){
         this.componentsToBeChecked = new LinkedBlockingDeque<>();
+    }
+
+    /**
+     * Construcor de administrador de datos locales. Necesita un serveradmin para mandar información a servidor que tiene
+     * montada la WebApp. Necesita DataBaseAdmin para guardar información en base de datos.
+     * @param serverAdmin : Quien se encarga de enviar información a AppWeb
+     * @param databaseAdmin : Quien se encarga de guardar información en Base de Datos
+     */
+    public LocalMasterAdmin(ServerAdmin serverAdmin, DatabaseAdmin databaseAdmin){
+        this.componentsToBeChecked = new LinkedBlockingDeque<>();
+        this.serverAdmin = serverAdmin;
+        this.databaseAdmin = databaseAdmin;
     }
 
     /**
@@ -30,9 +50,11 @@ public class LocalMasterAdmin implements Runnable{
     /**
      * Consume y procesa un Componente de la Queue. Deben visualizar sus valores y guardarse en la base de datos
      */
-    public void consumeComponent(){
+    public void consumeComponent() throws Exception{
         while(!componentsToBeChecked.isEmpty()){
+            //System.out.println("COMPONENTS TO BE CHECKED: " + this.componentsToBeChecked.size());
             Component c = this.componentsToBeChecked.poll();
+            serverAdmin.sendToServer(c.getID(), c.getMyValues()); // Mandar info al servidor
             // TODO: Procesar valores del componente
             System.out.println(c.toString());
         }
