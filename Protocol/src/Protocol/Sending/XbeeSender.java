@@ -81,6 +81,7 @@ public class XbeeSender implements Runnable{
                 }
 
                 System.out.print("Enviando datos a Xbee Destino: " + BitOperations.ArraytoString(data));
+                //myDevice.sendBroadcastData(data); // TODO: VER SI FUNCINOA PARA EVITAR DEPENDER DE OYENTE, ASI SI NO HAY OYENTE, NO HACE FALTA REINICIAR TODO
                 myDevice.sendData(remoteDevice, data);
                 System.out.println("Enviado.");
 
