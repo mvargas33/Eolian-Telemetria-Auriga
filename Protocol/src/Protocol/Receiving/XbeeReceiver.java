@@ -13,7 +13,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class XbeeReceiver implements Runnable{
     private final BlockingQueue<byte[]> bytesReceived;
     private XBeeDevice myDeviceR; // Xbee que recibirá los mensajes
-    private int dummy;
 
     /**
      * Listener de mensajes recibidos, este método se invoca cada vez que llega un mensaje
@@ -97,7 +96,7 @@ public class XbeeReceiver implements Runnable{
     public void run() {
         while(true){
             try{
-               dummy = 0; // TODO: AVERIGUAR SI ES NECESARIO MANTER DESPUERTO EL THREAD ASI, O SI EL LISTER SE INVOCA SOLO
+                Thread.sleep(1000000);
             } catch (Exception err) {
                 err.printStackTrace();
             }
