@@ -5,10 +5,10 @@ import Protocol.Initializer.Initializer;
 import Protocol.Sending.SenderAdmin;
 import Protocol.Sending.XbeeSender;
 import SensorReading.SensorsReader;
+import SensorReading.RandomReader;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -21,11 +21,10 @@ public class MainSender {
         int msgLimitSize = 8 + 16 + 8; // 8 bit header, 16 bit contenido, 8 bit CRC8
         int BAUD_RATE = 9600;
         String PORT_SENDER = "COM4";
-        String REMOTE_IDENTIFIER = "EOLIAN FENIX";
 
         /*------------------- Clases de envío -------------------*/
 
-        XbeeSender xbeeSender = new XbeeSender(BAUD_RATE, PORT_SENDER, REMOTE_IDENTIFIER);
+        XbeeSender xbeeSender = new XbeeSender(BAUD_RATE, PORT_SENDER);
         SenderAdmin senderAdmin = new SenderAdmin(xbeeSender);
 
         /*--------------------- Componentes ---------------------*/
@@ -53,7 +52,7 @@ public class MainSender {
 
         /*------------------ Generador de datos ------------------*/
 
-        SensorsReader sensorsReader = new SensorsReader(allComponents, listAllComponents_origen);
+        RandomReader sensorsReader = new RandomReader(allComponents, listAllComponents_origen);
 
         /*---------------- Threads de cada clase -----------------*/
 

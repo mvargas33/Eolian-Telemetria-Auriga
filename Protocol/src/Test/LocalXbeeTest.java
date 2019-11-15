@@ -4,8 +4,6 @@ import Components.Component;
 import LocalSystems.DatabaseAdmin.DatabaseAdmin;
 import LocalSystems.LocalMasterAdmin;
 import LocalSystems.ServerAdmin.ServerAdmin;
-import Main.MainReceiver;
-import Main.MainSender;
 import Protocol.Initializer.Initializer;
 import Protocol.Messages.Message;
 import Protocol.Receiving.ReceiverAdmin;
@@ -13,13 +11,12 @@ import Protocol.Receiving.XbeeReceiver;
 import Protocol.Sending.SenderAdmin;
 import Protocol.Sending.XbeeSender;
 import SensorReading.SensorsReader;
+import SensorReading.RandomReader;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class LocalXbeeTest {
 
@@ -31,14 +28,14 @@ class LocalXbeeTest {
         int msgLimitSize = 8 + 16 + 8; // 8 bit header, 16 bit contenido, 8 bit CRC8
         int BAUD_RATE = 9600;
         String PORT_RECEIVER = "COM6";
-        String REMOTE_IDENTIFIER = "EOLIAN FENIX"; // Yo tengo este nombre en mi Xbee
+        //String REMOTE_IDENTIFIER = "EOLIAN FENIX"; // Yo tengo este nombre en mi Xbee, no necesario, ahora se hace broadcast
 
         /*------------------ Clases de recibir ------------------*/
 
         XbeeReceiver xbeeReceiver = new XbeeReceiver(BAUD_RATE, PORT_RECEIVER);
         ServerAdmin serverAdmin = new ServerAdmin("http://localhost:3000/update");
         DatabaseAdmin databaseAdmin = new DatabaseAdmin();
-        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(serverAdmin, databaseAdmin); // Todos los componentes lo deben conocer para ponerse en su Queue y que el LocalMasterAdmin los revise
+        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(serverAdmin, databaseAdmin, false); // Todos los componentes lo deben conocer para ponerse en su Queue y que el LocalMasterAdmin los revise
 
         /*--------------------- Componentes ---------------------*/
         int[] valores_0 = {0, 0, 0, 0, 0};
@@ -75,7 +72,7 @@ class LocalXbeeTest {
 
         /*------------------- Clases de envío -------------------*/
 
-        XbeeSender xbeeSender = new XbeeSender(BAUD_RATE, PORT_SENDER, REMOTE_IDENTIFIER);
+        XbeeSender xbeeSender = new XbeeSender(BAUD_RATE, PORT_SENDER);
         SenderAdmin senderAdmin = new SenderAdmin(xbeeSender);
 
         /*--------------------- Componentes ---------------------*/
@@ -105,7 +102,7 @@ class LocalXbeeTest {
 
         System.out.println("BMS DESTINO ANTES DE ENVÍO DE MENSAJE : \n" + BMS_destino.toString());
 
-        SensorsReader sensorsReader = new SensorsReader(allComponents, listAllComponents_origen);
+        RandomReader sensorsReader = new RandomReader(allComponents, listAllComponents_origen);
 
         /*---------------- Threads de cada clase -----------------*/
 

@@ -3,7 +3,6 @@ package Components;
 import LocalSystems.LocalMasterAdmin;
 import Protocol.Messages.Message;
 import Protocol.Sending.SenderAdmin;
-import SensorReading.DataAdmin;
 import Utilities.BitOperations;
 
 import java.util.HashMap;

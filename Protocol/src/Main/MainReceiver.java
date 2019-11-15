@@ -31,7 +31,7 @@ public class MainReceiver {
         XbeeReceiver xbeeReceiver = new XbeeReceiver(BAUD_RATE, PORT_RECEIVER);
         ServerAdmin serverAdmin = new ServerAdmin("http://localhost:3000/update");
         DatabaseAdmin databaseAdmin = new DatabaseAdmin();
-        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(serverAdmin, databaseAdmin); // Todos los componentes lo deben conocer para ponerse en su Queue y que el LocalMasterAdmin los revise
+        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(serverAdmin, databaseAdmin, false); // Todos los componentes lo deben conocer para ponerse en su Queue y que el LocalMasterAdmin los revise
 
         /*--------------------- Componentes ---------------------*/
         int[] valores_0 = {0, 0, 0, 0, 0};

@@ -19,9 +19,9 @@ public class XbeeSender implements Runnable{
     private BlockingQueue<byte[]> bytesToSend; // Queue de bytes[] para enviar por Xbee
     private XbeeReceiver myReceiver; // ONLY FOR TESTING, DELETE AFTER REAL TESING
     private XBeeDevice myDevice; // Xbee para envío de bytes
-    private String REMOTE_NODE_IDENTIFIER; // Dirección de Xbee destino
-    private XBeeNetwork xbeeNetwork;
-    private RemoteXBeeDevice remoteDevice;
+    //private String REMOTE_NODE_IDENTIFIER; // Dirección de Xbee destino
+    //private XBeeNetwork xbeeNetwork;
+    //private RemoteXBeeDevice remoteDevice;
 
 
     /**
@@ -36,10 +36,10 @@ public class XbeeSender implements Runnable{
     /**
      * Constructor de XbeeSender real
      */
-    public XbeeSender(int BAUD_RATE, String PORT_SEND, String REMOTE_NODE_IDENTIFIER) throws Exception{
+    public XbeeSender(int BAUD_RATE, String PORT_SEND) throws Exception{
         this.bytesToSend = new LinkedBlockingQueue<>();
         this.myDevice = new XBeeDevice(PORT_SEND, BAUD_RATE);
-        this.REMOTE_NODE_IDENTIFIER = REMOTE_NODE_IDENTIFIER;
+        //this.REMOTE_NODE_IDENTIFIER = REMOTE_NODE_IDENTIFIER;
         this.myDevice.open(); // Esto se hace acá para hacerlo una sola vez, mejora la eficiencia de envío de mensajes
         //this.xbeeNetwork = myDevice.getNetwork();
         //this.remoteDevice = xbeeNetwork.discoverDevice(REMOTE_NODE_IDENTIFIER);

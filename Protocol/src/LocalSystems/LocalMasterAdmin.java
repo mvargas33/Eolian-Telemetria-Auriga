@@ -16,12 +16,14 @@ public class LocalMasterAdmin implements Runnable{
     private BlockingQueue<Component> componentsToBeChecked;
     private ServerAdmin serverAdmin;        // Para visualizar información en AppWeb
     private DatabaseAdmin databaseAdmin;    // Para almacenar información en Base de datos
+    private boolean serverON;
 
     /**
      * Constructor para DEBUG
      */
-    public LocalMasterAdmin(){
+    public LocalMasterAdmin(boolean serverON){
         this.componentsToBeChecked = new LinkedBlockingDeque<>();
+        this.serverON = serverON;
     }
 
     /**
@@ -30,10 +32,11 @@ public class LocalMasterAdmin implements Runnable{
      * @param serverAdmin : Quien se encarga de enviar información a AppWeb
      * @param databaseAdmin : Quien se encarga de guardar información en Base de Datos
      */
-    public LocalMasterAdmin(ServerAdmin serverAdmin, DatabaseAdmin databaseAdmin){
+    public LocalMasterAdmin(ServerAdmin serverAdmin, DatabaseAdmin databaseAdmin, boolean serverON){
         this.componentsToBeChecked = new LinkedBlockingDeque<>();
         this.serverAdmin = serverAdmin;
         this.databaseAdmin = databaseAdmin;
+        this.serverON = serverON;
     }
 
     /**
@@ -54,7 +57,9 @@ public class LocalMasterAdmin implements Runnable{
         while(!componentsToBeChecked.isEmpty()){
             //System.out.println("COMPONENTS TO BE CHECKED: " + this.componentsToBeChecked.size());
             Component c = this.componentsToBeChecked.poll();
-            serverAdmin.sendToServer(c.getID(), c.getMyValues()); // Mandar info al servidor
+            if(serverON) {
+                serverAdmin.sendToServer(c.getID(), c.getMyValues()); // Mandar info al servidor
+            }
             // TODO: Procesar valores del componente
             System.out.println(c.toString());
         }

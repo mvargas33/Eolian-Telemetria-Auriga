@@ -18,7 +18,7 @@ class InitializerTest {
         XbeeReceiver xbeeReceiver = new XbeeReceiver();
         XbeeSender xbeeSender = new XbeeSender(xbeeReceiver); // TODO: DELETE DESPUES DE TEST EXITOSO, ESTE ES EL PUENTE
         SenderAdmin senderAdmin = new SenderAdmin(xbeeSender);
-        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin();
+        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(false);
 
         // 2 4 8 16 32 64 128 256 512 1024 2048
         // 1 2 3 4  5  6  7   8   9   10   11
@@ -34,7 +34,6 @@ class InitializerTest {
         LinkedList<Component> listAllComponents = new LinkedList<>();
         listAllComponents.add(BMS_origen);
 
-        SensorsReader sensorsReader = new SensorsReader(allComponents);
 
         char baseHeader = 'A';
         int msgLimitSize = 24; // Bits
@@ -52,7 +51,7 @@ class InitializerTest {
         XbeeReceiver xbeeReceiver = new XbeeReceiver();
         XbeeSender xbeeSender = new XbeeSender(xbeeReceiver); // TODO: DELETE DESPUES DE TEST EXITOSO, ESTE ES EL PUENTE
         SenderAdmin senderAdmin = new SenderAdmin(xbeeSender);
-        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin();
+        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(false);
 
         // 2 4 8 16 32 64 128 256 512 1024 2048
         // 1 2 3 4  5  6  7   8   9   10   11

@@ -12,12 +12,12 @@ app.use(bodyParser.json()) // Usar formato JSON para POST
 
 // Variable global con todos los pares (componenteID, valores[])
 var map = new HashMap()
-map.set("BMS", [])
+map.set("BMS_DESTINO", [])
 map.set("MPPT1", [])
 
 
 app.post('/update', (req, res) => { // Listener a la ruta /update
-    //console.log(req.body) // DEBUG, Parse de los datos
+    console.log(req.body) // DEBUG, Parse de los datos
     var componente = req.body.componente // Tomamos el nombre del componente
     var valores = JSON.parse(req.body.valores) // Transformamos el String de valors a Array
     map.set(componente, valores) // Actualizamos variable global

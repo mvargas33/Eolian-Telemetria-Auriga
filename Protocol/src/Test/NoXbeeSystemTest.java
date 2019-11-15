@@ -10,6 +10,7 @@ import Protocol.Receiving.ReceiverAdmin;
 import Protocol.Receiving.XbeeReceiver;
 import Protocol.Sending.SenderAdmin;
 import Protocol.Sending.XbeeSender;
+import SensorReading.RandomReader;
 import SensorReading.SensorsReader;
 
 import java.util.HashMap;
@@ -38,7 +39,7 @@ class NoXbeeSystemTest {
         LinkedList<Component> listAllComponents_origen = new LinkedList<>();
         listAllComponents_origen.add(BMS_origen);
 
-        SensorsReader sensorsReader = new SensorsReader(allComponents);
+        RandomReader sensorsReader = new RandomReader(allComponents, listAllComponents_origen);
 
         char baseHeader = 'A';
         int msgLimitSize = 24 + 8; // Bits
@@ -49,7 +50,7 @@ class NoXbeeSystemTest {
         System.out.println("Initializaer origen: ");
         System.out.println(BMS_origen.printMessagesWithIndexes());
 
-        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin();
+        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(false);
 
         int[] valores_0 = {0, 0, 0, 0, 0};
         int[] bitSig_0 = {8, 8, 2, 8, 5};
@@ -128,7 +129,7 @@ class NoXbeeSystemTest {
         listAllComponents_origen.add(MPPT3_origen);
         listAllComponents_origen.add(BMS_TEMP_origen);
 
-        SensorsReader sensorsReader = new SensorsReader(allComponents);
+        RandomReader sensorsReader = new RandomReader(allComponents, listAllComponents_origen);
 
         char baseHeader = 'A';
         int msgLimitSize = 8*8 + 8 + 8; // Bits
@@ -145,7 +146,7 @@ class NoXbeeSystemTest {
 
         ServerAdmin serverAdmin = new ServerAdmin("http://localhost:3000/update");
         DatabaseAdmin databaseAdmin = new DatabaseAdmin();
-        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(serverAdmin, databaseAdmin); // Todos los componentes lo deben conocer para ponerse en su Queue y que el LocalMasterAdmin los revise
+        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(serverAdmin, databaseAdmin, false); // Todos los componentes lo deben conocer para ponerse en su Queue y que el LocalMasterAdmin los revise
 
 
         int[] bitSig00 = {8, 8, 2, 8, 5, 21, 21, 21, 11, 22, 9};
