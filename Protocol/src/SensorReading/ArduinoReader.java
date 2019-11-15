@@ -13,29 +13,35 @@ import java.io.OutputStream;
 import java.util.*;
 
 public class ArduinoReader extends SensorsReader implements SerialPortEventListener {
-    SerialPort serialPort;
-    /** The port we're normally going to use. */
-    private static final String[] PORT_NAMES = {
-            "/dev/tty.usbserial-A9007UX1", // Mac OS X
-            "/dev/ttyUSB0", // Linux
-            "COM7", // Windows
-    };
+    private SerialPort serialPort; /** The port we're normally going to use. */
+    private String[] PORT_NAMES;
     private BufferedReader input;
     private OutputStream output;
-    private static final int TIME_OUT = 2000;
-    private static final int DATA_RATE = 9600;
+    private int TIME_OUT; // Para buscar puerto
+    private int DATA_RATE; // Baudrate
 
-    private ArrayList<String> buffer;
-    private String header;
+    private String inputLine; // Buffer RAW de lectura
+    private ArrayList<String> buffer; // Aquí se ponen los siguientes split de números doubles
+    private String header; // Lectura del primer split
+    private Component actualComponentInRead; // Espacio para guardar el componente actual
 
-
-    public ArduinoReader(HashMap<String, Component> allComponents, LinkedList<Component> componentLinkedList) {
+    public ArduinoReader(HashMap<String, Component> allComponents, LinkedList<Component> componentLinkedList, String PORT, int BAUD_RATE, int TIME_OUT) {
         super(allComponents, componentLinkedList);
-    }
-
-    public void initialize() {
+        this.PORT_NAMES = new String[]{
+                "/dev/tty.usbserial-A9007UX1", // Mac OS X
+                "/dev/ttyUSB0", // Linux
+                PORT}; // COM7 Windows
+        this.DATA_RATE = BAUD_RATE; // = 9600 default
+        this.TIME_OUT = TIME_OUT; // = 2000 ms default
         buffer = new ArrayList<>();
         header = "";
+        initialize(); // Abrir el puerto
+    }
+
+    /**
+     * Inicializa y abre el puerto serial con las configuraciones señaladas
+     */
+    private void initialize() {
         CommPortIdentifier portId = null;
         Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
 
@@ -50,14 +56,12 @@ public class ArduinoReader extends SensorsReader implements SerialPortEventListe
             }
         }
         if (portId == null) {
-            System.out.println("Could not find COM port.");
+            System.out.println("No se encuentra puerto COM");
             return;
         }
 
         try {
             serialPort = (SerialPort) portId.open(this.getClass().getName(),TIME_OUT);
-            //serialPort.disableReceiveTimeout();
-            //serialPort.enableReceiveThreshold(1);
             serialPort.setSerialPortParams(DATA_RATE,
                     SerialPort.DATABITS_8,
                     SerialPort.STOPBITS_1,
@@ -74,6 +78,9 @@ public class ArduinoReader extends SensorsReader implements SerialPortEventListe
         }
     }
 
+    /**
+     * Cierra el puerto Serial
+     */
     public synchronized void close() {
         if (serialPort != null) {
             serialPort.removeEventListener();
@@ -81,61 +88,46 @@ public class ArduinoReader extends SensorsReader implements SerialPortEventListe
         }
     }
 
+    /**
+     * Listener de cuando hay datos en el bus Serial
+     * @param oEvent : Evento
+     */
     @Override
     public void serialEvent(SerialPortEvent oEvent) {
-        if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
+        if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) { // Evento de data available
             try {
-                String inputLine=null;
+                inputLine = null;
+                actualComponentInRead = null;
                 while (input.ready()) {
-                    //byte[] buff = new char[400];
-                    //buffer += (char) input.read();
-                    //input.read(buff);
-                    //if(index == buffer.length - 1)
-                    //    index = 0;
-                    //buffer[index] = (char) input.read();
-                    //index++;
-                    inputLine = input.readLine();
+                    inputLine = input.readLine(); // Se lee la primera línea completa
 
                     int pos = 0;
-                    int end = inputLine.indexOf(' ', pos);
-                    header = inputLine.substring(pos, end);
+                    int end = inputLine.indexOf(' ', pos); // Se usa indexOf() que tiene el mejor desempeño
+                    header = inputLine.substring(pos, end); // Leer primer valor
                     pos = end + 1;
 
-                    if(header.equals("BMS_ORIGEN")){
-                        while ((end = inputLine.indexOf(' ', pos)) >= 0) {
+                    Component c = allComponents.get(header);
+
+                    if(c != null){ // Si leí un componente que existe acá también
+                        System.out.println("Leído el componente: " + c.getID());
+                        while ((end = inputLine.indexOf(' ', pos)) >= 0) { // Hacer split() hasta el final y poner en buffer
                             buffer.add(inputLine.substring(pos, end));
                             pos = end + 1;
                         }
+
+                        // Se crea cada vez porque los componentes tienen tamaños de values diferentes
+                        int[] values = new int[buffer.size()]; // TODO: cambiar a double[] y Double.parseDouble(), pero con escalamiento
+                        for (int i=0;i<buffer.size();i++){
+                            values[i] = Integer.parseInt(buffer.get(i));
+                        }
+
+                        if(values.length == c.getMyValues().length){ // Si el largo es el mismo
+                            updateDirectly(c.getID(), values); // Hago update d evalores del componente, que actu;iza sus mensajes y se ponen en cola de envío
+                        }
+                        System.out.println(Arrays.toString(values));
                     }
-
-                    double[] values = new double[buffer.size()];
-                    for (int i=0;i<buffer.size();i++){
-                        values[i] = Double.parseDouble(buffer.get(i));
-                    }
-                    System.out.println(Arrays.toString(values));
-
-                    buffer.clear();
-
-                    //System.out.println(stringSplit.toString());
-
-                    //byte[] b = inputLine.getBytes();
-
-                    //System.out.println("START " + BitOperations.ArraytoString(b) + " END");
-                    //System.out.println(buff);
-                    //System.out.println(inputLine);
+                    buffer.clear(); // Limpiar la lista de Strings
                 }
-/*
-                    System.out.print("START ");
-                    for (char c : buffer
-                         ) {
-                        //System.out.print(c.toBinaryString());
-                        System.out.print(" ");
-                    }
-                    //System.out.print(buffer);
-                    System.out.println("END");
-*/
-
-
             } catch (Exception e) {
                 System.err.println(e.toString());
             }
@@ -150,7 +142,7 @@ public class ArduinoReader extends SensorsReader implements SerialPortEventListe
     public void run() {
         while(true){
             try {
-                Thread.sleep(1000000);
+                Thread.sleep(1000000); // El Listener del puerto serial serialEvent() se ejecuta cada vez que hay algo en el serial
             }catch (Exception e){
                 e.printStackTrace();
             }

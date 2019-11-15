@@ -15,21 +15,25 @@ import java.util.*;
  */
 public class ArduinoSandBox implements SerialPortEventListener{
 
-        SerialPort serialPort;
-        /** The port we're normally going to use. */
-        private static final String[] PORT_NAMES = {                  "/dev/tty.usbserial-A9007UX1", // Mac OS X
-                "/dev/ttyUSB0", // Linux
-                "COM7", // Windows
-        };
-        private BufferedReader input;
-        private OutputStream output;
-        private static final int TIME_OUT = 2000;
-        private static final int DATA_RATE = 9600;
+    SerialPort serialPort;
+    /** The port we're normally going to use. */
+    private static final String[] PORT_NAMES = {
+            "/dev/tty.usbserial-A9007UX1", // Mac OS X
+            "/dev/ttyUSB0", // Linux
+            "COM7", // Windows
+    };
+    private BufferedReader input;
+    private OutputStream output;
+    private static final int TIME_OUT = 2000;
+    private static final int DATA_RATE = 9600;
 
-        private ArrayList<String> buffer;
-        private String header;
+    private ArrayList<String> buffer;
+    private String header;
 
-        public void initialize() {
+    /**
+     * Abre el puerto serial con todas las configuraciones señaladas
+     */
+    public void initialize() {
             buffer = new ArrayList<>();
             header = "";
             CommPortIdentifier portId = null;
@@ -46,14 +50,12 @@ public class ArduinoSandBox implements SerialPortEventListener{
                 }
             }
             if (portId == null) {
-                System.out.println("Could not find COM port.");
+                System.out.println("No se encuentra puerto COM");
                 return;
             }
 
             try {
-                serialPort = (SerialPort) portId.open(this.getClass().getName(),TIME_OUT);
-                //serialPort.disableReceiveTimeout();
-                //serialPort.enableReceiveThreshold(1);
+                serialPort = (SerialPort) portId.open(this.getClass().getName(), TIME_OUT);
                 serialPort.setSerialPortParams(DATA_RATE,
                         SerialPort.DATABITS_8,
                         SerialPort.STOPBITS_1,
@@ -71,7 +73,10 @@ public class ArduinoSandBox implements SerialPortEventListener{
         }
 
 
-        public synchronized void close() {
+    /**
+     * Cierra el puerto serial abierto
+     */
+    public synchronized void close() {
             if (serialPort != null) {
                 serialPort.removeEventListener();
                 serialPort.close();
@@ -83,13 +88,7 @@ public class ArduinoSandBox implements SerialPortEventListener{
                 try {
                     String inputLine=null;
                     while (input.ready()) {
-                        //byte[] buff = new char[400];
-                        //buffer += (char) input.read();
-                        //input.read(buff);
-                        //if(index == buffer.length - 1)
-                        //    index = 0;
-                        //buffer[index] = (char) input.read();
-                        //index++;
+
                         inputLine = input.readLine();
 
                         int pos = 0;
@@ -112,25 +111,7 @@ public class ArduinoSandBox implements SerialPortEventListener{
 
                         buffer.clear();
 
-                        //System.out.println(stringSplit.toString());
-
-                        //byte[] b = inputLine.getBytes();
-
-                        //System.out.println("START " + BitOperations.ArraytoString(b) + " END");
-                        //System.out.println(buff);
-                        //System.out.println(inputLine);
                     }
-/*
-                    System.out.print("START ");
-                    for (char c : buffer
-                         ) {
-                        //System.out.print(c.toBinaryString());
-                        System.out.print(" ");
-                    }
-                    //System.out.print(buffer);
-                    System.out.println("END");
-*/
-
 
                 } catch (Exception e) {
                     System.err.println(e.toString());
