@@ -7,8 +7,8 @@ import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
-import java.util.Enumeration;
-import java.util.LinkedList;
+
+import java.util.*;
 
 /**
  * Clase que busca implementar una correcta comunicación Arduino-Java
@@ -25,12 +25,13 @@ public class ArduinoSandBox implements SerialPortEventListener{
         private OutputStream output;
         private static final int TIME_OUT = 2000;
         private static final int DATA_RATE = 9600;
-        private char[] buffer;
-        private int index;
+
+        private ArrayList<String> buffer;
+        private String header;
 
         public void initialize() {
-            buffer = new char[512*4*2+4];
-            index = 0;
+            buffer = new ArrayList<>();
+            header = "";
             CommPortIdentifier portId = null;
             Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
 
@@ -85,18 +86,41 @@ public class ArduinoSandBox implements SerialPortEventListener{
                         //byte[] buff = new char[400];
                         //buffer += (char) input.read();
                         //input.read(buff);
-                        if(index == buffer.length - 1)
-                            index = 0;
-                        buffer[index] = (char) input.read();
-                        index++;
-                        //inputLine = input.readLine();
+                        //if(index == buffer.length - 1)
+                        //    index = 0;
+                        //buffer[index] = (char) input.read();
+                        //index++;
+                        inputLine = input.readLine();
+
+                        int pos = 0;
+                        int end = inputLine.indexOf(' ', pos);
+                        header = inputLine.substring(pos, end);
+                        pos = end + 1;
+
+                        if(header.equals("BMS_ORIGEN")){
+                            while ((end = inputLine.indexOf(' ', pos)) >= 0) {
+                                buffer.add(inputLine.substring(pos, end));
+                                pos = end + 1;
+                            }
+                        }
+
+                        double[] values = new double[buffer.size()];
+                        for (int i=0;i<buffer.size();i++){
+                            values[i] = Double.parseDouble(buffer.get(i));
+                        }
+                        System.out.println(Arrays.toString(values));
+
+                        buffer.clear();
+
+                        //System.out.println(stringSplit.toString());
+
                         //byte[] b = inputLine.getBytes();
 
                         //System.out.println("START " + BitOperations.ArraytoString(b) + " END");
                         //System.out.println(buff);
                         //System.out.println(inputLine);
                     }
-
+/*
                     System.out.print("START ");
                     for (char c : buffer
                          ) {
@@ -105,7 +129,7 @@ public class ArduinoSandBox implements SerialPortEventListener{
                     }
                     //System.out.print(buffer);
                     System.out.println("END");
-
+*/
 
 
                 } catch (Exception e) {
