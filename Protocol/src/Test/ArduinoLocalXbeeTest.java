@@ -10,6 +10,7 @@ import Protocol.Receiving.ReceiverAdmin;
 import Protocol.Receiving.XbeeReceiver;
 import Protocol.Sending.SenderAdmin;
 import Protocol.Sending.XbeeSender;
+import SensorReading.ArduinoReader;
 import SensorReading.RandomReader;
 
 import java.util.HashMap;
@@ -38,7 +39,7 @@ public class ArduinoLocalXbeeTest {
 
         /*--------------------- Componentes ---------------------*/
         int[] valores_0 = {0, 0, 0, 0, 0};
-        int[] bitSig_0 = {8, 8, 2, 8, 5};
+        int[] bitSig_0 = {16, 8, 8, 8, 1};
         Component BMS_destino = new Component(localMasterAdmin, valores_0, bitSig_0, "BMS_DESTINO");
 
         LinkedList<Component> listAllComponents_destino = new LinkedList<>();
@@ -78,8 +79,8 @@ public class ArduinoLocalXbeeTest {
 
         // 2 4 8 16 32 64 128 256 512 1024 2048
         // 1 2 3 4  5  6  7   8   9   10   11
-        int[] valores = {200, 189, 0, 111, 30};
-        int[] bitSig = {8, 8, 2, 8, 5};
+        int[] valores = {0, 0, 0, 0, 0};
+        int[] bitSig =  {16, 8, 8, 8, 1};
         Component BMS_origen = new Component(senderAdmin, valores, bitSig, "BMS_ORIGEN");
 
         HashMap<String, Component> allComponents = new HashMap<>();
@@ -97,11 +98,15 @@ public class ArduinoLocalXbeeTest {
         System.out.println(BMS_origen.printMessagesWithIndexes());
 
 
-        /*------------------ Generador de datos ------------------*/
+        /*------------------ Lectura de datos ------------------*/
 
         System.out.println("BMS DESTINO ANTES DE ENVÍO DE MENSAJE : \n" + BMS_destino.toString());
 
-        RandomReader sensorsReader = new RandomReader(allComponents, listAllComponents_origen);
+        String ARDUINO_PORT = "COM7";
+        int ARDUINO_BAUD_RATE = 9600;
+        int ARDUINO_TIMEOUT = 2000;
+
+        ArduinoReader sensorsReader = new ArduinoReader(allComponents, listAllComponents_origen, ARDUINO_PORT, ARDUINO_BAUD_RATE, ARDUINO_TIMEOUT);
 
         /*---------------- Threads de cada clase -----------------*/
 
