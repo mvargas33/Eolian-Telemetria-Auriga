@@ -24,6 +24,7 @@ public class ArduinoLocalXbeeTest {
     public static void main(String ... args) throws Exception{
         ///////////////////////// Main Reciver /////////////////////////
         /*--------------------- Constantes ---------------------*/
+        boolean serverON = true; // True si servidor NodeJS está corriendo para probar el proceso completo
         char baseHeader = 'A';
         int msgLimitSize = 8 + 16 + 8; // 8 bit header, 16 bit contenido, 8 bit CRC8
         int BAUD_RATE = 9600;
@@ -35,7 +36,7 @@ public class ArduinoLocalXbeeTest {
         XbeeReceiver xbeeReceiver = new XbeeReceiver(BAUD_RATE, PORT_RECEIVER);
         ServerAdmin serverAdmin = new ServerAdmin("http://localhost:3000/update");
         DatabaseAdmin databaseAdmin = new DatabaseAdmin();
-        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(serverAdmin, databaseAdmin, false); // Todos los componentes lo deben conocer para ponerse en su Queue y que el LocalMasterAdmin los revise
+        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(serverAdmin, databaseAdmin, serverON); // Todos los componentes lo deben conocer para ponerse en su Queue y que el LocalMasterAdmin los revise
 
         /*--------------------- Componentes ---------------------*/
         int[] valores_0 = {0, 0, 0, 0, 0};
