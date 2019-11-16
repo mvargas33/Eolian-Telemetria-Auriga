@@ -31,6 +31,7 @@ public class ArduinoLocalXbeeTest {
         String PORT_RECEIVER = "COM6";
         //String REMOTE_IDENTIFIER = "EOLIAN FENIX"; // Yo tengo este nombre en mi Xbee, no necesario, ahora se hace broadcast
 
+
         /*------------------ Clases de recibir ------------------*/
 
         XbeeReceiver xbeeReceiver = new XbeeReceiver(BAUD_RATE, PORT_RECEIVER);
