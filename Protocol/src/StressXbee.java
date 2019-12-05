@@ -41,10 +41,12 @@ public class StressXbee {
      * @throws Exception : Excepcipon por errores de las Xbees
      */
     public static void main(String ... args) throws Exception {
+        long start = System.currentTimeMillis();
+
         // Constantes
         String PORT_RECEIVE = "COM4";
         String PORT_SEND = "COM6";
-        int BAUD_RATE = 115200;
+        int BAUD_RATE = 2400;
 
         // ------------------- RECEIVER ------------------- //
         XBeeDevice myDeviceR = new XBeeDevice(PORT_RECEIVE, BAUD_RATE);
@@ -99,7 +101,7 @@ public class StressXbee {
             last_time = System.currentTimeMillis();
 
             promedio_mensajes_sec[largo_actual-1] = intentos_por_largo / ((double) (last_time  - initial_time) / 1000.0); // # mensajes / tiempo trnascurrido
-
+            System.out.println("Mensajes por seguno para largo " + largo_actual + " : " + promedio_mensajes_sec[largo_actual - 1]);
             intento_actual = 0;
             largo_actual++;
             str_data += "0";
@@ -124,6 +126,8 @@ public class StressXbee {
             System.out.print(j+1);System.out.print("\t");System.out.println(bytes_sec[j]);
         }
 
+
+        System.out.print("Tiempo total transcurrido en segundos: " + ((System.currentTimeMillis() - start) / 1000.0));
         System.exit(0);
 
     }
