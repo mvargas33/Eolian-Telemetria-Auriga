@@ -8,8 +8,8 @@ For Back-end:
 * Import the directory *Protocol* into IntelliJ
 * Configure the project to work with Java 8
 * To import dependencies:
-  1. Right click in Protocol.iml and select *import modules* OR
-  2. Go to *File->Project Strucure->Modules* to add all the JAR files inside the *libs* directory. The JAR files inside *JUnit* must be imported for testing, not compiling
+  * Right click in Protocol.iml and select *import modules* OR
+  * Go to *File->Project Strucure->Modules* to add all the JAR files inside the *libs* directory. The JAR files inside *JUnit* must be imported for testing, not compiling
 * Run the *MainReceiver* and *MainSender* clases as requested
 
 For Middleware and Front-end:
