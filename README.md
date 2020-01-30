@@ -11,7 +11,7 @@ For Back-end:
 * Go to *File->Project Strucure->Modules* to add all the JAR files inside the *libs* directory. The JAR files inside *JUnit* must be imported for testing, not compiling
 * Run the *MainReceiver* and *MainSender* clases as requested
 
-For Middleware and Front-end
+For Middleware and Front-end:
 
 * Run `npm install` inside the *Server API* and *VueJS front end* directories to install all dependencies
 
