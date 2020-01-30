@@ -10,7 +10,6 @@ For Back-end:
 * To import dependencies:
   * Right click in Protocol.iml and select *import modules* OR
   * Go to *File->Project Strucure->Modules* to add all the JAR files inside the *libs* directory. The JAR files inside *JUnit* must be imported for testing, not compiling
-* Run the *MainReceiver* and *MainSender* clases as requested
 
 For Middleware and Front-end:
 
