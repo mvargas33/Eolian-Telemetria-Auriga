@@ -1,4 +1,4 @@
-# Telemetria Eolian Áuriga
+# Eolian Auriga Telemetry System
 Telemtry system of the Eolian Áuriga project from the University of Chile. Contains the back-end and front-end used to visualize data in real time inside and outside the solar car. More info at
 
 # Dependencies and configuration
