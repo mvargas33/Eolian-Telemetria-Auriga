@@ -22,7 +22,7 @@ public class ServerAdmin {
     private HttpPost request;
 
 
-    public ServerAdmin(java.lang.String serverDestinationURL) throws Exception{
+    public ServerAdmin(java.lang.String serverDestinationURL) {
         this.json = new JSONObject(); // JSON de envío ed datos
         this.request = new HttpPost(serverDestinationURL);
         this.request.addHeader("content-type", "application/json");

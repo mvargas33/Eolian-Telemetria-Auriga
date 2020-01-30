@@ -12,6 +12,7 @@ import Protocol.Sending.SenderAdmin;
 import Protocol.Sending.XbeeSender;
 import SensorReading.RandomReader;
 import SensorReading.SensorsReader;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class NoXbeeSystemTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     void noXbeeSendReceiveLinearTest() throws Exception{
         XbeeReceiver xbeeReceiver = new XbeeReceiver(); // Constructor especial para este Test
         XbeeSender xbeeSender = new XbeeSender(xbeeReceiver); // TODO: DELETE DESPUES DE TEST EXITOSO, ESTE ES EL PUENTE
@@ -86,7 +87,7 @@ class NoXbeeSystemTest {
 
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void noXbeeSendReceiveLinearTestComplex() throws Exception{
         XbeeReceiver xbeeReceiver = new XbeeReceiver();
         XbeeSender xbeeSender = new XbeeSender(xbeeReceiver); // TODO: DELETE DESPUES DE TEST EXITOSO, ESTE ES EL PUENTE
