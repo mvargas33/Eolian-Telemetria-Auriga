@@ -19,11 +19,11 @@ For Middleware and Front-end:
 
 Back end:
 
-* Run the *MainReceiver* and *MainSender* clases as requested
+* Run the *MainReceiver* and *MainSender* classes as requested
 
 Middleware:
 
-* With the back-end working, run `node index.js` inside *Server API* to run the middleware between back-end and front-end
+* With back-end running, run `node index.js` inside *Server API* to run the middleware between back-end and front-end
 
 Front end:
 
