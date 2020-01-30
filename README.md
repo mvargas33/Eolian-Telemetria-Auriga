@@ -1,5 +1,5 @@
 # Eolian Auriga Telemetry System
-Telemtry system of the Eolian Auriga project from the University of Chile. Contains the back-end and front-end used to visualize data in real time inside and outside the solar car. More info at
+The telemetry system runs in a Raspberry Pi inside the car. On one hand, it uses a Java Application to receive data from the car and other logistics tasks. On the other hand, it runs a VueJS application to visualize data and interact with the users. The system uses a middleware written in JS to communicate back-end and front-end.
 
 # Dependencies and configuration
 
