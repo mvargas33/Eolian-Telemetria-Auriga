@@ -1,5 +1,5 @@
 <template>
-<f7-app :params="f7params" >
+<f7-app :params="f7params">
 
   <!-- Left panel with cover effect-->
   <f7-panel left cover theme-dark>
@@ -23,33 +23,7 @@
   </f7-panel>
 
 
-  <!-- Views/Tabs container -->
-  <f7-views tabs class="safe-areas">
-    <!-- Tabbar for switching views-tabs -->
-    <f7-toolbar tabbar labels bottom>
-      <f7-link tab-link="#view-home" tab-link-active icon-md="material:directions_car" text="General"></f7-link>
-      <f7-link tab-link="#view-details" icon-md="material:list" text="Detalles"></f7-link>
-      <f7-link tab-link="#view-modulos" icon-md="material:battery_charging_full" text="Módulos"></f7-link>
-      <f7-link tab-link="#view-graphs" icon-md="material:show_chart" text="Gráficos"></f7-link>
-      <f7-link tab-link="#view-map" icon-md="material:near_me" text="Mapa"></f7-link>
-    </f7-toolbar>
-
-    <!-- Your main view/tab, should have "view-main" class. It also has "tab-active" class -->
-    <f7-view id="view-home" main tab tab-active url="/"></f7-view>
-
-    <!-- Details View -->
-    <f7-view id="view-details" name="details" tab url="/details/"></f7-view>
-
-    <!-- Modulos View -->
-    <f7-view id="view-modulos" name="modulos" tab url="/modulos/"></f7-view>
-
-    <!-- Graphs View -->
-    <f7-view id="view-graphs" name="graphs" tab url="/graphs/"></f7-view>
-
-    <!-- Map View -->
-    <f7-view id="view-map" name="map" tab url="/map/"></f7-view>
-
-  </f7-views>
+  
 
 
   <!-- Popup -->
