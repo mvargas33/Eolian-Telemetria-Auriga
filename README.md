@@ -28,3 +28,7 @@ Middleware:
 Front end:
 
 * Run `npm run dev` inside *VueJS front end* to run the front-end
+
+# Notes
+
+The project is under development. Basic data dynamics are already implemented. Front-end must be completed. Compatibility with Eolian Fenix (older solar car) is in progress.
