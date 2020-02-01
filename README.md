@@ -3,6 +3,12 @@ The telemetry system runs in a Raspberry Pi inside the car. On one hand, it uses
 
 # Dependencies and configuration
 
+Software required:
+
+* IntelliJ https://www.jetbrains.com/idea/
+* Java JDK https://www.oracle.com/technetwork/java/javase/downloads/index.html
+* NodeJS https://nodejs.org/en/
+
 For Back-end:
 
 * Import the directory *Protocol* into IntelliJ
@@ -28,3 +34,7 @@ Middleware:
 Front end:
 
 * Run `npm run dev` inside *VueJS front end* to run the front-end
+
+# Notes
+
+The project is under development. Basic data dynamics are already implemented. Front-end must be completed. Compatibility with Eolian Fenix (older solar car) is in progress.
