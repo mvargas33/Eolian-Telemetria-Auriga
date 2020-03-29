@@ -1,10 +1,38 @@
-
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/MainLayout.vue'),
+    component: () => import('layouts/FenixLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') }
+      { path: '', component: () => import('pages/Fenix.vue') }
+    ],
+    props: { navbar: true }
+  },
+  {
+    path: '/fenix',
+    component: () => import('layouts/FenixLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/Fenix.vue') }
+    ]
+  },
+  {
+    path: '/fenixbasic',
+    component: () => import('layouts/EmptyLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/FenixBasic.vue') }
+    ]
+  },
+  {
+    path: '/auriga',
+    component: () => import('layouts/AurigaLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/Auriga.vue') }
+    ]
+  },
+  {
+    path: '/aurigabasic',
+    component: () => import('layouts/EmptyLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/AurigaBasic.vue') }
     ]
   }
 ]
