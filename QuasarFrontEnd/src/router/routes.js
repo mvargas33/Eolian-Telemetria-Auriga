@@ -4,8 +4,7 @@ const routes = [
     component: () => import('layouts/FenixLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Fenix.vue') }
-    ],
-    props: { navbar: true }
+    ]
   },
   {
     path: '/fenix',

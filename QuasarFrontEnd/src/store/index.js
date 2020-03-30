@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import fenix from './module-fenix/index'
 
 // import example from './module-example'
 
@@ -16,8 +17,11 @@ Vue.use(Vuex)
 
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
+    state: {
+      recibiendoDatos: false
+    },
     modules: {
-      // example
+      fenix
     },
 
     // enable strict mode (adds overhead!)
