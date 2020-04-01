@@ -4,48 +4,30 @@
           <!-- Velocímetro, motores y paneles -->
           <div class="col-3">
             <!-- Velocímetro y motores -->
-            <div class="row wrap">
               <MainData></MainData>
-            </div>
             <!-- Soc Bar -->
-            <div class="row">
               <SocBar></SocBar>
-            </div>
             <!-- Motores [fases, ERR, Thr, Rev] -->
-            <div class="row">
               <MotorInfo></MotorInfo>
-            </div>
             <!-- BMS [Voltage, current] -->
-            <div class="row">
               <BMSInfo></BMSInfo>
-            </div>
             <!-- MPPT [Vin Iin Vout, parámetros ...] -->
-            <div class="row">
               <MPPTInfo></MPPTInfo>
-            </div>
           </div>
 
           <!-- Gráficos -->
           <div class="col-6">
             <!-- Gráfico de Consumo -->
-            <div class="row">
               <GraficoConsumo></GraficoConsumo>
-            </div>
             <!-- Gráfico de Temperaturas -->
-            <div class="row">
               <GraficoTemp></GraficoTemp>
-            </div>
           </div>
           <!-- Averages, Banco de baterías -->
           <div class="col-3">
             <!-- Info de módulos [max min temp/volt] -->
-            <div class="row">
               <ModulosInfo></ModulosInfo>
-            </div>
             <!-- Banco de baterías -->
-            <div class="row">
               <BancoBaterias></BancoBaterias>
-            </div>
           </div>
     </div>
   </q-page>

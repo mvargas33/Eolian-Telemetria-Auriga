@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="row justify-center full-height full-width text-center">
         Banco de baterías
     </div>
 </template>

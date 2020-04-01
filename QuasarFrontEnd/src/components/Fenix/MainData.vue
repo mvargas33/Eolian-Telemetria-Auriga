@@ -1,46 +1,43 @@
 <template>
-
-    <div class="">
-        <div class="row no-wrap justify-between">
-            <!-- Panel izquierdo -->
-            <div class="col-3">
-                <div class="row">
-                    {{ kelly_izq[6] }} <!-- RPM -->
-                </div>
-                <div class="row">
-                    {{ kelly_izq[10] }} <!-- Motor_temp -->
-                </div>
-                <div class="row">
-                    {{ kelly_izq[11] }} <!-- Kelly_temp -->
-                </div>
-                <div class="row">
-                    {{ kelly_izq[8] }} <!-- PWM -->
-                </div>
-                <div class="row">
-                    {{ kelly_izq[9] }} <!-- EMR -->
-                </div>
+    <div class="row justify-center full-height full-width text-center">
+        <!-- Panel izquierdo -->
+        <div class="col">
+            <div class="text-center">
+                {{ kelly_izq[6] }} <!-- RPM -->
             </div>
-            <!-- Velocímetro -->
-            <div class="col-6">
-                {{ mainData[0] }} <!-- Velocidad -->
+            <div class="text-center">
+                {{ kelly_izq[10] }} <!-- Motor_temp -->
             </div>
-            <!-- Panel derecho -->
-            <div class="col-3">
-                <div class="row">
-                    {{ kelly_der[6] }} <!-- RPM -->
-                </div>
-                <div class="row">
-                    {{ kelly_der[10] }} <!-- Motor_temp -->
-                </div>
-                <div class="row">
-                    {{ kelly_der[11] }} <!-- Kelly_temp -->
-                </div>
-                <div class="row">
-                    {{ kelly_der[8] }} <!-- PWM -->
-                </div>
-                <div class="row">
-                    {{ kelly_der[9] }} <!-- EMR -->
-                </div>
+            <div class="text-center">
+                {{ kelly_izq[11] }} <!-- Kelly_temp -->
+            </div>
+            <div class="text-center">
+                {{ kelly_izq[8] }} <!-- PWM -->
+            </div>
+            <div class="text-center">
+                {{ kelly_izq[9] }} <!-- EMR -->
+            </div>
+        </div>
+        <!-- Velocímetro -->
+        <div class="col-6">
+            {{ mainData[0] }} <!-- Velocidad -->
+        </div>
+        <!-- Panel derecho -->
+        <div class="col">
+            <div class="text-center">
+                {{ kelly_der[6] }} <!-- RPM -->
+            </div>
+            <div class="text-center">
+                {{ kelly_der[10] }} <!-- Motor_temp -->
+            </div>
+            <div class="text-center">
+                {{ kelly_der[11] }} <!-- Kelly_temp -->
+            </div>
+            <div class="text-center">
+                {{ kelly_der[8] }} <!-- PWM -->
+            </div>
+            <div class="text-center">
+                {{ kelly_der[9] }} <!-- EMR -->
             </div>
         </div>
     </div>
