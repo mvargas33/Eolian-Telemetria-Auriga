@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="padding-5">
         <div class="allCenter">
-            Motor
+            <!-- Motor -->
         </div>
         <div class="row">
             <!-- 1 Columna  -->

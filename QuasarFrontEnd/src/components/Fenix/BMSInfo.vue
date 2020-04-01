@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="padding-5">
     <div class="allCenter">
         <!-- BMS -->
     </div>
@@ -25,7 +25,7 @@
       </div>
       <!-- 3 Current -->
       <div class="col">
-          <div class="allCenter numero">
+          <div class="allCenter numero" style="color:red">
               {{ bms[1] }} <!-- Current -->
           </div>
       </div>

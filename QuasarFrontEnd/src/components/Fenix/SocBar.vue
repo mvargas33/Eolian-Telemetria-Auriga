@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="padding-5">
     <div class="allCenter">
-            SOC
+            <!-- SOC -->
     </div>
     <div class="row justify-center full-width text-center">
         <div class="allCenter numero">

@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="padding-5">
         <div class="allCenter">
-            Main Data
+            <!-- Main Data -->
         </div>
 
         <div class="row">
