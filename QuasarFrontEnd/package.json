@@ -15,6 +15,7 @@
     "@quasar/extras": "^1.0.0",
     "axios": "^0.18.1",
     "chart.js": "^2.9.3",
+    "chartjs-plugin-streaming": "^1.8.0",
     "quasar": "^1.0.0",
     "vue-chartjs": "^3.5.0"
   },

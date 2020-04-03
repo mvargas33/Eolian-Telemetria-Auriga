@@ -18,7 +18,11 @@
           <!-- Gráficos -->
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             <!-- Gráfico de Consumo -->
-              <GraficoConsumo></GraficoConsumo>
+            <div class="padding-5">
+              <div class="">
+                <GraficoConsumo></GraficoConsumo>
+              </div>
+            </div>
             <!-- Gráfico de Temperaturas -->
               <GraficoTemp></GraficoTemp>
           </div>
