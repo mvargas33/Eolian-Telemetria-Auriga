@@ -18,13 +18,13 @@
           <!-- Gráficos -->
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             <!-- Gráfico de Consumo -->
-            <div class="padding-5">
-              <div class="">
-                <GraficoConsumo></GraficoConsumo>
-              </div>
+            <div class="padding-1">
+                <ConsumoChart></ConsumoChart>
             </div>
             <!-- Gráfico de Temperaturas -->
-              <GraficoTemp></GraficoTemp>
+            <div class="padding-1">
+                <TempChart></TempChart>
+            </div>
           </div>
           <!-- Averages, Banco de baterías -->
           <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
@@ -46,15 +46,15 @@ import MotorInfo from '../components/Fenix/MotorInfo'
 import BMSInfo from '../components/Fenix/BMSInfo'
 import MPPTInfo from '../components/Fenix/MPPTInfo'
 
-import GraficoConsumo from '../components/Fenix/GraficoConsumo'
-import GraficoTemp from '../components/Fenix/GraficoTemp'
+import ConsumoChart from '../components/Fenix/ConsumoChart'
+import TempChart from '../components/Fenix/TempChart'
 
 import ModulosInfo from '../components/Fenix/ModulosInfo'
 import BancoBaterias from '../components/Fenix/BancoBaterias'
 
 export default {
   name: 'Fenix',
-  components: { MainData, SocBar, MotorInfo, BMSInfo, MPPTInfo, GraficoConsumo, GraficoTemp, ModulosInfo, BancoBaterias },
+  components: { MainData, SocBar, MotorInfo, BMSInfo, MPPTInfo, ConsumoChart, TempChart, ModulosInfo, BancoBaterias },
   computed: {
     ...mapState('fenix', ['mainData']),
     ...mapState(['recibiendoDatos'])
