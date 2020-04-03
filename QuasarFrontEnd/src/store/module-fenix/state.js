@@ -6,10 +6,10 @@ export default function () {
     bms: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], // 15 [SOC, current, inst_volt, open_volt, abs_current, max_volt, min_volt, max_temp, max_temp_id, min_temp, min_temp_id, avg_temp, internal_temp, max_volt_id, min_volt_id]
     bms_temp: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 60
     bms_volt: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 30
-    mppt1: [0, 0, 0, 0, 0, 0, 0, 0], // 8 [uin, iin, uout, blvr, ovt, noc, undv, temp]
-    mppt2: [0, 0, 0, 0, 0, 0, 0, 0], // 8
-    mppt3: [0, 0, 0, 0, 0, 0, 0, 0], // 8
-    mppt4: [0, 0, 0, 0, 0, 0, 0, 0], // 8
+    mppt1: [0, 1, 2, 3, 4, 5, 6, 7], // 8 [uin, iin, uout, blvr, ovt, noc, undv, temp]
+    mppt2: [0, 1, 2, 3, 4, 5, 6, 7], // 8
+    mppt3: [0, 1, 2, 3, 4, 5, 6, 7], // 8
+    mppt4: [0, 1, 2, 3, 4, 5, 6, 7], // 8
     potencia_mppt: [0, 0, 0, 0] // 4 [pot_mppt1, pot_mppt2, pot_mppt3, pot_mppt4]
   }
 }
