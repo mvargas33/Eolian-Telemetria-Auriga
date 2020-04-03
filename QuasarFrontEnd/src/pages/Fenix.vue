@@ -1,8 +1,8 @@
 <template>
   <q-page class="justify-between items-start">
-    <div class="row">
+    <div class="row wrap">
           <!-- Velocímetro, motores y paneles -->
-          <div class="col-3">
+          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
             <!-- Velocímetro y motores -->
               <MainData></MainData>
             <!-- Soc Bar -->
@@ -16,14 +16,14 @@
           </div>
 
           <!-- Gráficos -->
-          <div class="col-6">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             <!-- Gráfico de Consumo -->
               <GraficoConsumo></GraficoConsumo>
             <!-- Gráfico de Temperaturas -->
               <GraficoTemp></GraficoTemp>
           </div>
           <!-- Averages, Banco de baterías -->
-          <div class="col-3">
+          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
             <!-- Info de módulos [max min temp/volt] -->
               <ModulosInfo></ModulosInfo>
             <!-- Banco de baterías -->

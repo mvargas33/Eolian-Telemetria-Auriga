@@ -4,7 +4,6 @@
         <!-- BMS -->
     </div>
     <div class="row">
-
       <!-- 1 Etiquetas  -->
       <div class="col">
           <div class="text-left etiqueta texto-bold">
