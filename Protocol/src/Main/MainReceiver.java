@@ -8,7 +8,7 @@ import Protocol.Initializer.Initializer;
 import Protocol.Messages.Message;
 import Protocol.Receiving.ReceiverAdmin;
 import Protocol.Receiving.XbeeReceiver;
-import com.sun.security.ntlm.Server;
+//import com.sun.security.ntlm.Server;
 
 import java.util.HashMap;
 import java.util.LinkedList;

@@ -20,8 +20,8 @@ public abstract class SensorsReader implements Runnable {
 
     /**
      * Constructor para generar datos random
-     *
-     * @param allComponents
+     * @param allComponents : HashMap de Componentes
+     * @param componentLinkedList : Linked list de Componentes
      */
     public SensorsReader(HashMap<String, Component> allComponents, LinkedList<Component> componentLinkedList) {
         this.allComponents = allComponents;

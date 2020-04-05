@@ -101,7 +101,7 @@ public class ArduinoLocalXbeeTest {
 
         /*------------------ Lectura de datos ------------------*/
 
-        System.out.println("BMS DESTINO ANTES DE ENVÍO DE MENSAJE : \n" + BMS_destino.toString());
+        System.out.println("BMS DESTINO ANTES DE ENVIO DE MENSAJE : \n" + BMS_destino.toString());
 
         String ARDUINO_PORT = "COM7";
         int ARDUINO_BAUD_RATE = 9600;

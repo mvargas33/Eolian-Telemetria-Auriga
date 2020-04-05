@@ -27,6 +27,7 @@ public class XbeeSender implements Runnable{
     /**
      * Constructor sólo se encarga de iniciar cola con implementación de LinkedBlockingQueue()
      * Constructor tipo TEST
+     * @param xbeeReceiver : Xbee receiver objeto
      */
     public XbeeSender(XbeeReceiver xbeeReceiver){
         this.bytesToSend = new LinkedBlockingQueue<>();
@@ -35,6 +36,9 @@ public class XbeeSender implements Runnable{
 
     /**
      * Constructor de XbeeSender real
+     * @param BAUD_RATE : Velocidad de envío de la Xbee, debe calzar con la preconfigurada en el hardware con XCTU
+     * @param PORT_SEND : Puerto COM donde está conectada la Xbee
+     * @throws Exception : Ecepcion de ejecucion
      */
     public XbeeSender(int BAUD_RATE, String PORT_SEND) throws Exception{
         this.bytesToSend = new LinkedBlockingQueue<>();
@@ -56,6 +60,7 @@ public class XbeeSender implements Runnable{
     /**
      * Método de TEST, para cuando no ha Xbees
      * Toma un byte[] array de la Queue y lo envía a través de las Xbees
+     * @throws Exception : Ecepcion de ejecucion
      */
     public void sendByteOffline() throws Exception{
         while(!this.bytesToSend.isEmpty()){
@@ -68,7 +73,7 @@ public class XbeeSender implements Runnable{
     /**
      * Toma un byte[] array de la Queue y lo envía a través de las Xbees
      */
-    public void sendByte() throws Exception{
+    public void sendByte() {
         while(!this.bytesToSend.isEmpty()){
             System.out.println("Tamaño de Queue de XbeeSender: " + this.bytesToSend.size());
             byte[] data = this.bytesToSend.poll(); // Sacar byte[] de la Queue

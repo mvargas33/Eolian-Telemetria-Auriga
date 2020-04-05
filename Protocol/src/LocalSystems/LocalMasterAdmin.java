@@ -20,6 +20,7 @@ public class LocalMasterAdmin implements Runnable{
 
     /**
      * Constructor para DEBUG
+     * @param serverON : true si el servidor API para front end está encendido
      */
     public LocalMasterAdmin(boolean serverON){
         this.componentsToBeChecked = new LinkedBlockingDeque<>();
@@ -31,6 +32,7 @@ public class LocalMasterAdmin implements Runnable{
      * montada la WebApp. Necesita DataBaseAdmin para guardar información en base de datos.
      * @param serverAdmin : Quien se encarga de enviar información a AppWeb
      * @param databaseAdmin : Quien se encarga de guardar información en Base de Datos
+     * @param serverON : true si el servidor API para front end está encendido
      */
     public LocalMasterAdmin(ServerAdmin serverAdmin, DatabaseAdmin databaseAdmin, boolean serverON){
         this.componentsToBeChecked = new LinkedBlockingDeque<>();
@@ -52,6 +54,7 @@ public class LocalMasterAdmin implements Runnable{
 
     /**
      * Consume y procesa un Componente de la Queue. Deben visualizar sus valores y guardarse en la base de datos
+     * @throws Exception si falla en alguna parte
      */
     public void consumeComponent() throws Exception{
         while(!componentsToBeChecked.isEmpty()){

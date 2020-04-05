@@ -25,6 +25,7 @@ public class Initializer {
     /**
      * Genera los mensajes correspondientes para cada Componente, en realidad los MessagesWithIndexes para cada Componente
      * @throws Exception : Por mala definición de Componentes o parámetros de la red
+     * @return HashMap de caracter, Mensaje
      */
     public HashMap<Character, Message> genMessages() throws Exception{
         if (allComponents.size() == 0){

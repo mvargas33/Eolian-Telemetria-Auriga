@@ -1,8 +1,8 @@
 public class OldMessage {/*
     private char header;
     private ArrayList<Component> components;    // Values and Sizes available
-    private int firstComponentValueIndex;       // Índice del primer valor a usar en el primer componente
-    private int lastComponentValueIndex;        // Índice del último valor a usar en el último componente
+    private int firstComponentValueIndex;       // Indice del primer valor a usar en el primer componente
+    private int lastComponentValueIndex;        // Indice del último valor a usar en el último componente
     private String typeOfCompression;           // Get size type
     private byte[] concatenationReceived;
 

@@ -1,8 +1,8 @@
 package SensorReading;
 
 import Components.Component;
-import SensorReading.SensorsReader;
-import sun.management.Sensor;
+//import SensorReading.SensorsReader;
+//import sun.management.Sensor;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -37,6 +37,7 @@ public class RandomReader extends SensorsReader implements Runnable{
 
     /**
      * Lectura directa del BMS, luego reemplaza valores int[] en Component BMS.
+     * @param componentName : Nombre del Componente
      */
     public void randomData(String componentName){
 

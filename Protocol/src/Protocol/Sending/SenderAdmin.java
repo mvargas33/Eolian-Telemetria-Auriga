@@ -17,7 +17,7 @@ public class SenderAdmin implements Runnable{
 
     /**
      * Pone un nuevo Message en la cola de messages. Llamada comienza con lectura de nuevos valores:
-     * updateDriectly() -> replaceMyValues() -> updateMsg() -> PutMessageInQueue()
+     * updateDriectly() llama a replaceMyValues() llama a updateMsg() llama a PutMessageInQueue()
      * CRC lo calcula SenderAdmin para mayor eficiencia (que updateDirectly() pueda retornar antes)
      * @param m : Message nuevo a poner en la Queue (Message actualizado)
      */

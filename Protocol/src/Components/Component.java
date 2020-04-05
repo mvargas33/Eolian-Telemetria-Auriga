@@ -49,6 +49,7 @@ public class Component {
      * @param mySenderAdmin : A quien informa sobre nuevos valores leídos
      * @param valores : Array de valores del componente
      * @param bitsSignificativos : Array de bits significativos de cada valor en valores[]
+     * @param ID : ID del Componente
      */
     public Component(SenderAdmin mySenderAdmin, int[] valores, int[] bitsSignificativos, String ID) {
         this.ID = ID;
@@ -64,6 +65,7 @@ public class Component {
      * @param myLocalMasterAdmin : A quien informo sobre nuevos valores recibidos
      * @param valores : Array de valores del componente
      * @param bitsSignificativos : Array de bits significativos de cada valor en valores[]
+     * @param ID : ID del Componente
      */
     public Component(LocalMasterAdmin myLocalMasterAdmin, int[] valores, int[] bitsSignificativos, String ID) {
         this.ID = ID;
@@ -83,6 +85,7 @@ public class Component {
      * @param raw_inicio Bit de inicio en Mensaje
      * @param raw_fin Bit de fin en Mensaje
      * @param bitSigInicio Bit de inicio en componente
+     * @param componentNumber : Numero del componente
      */
     public void addNewMessage(Message m, int raw_inicio, int raw_fin, int bitSigInicio, int componentNumber){
         this.listOfMyMessagesWithIndexes.add(new MessagesWithIndexes(m,raw_inicio, raw_fin,bitSigInicio, componentNumber));

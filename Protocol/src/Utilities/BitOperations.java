@@ -4,8 +4,8 @@ public class BitOperations {
     // Raw tiene n bytes de la forma:
     //                          _______________________________________________________
     //  bytes[] raw             | xxxx xxxx | xxxx xxxx | ... | xxxx xxxx | xxxx xxxx |
-    //  Índice de bytes         |‾0123‾4567‾|‾0123‾4567‾|‾...‾|‾0123‾4567‾|‾0123‾4567‾|
-    //  Índice en arreglo       |‾‾‾‾‾0‾‾‾‾‾|‾‾‾‾‾1‾‾‾‾‾|‾...‾|‾‾‾n - 2‾‾‾|‾‾‾n - 1‾‾‾|
+    //  Indice de bytes         |‾0123‾4567‾|‾0123‾4567‾|‾...‾|‾0123‾4567‾|‾0123‾4567‾|
+    //  Indice en arreglo       |‾‾‾‾‾0‾‾‾‾‾|‾‾‾‾‾1‾‾‾‾‾|‾...‾|‾‾‾n - 2‾‾‾|‾‾‾n - 1‾‾‾|
     //                          ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 
     public static String ArraytoString(byte[] byteArray){
@@ -37,7 +37,7 @@ public class BitOperations {
      * @param rawBytes_fin : bit de fin en array destino
      */
     public static void updateByteArrayFromValues(int[] source, byte[] rawBytes, int[] bitSig, int bitSig_inicio, int rawBytes_inicio, int rawBytes_fin) {
-        // Índice en arreglo bitSig y dest.
+        // Indice en arreglo bitSig y dest.
         int indiceBitSigYSource = 0;
         int count = 0;
         while(count != bitSig_inicio){
@@ -110,7 +110,7 @@ public class BitOperations {
      * @param rawBytes_fin : Indice de fin de extracción de bits, de 'rawBytes'
      */
     public static void updateValuesFromByteArray(int[] destino, byte[] rawBytes, int[] bitSig, int bitSig_inicio, int rawBytes_inicio, int rawBytes_fin){
-        // Índice en arreglo bitSig y dest.
+        // Indice en arreglo bitSig y dest.
         int indiceBitSigYDest = 0;
         int count = 0;
         while(count != bitSig_inicio){
@@ -140,7 +140,7 @@ public class BitOperations {
      * @return El valor interpretado de la extracción.
      */
     public static int extraerBits(byte[] raw, int desde, int cantidad){
-        int index = desde / 8 ; // Índice en raw desde done comenzar a extraer
+        int index = desde / 8 ; // Indice en raw desde done comenzar a extraer
         int subIndex = desde % 8;  // Sub-índice de inicio en byte, ej : 2. Valor entre 0-7
         int valor = 0; // Valor final
         short mask; // Máscara para extracciones
@@ -176,7 +176,7 @@ public class BitOperations {
      */
     public static void resetToZeroBitRange(byte[] raw, int desde, int hasta){
         int cantidad = hasta - desde + 1; // Si tengo desde 2 hasta 2, tengo que neutralizar ese bit
-        int index = desde / 8 ; // Índice en raw desde done comenzar a extraer
+        int index = desde / 8 ; // Indice en raw desde done comenzar a extraer
         int subIndex = desde % 8;  // Sub-índice de inicio en byte, ej : 2. Valor entre 0-7
         int zero = 0; // Valor final
         short mask; // Máscara para extracciones

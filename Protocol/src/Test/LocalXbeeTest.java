@@ -100,7 +100,7 @@ class LocalXbeeTest {
 
         /*------------------ Generador de datos ------------------*/
 
-        System.out.println("BMS DESTINO ANTES DE ENVÍO DE MENSAJE : \n" + BMS_destino.toString());
+        System.out.println("BMS DESTINO ANTES DE ENVIO DE MENSAJE : \n" + BMS_destino.toString());
 
         RandomReader sensorsReader = new RandomReader(allComponents, listAllComponents_origen);
 

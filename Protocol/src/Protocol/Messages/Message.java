@@ -111,7 +111,7 @@ public class Message {
 
     /**
      * Retorna el largo en bytes del mensaje, se usa para calcuo de CRC
-     * @return
+     * @return el largo en bytes del mensaje
      */
     public int getLargoEnBytes(){return largoEnBytes;}
     /**

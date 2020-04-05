@@ -46,6 +46,8 @@ public class XbeeReceiver implements Runnable{
 
     /**
      * Constructor de caso de uso
+     * @param BAUD_RATE : Velocidad de envío de la Xbee, debe calzar con la preconfigurada en el hardware con XCTU
+     * @param PORT_RECEIVE : Puerto COM donde está conectada la Xbee
      */
     public XbeeReceiver(int BAUD_RATE, String PORT_RECEIVE){
         this.bytesReceived = new LinkedBlockingQueue<>();
@@ -65,6 +67,7 @@ public class XbeeReceiver implements Runnable{
     /**
      * Método para Testing
      * Método para recibir bytes desde otra Xbee
+     * @param b : arreglo de bytes
      * @throws Exception Por poner en Queue
      */
     public void receiveByteOffline(byte[] b) throws Exception{
