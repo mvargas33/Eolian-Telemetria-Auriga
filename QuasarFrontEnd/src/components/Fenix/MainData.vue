@@ -53,20 +53,28 @@
                 <div class="allCenter">
                     <div>
                         <div class="allCenter" >
-                            <vue-speedometer style="min-width: 300px;height: 300px"
-                            :fluidWidth="true"
-                            :minValue="0"
-                            :maxValue="120"
-                            :needleHeightRatio="0.7"
-                            :maxSegmentLabels="12"
-                            :segments="22"
+                            <VueSvgGauge
+                            :start-angle="-145"
+                            :end-angle="145"
                             :value=mainData[0]
-                            :ringWidth="30"
-                            />
+                            :separator-step="20"
+                            :scale-interval="5"
+                            :inner-radius="75"
+                            :gaugeColor="[{ offset: 0, color: '#347AB0' }, { offset: 100, color: '#8CDFAD' }]"
+                            :transitionDuration="10"
+                            >
+                            <div class="col">
+                                <div style="padding-top:60%">
+                                    <div class="allCenter numero">
+                                        {{ mainData[0] }}
+                                    </div>
+                                    <div class="allCenter">
+                                        Km/Hr
+                                    </div>
+                                </div>
+                            </div>
+                            </VueSvgGauge>
                             <!-- {{ mainData[0] }} Velocidad -->
-                        </div>
-                        <div class="allCenter etiqueta">
-                            Km/hr
                         </div>
                     </div>
                 </div>
@@ -120,11 +128,11 @@
 
 <script>
 import { mapState } from 'vuex'
-import VueSpeedometer from 'vue-speedometer'
+import { VueSvgGauge } from 'vue-svg-gauge'
 
 export default {
   name: 'MainData',
-  components: { VueSpeedometer },
+  components: { VueSvgGauge },
   computed: {
     ...mapState('fenix', ['mainData', 'kelly_der', 'kelly_izq'])
   }
