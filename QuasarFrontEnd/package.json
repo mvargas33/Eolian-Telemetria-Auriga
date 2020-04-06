@@ -18,7 +18,8 @@
     "chartjs-plugin-streaming": "^1.8.0",
     "quasar": "^1.0.0",
     "vue-chartjs": "^3.5.0",
-    "vue-speedometer": "^1.4.0"
+    "vue-speedometer": "^1.4.0",
+    "vue-svg-gauge": "^1.2.1"
   },
   "devDependencies": {
     "@quasar/app": "^1.0.0",
