@@ -53,7 +53,8 @@
                 <div class="allCenter">
                     <div>
                         <div class="allCenter numero">
-                            {{ mainData[0] }} <!-- Velocidad -->
+                            <Velocimetro></Velocimetro>
+                            <!-- {{ mainData[0] }} Velocidad -->
                         </div>
                         <div class="allCenter etiqueta">
                             Km/hr
@@ -110,9 +111,11 @@
 
 <script>
 import { mapState } from 'vuex'
+import Velocimetro from './Velocimetro'
 
 export default {
   name: 'MainData',
+  components: { Velocimetro },
   computed: {
     ...mapState('fenix', ['mainData', 'kelly_der', 'kelly_izq'])
   }
