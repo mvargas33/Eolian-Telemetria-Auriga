@@ -50,33 +50,29 @@
             </div>
             <!-- Velocímetro -->
             <div class="col-6">
-                <div class="allCenter">
-                    <div>
-                        <div class="allCenter" >
-                            <VueSvgGauge
-                            :start-angle="-145"
-                            :end-angle="145"
-                            :value=mainData[0]
-                            :separator-step="20"
-                            :scale-interval="5"
-                            :inner-radius="75"
-                            :gaugeColor="[{ offset: 0, color: '#347AB0' }, { offset: 100, color: '#8CDFAD' }]"
-                            :transitionDuration="10"
-                            >
-                            <div class="col">
-                                <div style="padding-top:60%">
-                                    <div class="allCenter numero">
-                                        {{ mainData[0] }}
-                                    </div>
-                                    <div class="allCenter">
-                                        Km/Hr
-                                    </div>
-                                </div>
+                <div class="allCenter" >
+                    <VueSvgGauge
+                    :start-angle="-145"
+                    :end-angle="145"
+                    :value=mainData[0]
+                    :separator-step="20"
+                    :scale-interval="5"
+                    :inner-radius="75"
+                    :gaugeColor="[{ offset: 0, color: '#347AB0' }, { offset: 100, color: '#8CDFAD' }]"
+                    :transitionDuration="10"
+                    >
+                    <div class="col">
+                        <div style="padding-top:60%">
+                            <div class="allCenter numero">
+                                {{ mainData[0] }}
                             </div>
-                            </VueSvgGauge>
-                            <!-- {{ mainData[0] }} Velocidad -->
+                            <div class="allCenter">
+                                Km/Hr
+                            </div>
                         </div>
                     </div>
+                    </VueSvgGauge>
+                    <!-- {{ mainData[0] }} Velocidad -->
                 </div>
             </div>
             <!-- Panel derecho -->
