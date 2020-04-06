@@ -52,16 +52,15 @@
             <div class="col-6">
                 <div class="allCenter">
                     <div>
-                        <div class="allCenter numero">
-                            <vue-speedometer
+                        <div class="allCenter" >
+                            <vue-speedometer style="min-width: 300px;height: 300px"
+                            :fluidWidth="true"
                             :minValue="0"
                             :maxValue="120"
                             :needleHeightRatio="0.7"
                             :maxSegmentLabels="12"
                             :segments="22"
                             :value=mainData[0]
-                            :width="350"
-                            :height="200"
                             :ringWidth="30"
                             />
                             <!-- {{ mainData[0] }} Velocidad -->
