@@ -53,7 +53,17 @@
                 <div class="allCenter">
                     <div>
                         <div class="allCenter numero">
-                            <Velocimetro></Velocimetro>
+                            <vue-speedometer
+                            :minValue="0"
+                            :maxValue="120"
+                            :needleHeightRatio="0.7"
+                            :maxSegmentLabels="12"
+                            :segments="22"
+                            :value=mainData[0]
+                            :width="350"
+                            :height="200"
+                            :ringWidth="30"
+                            />
                             <!-- {{ mainData[0] }} Velocidad -->
                         </div>
                         <div class="allCenter etiqueta">
@@ -111,11 +121,11 @@
 
 <script>
 import { mapState } from 'vuex'
-import Velocimetro from './Velocimetro'
+import VueSpeedometer from 'vue-speedometer'
 
 export default {
   name: 'MainData',
-  components: { Velocimetro },
+  components: { VueSpeedometer },
   computed: {
     ...mapState('fenix', ['mainData', 'kelly_der', 'kelly_izq'])
   }

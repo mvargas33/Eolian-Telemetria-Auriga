@@ -68,6 +68,7 @@ module.exports = function (ctx) {
 
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
       extendWebpack (cfg) {
+        cfg.resolve.alias['vue'] = 'vue/dist/vue.common' // https://github.com/nuxt/nuxt.js/issues/1142
         cfg.module.rules.push({
           enforce: 'pre',
           test: /\.(js|vue)$/,
