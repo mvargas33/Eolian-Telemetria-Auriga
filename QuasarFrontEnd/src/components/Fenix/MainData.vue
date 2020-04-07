@@ -2,6 +2,9 @@
     <div class="padding-5">
         <div class="allCenter">
             <!-- Main Data -->
+            {{ mainData[0] }}
+            <q-btn color="red" text-color="black" label="Hola" @click="updateVelocidad()"/>
+            <q-btn color="white" text-color="black" label="Increase Speed" @click="updateVelocidad()"/>
         </div>
 
         <div class="row">
@@ -123,14 +126,21 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
+
 import { VueSvgGauge } from 'vue-svg-gauge'
 
 export default {
   name: 'MainData',
   components: { VueSvgGauge },
+  data () {
+    return { hola: 0 }
+  },
   computed: {
     ...mapState('fenix', ['mainData', 'kelly_der', 'kelly_izq'])
+  },
+  methods: {
+    ...mapMutations('fenix', ['updateVelocidad'])
   }
 }
 </script>

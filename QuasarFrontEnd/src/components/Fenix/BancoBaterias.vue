@@ -1,5 +1,6 @@
 <template>
     <div class="padding-5">
+      <q-btn color="white" text-color="black" label="Change Modulo 1" @click="updateModulo(0)"/>
         <div class="" v-for='(modulo, index) in bms_volt' :key="index" >
           <div class="row padding-1" v-if="index % 3 === 0">
             <div class="col">
@@ -77,30 +78,15 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'BancoBaterias',
+  computed: {
+    ...mapState('fenix', ['bms_volt', 'bms_temp'])
+  },
   methods: {
-    createBackgroundString (index) {
-      var a = '#000000'
-      var b = '#ffffff'
-      var maxV = 4.2
-      var minV = 3.4
-      var amount = (index - minV) / (maxV - minV)
-
-      var ah = +a.replace('#', '0x'),
-        ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
-        bh = +b.replace('#', '0x'),
-        br = bh >> 16, bg = bh >> 8 & 0xff, bb = bh & 0xff,
-        rr = ar + amount * (br - ar),
-        rg = ag + amount * (bg - ag),
-        rb = ab + amount * (bb - ab)
-
-      var r = '{background-color: ' + '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1) + ';}'
-      console.log(r)
-      return r
-    },
+    ...mapMutations('fenix', ['updateModulo']),
     rgbInterpolation (valor) {
       var maxV = 4.2
       var minV = 3.4
@@ -137,9 +123,6 @@ export default {
       console.log(str)
       return str
     }
-  },
-  computed: {
-    ...mapState('fenix', ['bms_volt', 'bms_temp'])
   }
 }
 </script>
