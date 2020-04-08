@@ -3,8 +3,8 @@
         <div class="allCenter">
             <!-- Main Data -->
             {{ mainData[0] }}
-            <q-btn color="red" text-color="black" label="Hola" @click="updateVelocidad()"/>
-            <q-btn color="white" text-color="black" label="Increase Speed" @click="updateVelocidad()"/>
+            <q-btn color="red" text-color="black" label="Hola" @click="addSpeed"/>
+            <q-btn color="red" text-color="black" label="replace" @click="replaceData"/>
         </div>
 
         <div class="row">
@@ -55,6 +55,8 @@
             <div class="col-6">
                 <div class="allCenter" >
                     <VueSvgGauge
+                    :min="0"
+                    :max="150"
                     :start-angle="-145"
                     :end-angle="145"
                     :value=mainData[0]
@@ -126,8 +128,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
-
+import { mapState, mapActions } from 'vuex'
 import { VueSvgGauge } from 'vue-svg-gauge'
 
 export default {
@@ -140,7 +141,7 @@ export default {
     ...mapState('fenix', ['mainData', 'kelly_der', 'kelly_izq'])
   },
   methods: {
-    ...mapMutations('fenix', ['updateVelocidad'])
+    ...mapActions('fenix', ['addSpeed', 'replaceData'])
   }
 }
 </script>
