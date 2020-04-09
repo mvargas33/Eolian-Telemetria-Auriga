@@ -5,6 +5,7 @@
             {{ mainData[0] }}
             <q-btn color="red" text-color="black" label="Hola" @click="addSpeed"/>
             <q-btn color="red" text-color="black" label="replace" @click="replaceData"/>
+            <q-btn color="red" text-color="black" label="sumsoc" @click="sumsoc"/>
         </div>
 
         <div class="row">
@@ -141,7 +142,7 @@ export default {
     ...mapState('fenix', ['mainData', 'kelly_der', 'kelly_izq'])
   },
   methods: {
-    ...mapActions('fenix', ['addSpeed', 'replaceData'])
+    ...mapActions('fenix', ['addSpeed', 'replaceData', 'sumsoc'])
   }
 }
 </script>

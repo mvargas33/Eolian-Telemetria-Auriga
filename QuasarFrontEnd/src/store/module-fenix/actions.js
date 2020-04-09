@@ -5,3 +5,7 @@ export function addSpeed (context) {
 export function replaceData (context) {
   context.commit('replaceMainData')
 }
+
+export function sumsoc (context) {
+  context.commit('sumsoc')
+}

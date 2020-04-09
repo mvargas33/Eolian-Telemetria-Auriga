@@ -26,3 +26,7 @@ export function updateModulo (state, index) {
   var newVal = Math.round((state.bms_volt[index] + 0.01) * 1000) / 1000
   Vue.set(state.bms_volt, index, newVal)
 }
+
+export function sumsoc (state) {
+  Vue.set(state.mainData, 3, state.mainData[3] + 1) // state.mainData[0]++ No funciona, usar Vue.set https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats
+}
