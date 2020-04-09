@@ -4,7 +4,8 @@
             <!-- SOC -->
     </div>
     <div class="row justify-center full-width text-center">
-      <q-linear-progress stripe size="50px" :value="mainData[3]/100" track-color="rgbInterpolationSOC(mainData[3]/100)" class="q-mt-sm" :rounded="true">
+      <q-linear-progress stripe size="50px" :value="mainData[3]/100"
+      track-color="rgbInterpolationSOC(mainData[3]/100)" class="q-mt-sm" :rounded="true">
         <div class="absolute-full flex flex-center">
           <q-badge color="white" text-color="black" :label="progressLabel2" />
         </div>
