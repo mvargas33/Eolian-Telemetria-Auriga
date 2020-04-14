@@ -34,15 +34,33 @@ export default {
   watch: {
     mainData: function (newValue, oldValue) {
       // console.log('was: ', oldValue, ' now: ', newValue)
-      this.$data._chart.data.datasets.forEach((dataset) => {
-        dataset.data.push({
-          x: Date.now(),
-          y: newValue[0]
-        })
-      })
-      this.$data._chart.update()
+      // this.$data._chart.data.datasets.forEach((dataset) => {
+      //   dataset.data.push({
+      //     x: Date.now(),
+      //     y: newValue[0]
+      //   })
+      // })
+      // this.$data._chart.update()
       // console.log(this.$data._chart)
       // this.updateChart(newValue)
+      this.$data._chart.options.scales.xAxes[0] =
+      {
+        type: 'realtime',
+        realtime: {
+          duration: 20000,
+          refresh: 1000,
+          delay: 2000,
+          onRefresh: function (chart) {
+            console.log(chart)
+            chart.config.data.datasets.forEach(function (dataset) {
+              dataset.data.push({
+                x: Date.now(),
+                y: newValue[0]
+              })
+            })
+          }
+        }
+      }
     }
   },
   mounted () {
@@ -83,21 +101,21 @@ export default {
         },
         scales: {
           xAxes: [{
-            type: 'realtime'// ,
-            // realtime: {
-            //   duration: 20000,
-            //   refresh: 1000,
-            //   delay: 2000,
-            //   onRefresh: function (chart) {
-            //     console.log('onrefreshh')
-            //     chart.config.data.datasets.forEach(function (dataset) {
-            //       dataset.data.push({
-            //         x: Date.now(),
-            //         y: 0
-            //       })
-            //     })
-            //   }
-            // }
+            type: 'realtime',
+            realtime: {
+              duration: 20000,
+              refresh: 1000,
+              delay: 2000,
+              onRefresh: function (chart) {
+                console.log(chart)
+                chart.config.data.datasets.forEach(function (dataset) {
+                  dataset.data.push({
+                    x: Date.now(),
+                    y: 0
+                  })
+                })
+              }
+            }
           }],
           yAxes: [{
             scaleLabel: {
