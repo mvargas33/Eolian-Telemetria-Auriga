@@ -32,24 +32,16 @@ export default {
     ...mapState('fenix', ['mainData'])
   },
   watch: {
+    // Cada vez que cambia el store se cambia el onRefresh que se queda pegado con el último valor del Store que se le dió a onRefresh,
+    // de esta forma, el gráfico mustra el valor anterior hasta que cambie el store y se vuelva a cambiar el onRefresh con el nuevo valor
     mainData: function (newValue, oldValue) {
-      // console.log('was: ', oldValue, ' now: ', newValue)
-      // this.$data._chart.data.datasets.forEach((dataset) => {
-      //   dataset.data.push({
-      //     x: Date.now(),
-      //     y: newValue[0]
-      //   })
-      // })
-      // this.$data._chart.update()
-      // console.log(this.$data._chart)
-      // this.updateChart(newValue)
       this.$data._chart.options.scales.xAxes[0] =
       {
         type: 'realtime',
         realtime: {
-          duration: 20000,
-          refresh: 1000,
-          delay: 2000,
+          duration: 20000, // Ventana de tiempo
+          refresh: 300, // Cada cuanto agregar un punto
+          delay: 500, // Corrimiento a la derecha del grafico. Deve ser mayor que el refresh
           onRefresh: function (chart) {
             console.log(chart)
             chart.config.data.datasets.forEach(function (dataset) {
@@ -137,14 +129,7 @@ export default {
         }
       } // End Options
     ) // End renderChart
-  }, // End Mounted
-  methods: {
-    updateChart (data) {
-      this.chart.data.datasets.forEach((dataset) => {
-        dataset.data.push(data[0])
-      })
-    }
-  }
+  } // End Mounted
 }
 
 </script>
