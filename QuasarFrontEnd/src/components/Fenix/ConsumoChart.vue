@@ -13,28 +13,15 @@ var chartColors = {
   grey: 'rgb(201, 203, 207)'
 }
 
-// function randomScalingFactor () {
-//   return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100)
-// }
-
-// function onRefresh1 (chart) {
-//   chart.config.data.datasets.forEach(function (dataset) {
-//     dataset.data.push({
-//       x: Date.now(),
-//       y: randomScalingFactor()
-//     })
-//   })
-// }
-
 export default {
   extends: Line,
   computed: {
-    ...mapState('fenix', ['mainData'])
+    ...mapState('fenix', ['data_grafico_1'])
   },
   watch: {
     // Cada vez que cambia el store se cambia el onRefresh que se queda pegado con el último valor del Store que se le dió a onRefresh,
     // de esta forma, el gráfico mustra el valor anterior hasta que cambie el store y se vuelva a cambiar el onRefresh con el nuevo valor
-    mainData: function (newValue, oldValue) {
+    data_grafico_1: function (newValue, oldValue) {
       this.$data._chart.options.scales.xAxes[0] =
       {
         type: 'realtime',
@@ -104,9 +91,9 @@ export default {
           xAxes: [{
             type: 'realtime',
             realtime: {
-              duration: 20000,
-              refresh: 1000,
-              delay: 2000,
+              duration: 20000, // Ventana de tiempo
+              refresh: 1, // Cada cuanto agregar un punto
+              delay: 100, // Corrimiento a la derecha del grafico. Deve ser mayor que el refresh
               onRefresh: function (chart) {
                 console.log(chart)
                 chart.config.data.datasets.forEach(function (dataset) {

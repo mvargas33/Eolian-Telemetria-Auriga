@@ -9,3 +9,7 @@ export function replaceData (context) {
 export function sumsoc (context) {
   context.commit('sumsoc')
 }
+
+export function updateTemps (context) {
+  context.commit('updateTemps')
+}

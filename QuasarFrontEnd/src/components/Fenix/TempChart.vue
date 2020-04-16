@@ -1,6 +1,7 @@
 <script>
 import { Line } from 'vue-chartjs'
 import 'chartjs-plugin-streaming'
+import { mapState } from 'vuex'
 
 var chartColors = {
   red: 'rgb(255, 99, 132)',
@@ -12,119 +13,119 @@ var chartColors = {
   grey: 'rgb(201, 203, 207)'
 }
 
-function randomScalingFactor () {
-  return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100)
-}
-
-function onRefresh (chart) {
-  chart.config.data.datasets.forEach(function (dataset) {
-    dataset.data.push({
-      x: Date.now(),
-      y: randomScalingFactor()
-    })
-  })
-}
-
-var data = {
-  datasets: [{
-    label: 'BMS',
-    backgroundColor: chartColors.orange,
-    borderColor: chartColors.orange,
-    fill: false,
-    cubicInterpolationMode: 'monotone',
-    data: []
-  }, {
-    label: 'Motor Izq',
-    backgroundColor: chartColors.purple,
-    borderColor: chartColors.purple,
-    fill: false,
-    cubicInterpolationMode: 'monotone',
-    data: []
-  }, {
-    label: 'Motor Der',
-    backgroundColor: chartColors.green,
-    borderColor: chartColors.green,
-    fill: false,
-    cubicInterpolationMode: 'monotone',
-    data: []
-  }]
-}
-
-var options = {
-  responsive: true,
-  maintainAspectRatio: false,
-  title: {
-    display: true,
-    text: 'Temperaturas'
-  },
-  scales: {
-    xAxes: [{
-      type: 'realtime',
-      realtime: {
-        duration: 20000,
-        refresh: 1000,
-        delay: 2000,
-        onRefresh: onRefresh
-      }
-    }],
-    yAxes: [{
-      scaleLabel: {
-        display: true,
-        labelString: 'value'
-      }
-    }]
-  },
-  tooltips: {
-    mode: 'nearest',
-    intersect: false
-  },
-  hover: {
-    mode: 'nearest',
-    intersect: false
-  },
-  legend: {
-    position: 'bottom'
-  }
-}
-
 export default {
   extends: Line,
-  mounted () {
-    this.renderChart(data, options)
+  computed: {
+    ...mapState('fenix', ['data_grafico_2'])
   },
-  methods: {
-    updateChart (data) {
-      this.renderChart({
+  watch: {
+    // Cada vez que cambia el store se cambia el onRefresh que se queda pegado con el último valor del Store que se le dió a onRefresh,
+    // de esta forma, el gráfico mustra el valor anterior hasta que cambie el store y se vuelva a cambiar el onRefresh con el nuevo valor
+    data_grafico_2: function (newValue, oldValue) {
+      this.$data._chart.options.scales.xAxes[0] =
+      {
+        type: 'realtime',
+        realtime: {
+          duration: 20000, // Ventana de tiempo
+          refresh: 1, // Cada cuanto agregar un punto
+          delay: 100, // Corrimiento a la derecha del grafico. Deve ser mayor que el refresh
+          onRefresh: function (chart) {
+            chart.config.data.datasets[0].data.push({
+              x: Date.now(),
+              y: newValue[0]
+            })
+            chart.config.data.datasets[1].data.push({
+              x: Date.now(),
+              y: newValue[1]
+            })
+            chart.config.data.datasets[2].data.push({
+              x: Date.now(),
+              y: newValue[2]
+            })
+          }
+        }
+      }
+    }
+  },
+  // Configuración inicial antes que lleguen los datos
+  mounted () {
+    this.renderChart(
+      // Data
+      {
         datasets: [{
-          label: 'Dataset 1',
-          borderColor: 'rgb(255, 99, 132)',
-          backgroundColor: 'rgba(255, 99, 132, 0.5)',
-          lineTension: 0,
-          borderDash: [8, 4]
+          label: 'BMS',
+          backgroundColor: chartColors.orange,
+          borderColor: chartColors.orange,
+          fill: false,
+          cubicInterpolationMode: 'monotone',
+          pointRadius: 0, // No point
+          data: []
         }, {
-          label: 'Dataset 2',
-          borderColor: 'rgb(54, 162, 235)',
-          backgroundColor: 'rgba(54, 162, 235, 0.5)'
+          label: 'Motor Der',
+          backgroundColor: chartColors.purple,
+          borderColor: chartColors.purple,
+          fill: false,
+          cubicInterpolationMode: 'monotone',
+          pointRadius: 0, // No point
+          data: []
+        }, {
+          label: 'Motor Izq',
+          backgroundColor: chartColors.green,
+          borderColor: chartColors.green,
+          fill: false,
+          cubicInterpolationMode: 'monotone',
+          pointRadius: 0, // No point
+          data: []
         }]
-      }, {
+      }
+      ,
+      // Options
+      {
+        responsive: true,
+        maintainAspectRatio: false,
+        title: {
+          display: true,
+          text: 'Temperaturas'
+        },
         scales: {
           xAxes: [{
+            type: 'realtime',
             realtime: {
+              duration: 20000, // Ventana de tiempo
+              refresh: 1, // Cada cuanto agregar un punto
+              delay: 100, // Corrimiento a la derecha del grafico. Deve ser mayor que el refresh
               onRefresh: function (chart) {
-                chart.data.datasets.forEach(function (dataset) {
+                console.log(chart)
+                chart.config.data.datasets.forEach(function (dataset) {
                   dataset.data.push({
                     x: Date.now(),
-                    y: Math.random()
+                    y: 0
                   })
                 })
-              },
-              delay: 2000
+              }
+            }
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Temp [°C]'
             }
           }]
+        },
+        tooltips: {
+          mode: 'nearest',
+          intersect: false
+        },
+        hover: {
+          mode: 'nearest',
+          intersect: false
+        },
+        legend: {
+          position: 'bottom'
         }
-      })
-    }
-  }
+      } // End Options
+    ) // End renderChart
+  } // End Mounted
 }
 
 </script>

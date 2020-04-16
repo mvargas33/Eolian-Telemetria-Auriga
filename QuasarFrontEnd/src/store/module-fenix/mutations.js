@@ -30,3 +30,14 @@ export function updateModulo (state, index) {
 export function sumsoc (state) {
   Vue.set(state.mainData, 3, state.mainData[3] + 1) // state.mainData[0]++ No funciona, usar Vue.set https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats
 }
+
+export function updateTemps (state) {
+  Vue.set(state.bms, 11, state.bms[11] + 1)
+  Vue.set(state.data_grafico_2, 0, state.bms[11])
+
+  Vue.set(state.kelly_der, 11, state.kelly_der[11] + 2)
+  Vue.set(state.data_grafico_2, 1, state.kelly_der[11])
+
+  Vue.set(state.kelly_izq, 11, state.kelly_izq[11] + 3)
+  Vue.set(state.data_grafico_2, 2, state.kelly_izq[11])
+}
