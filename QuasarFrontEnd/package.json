@@ -12,13 +12,14 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
+    "@quasar/cli": "^1.0.7",
     "@quasar/extras": "^1.0.0",
     "axios": "^0.18.1",
     "chart.js": "^2.9.3",
     "chartjs-plugin-streaming": "^1.8.0",
     "compass": "^0.1.1",
     "node-sass": "^4.13.1",
-    "quasar": "^1.0.0",
+    "quasar": "^1.9.15",
     "vue-chartjs": "^3.5.0",
     "vue-speedometer": "^1.4.0",
     "vue-svg-gauge": "^1.2.1"

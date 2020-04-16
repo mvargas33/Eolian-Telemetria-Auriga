@@ -20,6 +20,8 @@ For Back-end:
 For Middleware and Front-end:
 
 * Run `npm install` inside the *Server API* and *VueJS front end* directories to install all dependencies
+* Install Quasar CLI with `npm i -g @quasar/cli`
+* In Windows allow scripts to run. In Admin Power Shell run `Set-ExecutionPolicy RemoteSigned`
 
 # Run the applications
 
