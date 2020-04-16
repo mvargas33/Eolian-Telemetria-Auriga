@@ -40,21 +40,27 @@ export default {
         type: 'realtime',
         realtime: {
           duration: 20000, // Ventana de tiempo
-          refresh: 300, // Cada cuanto agregar un punto
-          delay: 500, // Corrimiento a la derecha del grafico. Deve ser mayor que el refresh
+          refresh: 1, // Cada cuanto agregar un punto
+          delay: 100, // Corrimiento a la derecha del grafico. Deve ser mayor que el refresh
           onRefresh: function (chart) {
-            console.log(chart)
-            chart.config.data.datasets.forEach(function (dataset) {
-              dataset.data.push({
-                x: Date.now(),
-                y: newValue[0]
-              })
+            chart.config.data.datasets[0].data.push({
+              x: Date.now(),
+              y: newValue[0]
+            })
+            chart.config.data.datasets[1].data.push({
+              x: Date.now(),
+              y: newValue[1] * 10
+            })
+            chart.config.data.datasets[2].data.push({
+              x: Date.now(),
+              y: newValue[2] * 10
             })
           }
         }
       }
     }
   },
+  // Configuración inicial antes que lleguen los datos
   mounted () {
     this.renderChart(
       // Data
@@ -65,6 +71,7 @@ export default {
           borderColor: chartColors.red,
           fill: false,
           cubicInterpolationMode: 'monotone',
+          pointRadius: 0, // No point
           data: []
         }, {
           label: 'Consumo',
@@ -72,6 +79,7 @@ export default {
           borderColor: chartColors.blue,
           fill: false,
           cubicInterpolationMode: 'monotone',
+          pointRadius: 0, // No point
           data: []
         }, {
           label: 'Paneles',
@@ -79,6 +87,7 @@ export default {
           borderColor: chartColors.yellow,
           fill: false,
           cubicInterpolationMode: 'monotone',
+          pointRadius: 0, // No point
           data: []
         }]
       }
