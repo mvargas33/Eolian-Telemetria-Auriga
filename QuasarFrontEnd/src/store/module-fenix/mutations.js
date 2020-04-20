@@ -57,6 +57,11 @@ export function update_mainData(state, array) {
 
   // Cambiamos el state
   Vue.set(state, 'mainData', [...array]) // [...array] Copiamos para prevenir cambios de terceros
+
+  // Update del gráfico
+  Vue.set(state, 'data_grafico_1', 0, state.mainData[0]) // Velocidad
+  Vue.set(state, 'data_grafico_1', 1, state.mainData[1]) // Potencia (Consumo)
+  Vue.set(state, 'data_grafico_1', 2, state.mainData[2]) // Paneles IN (MPPT)
 }
 
 export function update_kelly_der(state, array) {
@@ -71,6 +76,9 @@ export function update_kelly_der(state, array) {
 
   // Cambiamos el state
   Vue.set(state, 'kelly_der', [...array]) // [...array] Copiamos para prevenir cambios de terceros
+
+  // Update del gráfico
+  Vue.set(state, 'data_grafico_2', 1, state.kelly_der[10]) // Temp Kelly Der
 }
 
 export function update_kelly_izq(state, array) {
@@ -85,6 +93,9 @@ export function update_kelly_izq(state, array) {
 
   // Cambiamos el state
   Vue.set(state, 'kelly_izq', [...array]) // [...array] Copiamos para prevenir cambios de terceros
+
+  // Update del gráfico
+  Vue.set(state, 'data_grafico_2', 2, state.kelly_izq[10]) // Temp Kelly Izq
 }
 
 export function update_bms(state, array) {
@@ -99,6 +110,9 @@ export function update_bms(state, array) {
 
   // Cambiamos el state
   Vue.set(state, 'bms', [...array]) // [...array] Copiamos para prevenir cambios de terceros
+
+  // Update del gráfico
+  Vue.set(state, 'data_grafico_2', 0, state.bms[11]) // Average Temp BMS
 }
 
 export function update_bms_temp(state, array) {
