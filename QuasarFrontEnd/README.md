@@ -14,7 +14,7 @@ quasar dev
 
 ### Lint the files
 ```bash
-npm run lint
+npm run lint -- --fix
 ```
 
 ### Build the app for production

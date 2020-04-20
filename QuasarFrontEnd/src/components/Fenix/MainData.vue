@@ -2,11 +2,6 @@
     <div class="padding-5">
         <div class="allCenter">
             <!-- Main Data -->
-            {{ mainData[0] }}
-            <q-btn color="red" text-color="black" label="Hola" @click="addSpeed"/>
-            <q-btn color="red" text-color="black" label="replace" @click="replaceData"/>
-            <q-btn color="red" text-color="black" label="sumsoc" @click="sumsoc"/>
-            <q-btn color="orange" text-color="black" label="temps" @click="updateTemps"/>
         </div>
 
         <div class="row">

@@ -45,13 +45,13 @@ export function updateTemps (state) {
 
 /* Mutations reales de update de arreglos de componentes en el store */
 
-export function update_mainData(state, array) {
+export function updateMainData (state, array) {
   // Formateamos a tres decimales para visualizar bien
 
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(a[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * 1000) / 1000
     x++
   }
 
@@ -64,13 +64,13 @@ export function update_mainData(state, array) {
   Vue.set(state, 'data_grafico_1', 2, state.mainData[2]) // Paneles IN (MPPT)
 }
 
-export function update_kelly_der(state, array) {
+export function updateKellyDer (state, array) {
   // Formateamos a tres decimales para visualizar bien
 
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(a[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * 1000) / 1000
     x++
   }
 
@@ -81,13 +81,13 @@ export function update_kelly_der(state, array) {
   Vue.set(state, 'data_grafico_2', 1, state.kelly_der[10]) // Temp Kelly Der
 }
 
-export function update_kelly_izq(state, array) {
+export function updateKellyIzq (state, array) {
   // Formateamos a tres decimales para visualizar bien
 
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(a[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * 1000) / 1000
     x++
   }
 
@@ -98,13 +98,13 @@ export function update_kelly_izq(state, array) {
   Vue.set(state, 'data_grafico_2', 2, state.kelly_izq[10]) // Temp Kelly Izq
 }
 
-export function update_bms(state, array) {
+export function updateBms (state, array) {
   // Formateamos a tres decimales para visualizar bien
 
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(a[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * 1000) / 1000
     x++
   }
 
@@ -115,13 +115,13 @@ export function update_bms(state, array) {
   Vue.set(state, 'data_grafico_2', 0, state.bms[11]) // Average Temp BMS
 }
 
-export function update_bms_temp(state, array) {
+export function updateBmsTemp (state, array) {
   // Formateamos a tres decimales para visualizar bien
 
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(a[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * 1000) / 1000
     x++
   }
 
@@ -129,13 +129,13 @@ export function update_bms_temp(state, array) {
   Vue.set(state, 'bms_temp', [...array]) // [...array] Copiamos para prevenir cambios de terceros
 }
 
-export function update_bms_volt(state, array) {
+export function updateBmsVolt (state, array) {
   // Formateamos a tres decimales para visualizar bien
 
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(a[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * 1000) / 1000
     x++
   }
 
@@ -143,13 +143,13 @@ export function update_bms_volt(state, array) {
   Vue.set(state, 'bms_volt', [...array]) // [...array] Copiamos para prevenir cambios de terceros
 }
 
-export function update_mppt1(state, array) {
+export function updateMppt1 (state, array) {
   // Formateamos a tres decimales para visualizar bien
 
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(a[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * 1000) / 1000
     x++
   }
 
@@ -157,13 +157,13 @@ export function update_mppt1(state, array) {
   Vue.set(state, 'mppt1', [...array]) // [...array] Copiamos para prevenir cambios de terceros
 }
 
-export function update_mppt2(state, array) {
+export function updateMppt2 (state, array) {
   // Formateamos a tres decimales para visualizar bien
 
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(a[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * 1000) / 1000
     x++
   }
 
@@ -171,13 +171,13 @@ export function update_mppt2(state, array) {
   Vue.set(state, 'mppt2', [...array]) // [...array] Copiamos para prevenir cambios de terceros
 }
 
-export function update_mppt3(state, array) {
+export function updateMppt3 (state, array) {
   // Formateamos a tres decimales para visualizar bien
 
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(a[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * 1000) / 1000
     x++
   }
 
@@ -185,13 +185,13 @@ export function update_mppt3(state, array) {
   Vue.set(state, 'mppt3', [...array]) // [...array] Copiamos para prevenir cambios de terceros
 }
 
-export function update_mppt4(state, array) {
+export function updateMppt4 (state, array) {
   // Formateamos a tres decimales para visualizar bien
 
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(a[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * 1000) / 1000
     x++
   }
 
@@ -199,13 +199,13 @@ export function update_mppt4(state, array) {
   Vue.set(state, 'mppt4', [...array]) // [...array] Copiamos para prevenir cambios de terceros
 }
 
-export function update_potencia_mppt(state, array) {
+export function updatePotenciaMppt (state, array) {
   // Formateamos a tres decimales para visualizar bien
 
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(a[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * 1000) / 1000
     x++
   }
 

@@ -6,22 +6,22 @@
             <div class="col">
               <div class="row">
                 <div class="col-1">
-                  {{ index + 1 }}
+                  {{ index + 1 }} <!-- Módulo Número (parte del 0, que es el módulo 1) -->
                 </div>
                 <div class="col">
                   <div class="row">
-                    <div class="col allCenter">
-                      {{ bms_temp[index*2] }}
+                    <div class="col allCenter" :style="hslInterpolationTEMPERATURA(bms_temp[index*2])">
+                      {{ bms_temp[index*2] }} <!-- Primer Termistor son los pares (0 en a 58) -->
                     </div>
                     <div>
                       |
                     </div>
-                    <div class="col allCenter">
-                      {{ bms_temp[index*2 + 1] }}
+                    <div class="col allCenter" :style="hslInterpolationTEMPERATURA(bms_temp[index*2 + 1])">
+                      {{ bms_temp[index*2 + 1] }} <!-- Segundo Termistor son los impares (1 a 59) -->
                     </div>
                   </div>
-                  <div class="text-center numero" :style="rgbInterpolation(bms_volt[(index)])">
-                    {{ bms_volt[index] }}
+                  <div class="text-center numero" :style="rgbInterpolationVOLTAJE(bms_volt[(index)])">
+                    {{ bms_volt[index] }} <!-- Módulo va a la par con el índice -->
                   </div>
                 </div>
               </div>
@@ -33,17 +33,17 @@
                 </div>
                 <div class="col">
                   <div class="row">
-                    <div class="col allCenter">
+                    <div class="col allCenter" :style="hslInterpolationTEMPERATURA(bms_temp[(index + 1)*2])">
                       {{ bms_temp[(index + 1)*2] }}
                     </div>
                     <div>
                       |
                     </div>
-                    <div class="col allCenter">
+                    <div class="col allCenter" :style="hslInterpolationTEMPERATURA(bms_temp[(index + 1)*2 + 1])">
                       {{ bms_temp[(index + 1)*2 + 1] }}
                     </div>
                   </div>
-                  <div class="text-center numero" :style="rgbInterpolation(bms_volt[(index + 1)])">
+                  <div class="text-center numero" :style="rgbInterpolationVOLTAJE(bms_volt[(index + 1)])">
                     {{ bms_volt[(index + 1)] }}
                   </div>
                 </div>
@@ -56,17 +56,17 @@
                 </div>
                 <div class="col">
                   <div class="row">
-                    <div class="col allCenter">
+                    <div class="col allCenter" :style="hslInterpolationTEMPERATURA(bms_temp[(index + 2)*2])">
                       {{ bms_temp[(index + 2)*2] }}
                     </div>
                     <div>
                       |
                     </div>
-                    <div class="col allCenter">
+                    <div class="col allCenter" :style="hslInterpolationTEMPERATURA(bms_temp[(index + 2)*2 + 1])">
                       {{ bms_temp[(index + 2)*2 + 1] }}
                     </div>
                   </div>
-                    <div class="text-center numero" :style="rgbInterpolation(bms_volt[(index + 2)])">
+                    <div class="text-center numero" :style="rgbInterpolationVOLTAJE(bms_volt[(index + 2)])">
                     {{ bms_volt[(index + 2)] }}
                   </div>
                 </div>
@@ -87,7 +87,7 @@ export default {
   },
   methods: {
     ...mapMutations('fenix', ['updateModulo']),
-    rgbInterpolation (valor) {
+    rgbInterpolationVOLTAJE (valor) {
       var maxV = 4.2
       var minV = 3.4
       var middle = (maxV + minV) / 2
@@ -120,6 +120,25 @@ export default {
       // var b = (color2[2] - color1[2]) * amount + color1[2]
 
       var str = 'background-color: rgb(' + r + ',' + g + ',' + b + ');'
+      console.log(str)
+      return str
+    },
+    hslInterpolationTEMPERATURA (valor) {
+      var maxT = 80
+      var minT = 0
+      var factor = (valor - minT) / (maxT - minT)
+      var color1 = [0, 0, 255]
+      var color2 = [255, 0, 0]
+
+      console.log(factor)
+
+      var result = color1.slice()
+      for (var i = 0; i < 3; i++) {
+        result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]))
+      }
+      console.log(result)
+
+      var str = 'background-color: rgb(' + result[0] + ',' + result[1] + ',' + result[2] + ');'
       console.log(str)
       return str
     }

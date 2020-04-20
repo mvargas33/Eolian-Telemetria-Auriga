@@ -53,7 +53,7 @@ export default {
       // Data
       {
         datasets: [{
-          label: 'BMS',
+          label: 'Average BMS',
           backgroundColor: chartColors.orange,
           borderColor: chartColors.orange,
           fill: false,
