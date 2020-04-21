@@ -1,6 +1,6 @@
 <template>
     <div class="padding-5">
-      <q-btn color="white" text-color="black" label="Change Modulo 1" @click="updateModulo(0)"/>
+      <!-- <q-btn color="white" text-color="black" label="Change Modulo 1" @click="updateModulo(0)"/> -->
         <div class="" v-for='(modulo, index) in bms_volt' :key="index" >
           <div class="row padding-1" v-if="index % 3 === 0">
             <div class="col">
@@ -132,7 +132,7 @@ export default {
       console.log(str)
       return str
     },
-    hslInterpolationTEMPERATURA (valor) {
+    hslInterpolationTEMPERATURA (valor) { // https://codepen.io/njmcode/pen/axoyD/
       var maxT = 50
       var minT = 5
       var factor = (valor - minT) / (maxT - minT)
