@@ -24,8 +24,8 @@ export function updatePotencia (state) {
 }
 
 export function updateModulo (state, index) {
-  var newVal = Math.round((state.bms_volt[index] + 0.01) * 1000) / 1000
-  Vue.set(state.bms_volt, index, newVal)
+  var newVal = Math.round((state.bms_temp[index] + 1) * 10) / 10
+  Vue.set(state.bms_temp, index, newVal)
 }
 
 export function sumsoc (state) {
