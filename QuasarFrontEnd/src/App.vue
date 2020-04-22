@@ -8,10 +8,10 @@
 export default {
   name: 'App',
   sockets: {
-    broadcast (data) {
+    mainData (data) {
       console.log('broadcast event listened\n')
-      console.log(this.$store)
-      this.$store.dispatch('fenix/SOCKET_update', data)
+      // console.log(this.$store)
+      this.$store.dispatch('fenix/updateMainData', data.mainData)
     }
   }
 }

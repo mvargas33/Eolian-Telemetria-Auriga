@@ -29,7 +29,7 @@ app.post('/update', (req, res) => { // Listener a la ruta /update
 
 })
 
-var v = {velocidad : 20};
+var v = {mainData : [56, 3.4, 1.024, 33, 4.048, 3.876, 34.5, 27.9]};
 
 app.get('/getdata', (req, res) => {
     res.status(200).send(v) // Enviar velocidad
@@ -60,9 +60,9 @@ server.listen(port, () => { // Pasamos una lambda que solo hace log
 
 async function init(){
     while(true){
-        v.velocidad = Math.trunc(Math.random()*100);
-        console.log(v.velocidad);
-        io.emit('broadcast', v); // To all sockets
+        v.mainData[0] = Math.trunc(Math.random()*100);
+        console.log(v.mainData[0]);
+        io.emit('mainData', v); // To all sockets
         await delay(50)
 
     }

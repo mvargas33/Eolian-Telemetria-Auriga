@@ -23,7 +23,7 @@ export function SOCKET_update (context, data) {
   console.log(data)
 }
 
-export function socket_updateMainData (context, array) {
+export function updateMainData (context, array) {
   context.commit('updateMainData', array)
 }
 
