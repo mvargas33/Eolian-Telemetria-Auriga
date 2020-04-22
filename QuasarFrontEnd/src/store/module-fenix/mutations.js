@@ -1,5 +1,13 @@
 import Vue from 'vue'
 /* Mutations para debug, test y pruebas */
+export function SOCKET_CHAT_MESSAGE (state, message) {
+  console.log('mutation called')
+}
+
+export function SOCKET_updateData (context, data) {
+  console.log('Action triggered! socket_updateMainData\n')
+  console.log(data)
+}
 
 export function updateVelocidad (state) {
   Vue.set(state.mainData, 0, state.mainData[0] + 1) // state.mainData[0]++ No funciona, usar Vue.set https://vuejs.org/v2/guide/reactivity.html#Change-Detection-Caveats

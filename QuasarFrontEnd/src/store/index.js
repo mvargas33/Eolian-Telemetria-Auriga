@@ -18,7 +18,32 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     state: {
-      recibiendoDatos: false
+      recibiendoDatos: false,
+      connected: false,
+      error: '',
+      message: ''
+    },
+    mutations: {
+      SOCKET_CONNECT (state) {
+        state.connected = true
+        console.log('connected')
+      },
+      SOCKET_DISCONNECT (state) {
+        state.connected = false
+        console.log('disconnected')
+      },
+      SOCKET_MESSAGE (state, message) {
+        state.message = message
+        console.log('message')
+      },
+      SOCKET_HELLO_WORLD (state, message) {
+        state.message = message
+        console.log('hello world')
+      },
+      SOCKET_ERROR (state, message) {
+        state.error = message.error
+        console.log('error')
+      }
     },
     modules: {
       fenix

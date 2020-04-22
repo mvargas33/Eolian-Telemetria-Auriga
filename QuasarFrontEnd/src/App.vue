@@ -10,7 +10,8 @@ export default {
   sockets: {
     broadcast (data) {
       console.log('broadcast event listened\n')
-      console.log(data)
+      console.log(this.$store)
+      this.$store.dispatch('fenix/SOCKET_update', data)
     }
   }
 }

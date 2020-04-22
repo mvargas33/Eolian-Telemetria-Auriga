@@ -18,6 +18,11 @@ export function updateTemps (context) {
 
 /* Actions reales que llaman a mutations reales */
 
+export function SOCKET_update (context, data) {
+  console.log('Action triggered! socket_updateMainData\n')
+  console.log(data)
+}
+
 export function socket_updateMainData (context, array) {
   context.commit('updateMainData', array)
 }
