@@ -20,6 +20,8 @@
     "compass": "^0.1.1",
     "node-sass": "^4.13.1",
     "quasar": "^1.9.15",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
     "vue-chartjs": "^3.5.0",
     "vue-speedometer": "^1.4.0",
     "vue-svg-gauge": "^1.2.1"
