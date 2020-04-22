@@ -63,7 +63,7 @@ async function init(){
         v.mainData[0] = Math.trunc(Math.random()*100);
         console.log(v.mainData[0]);
         io.emit('mainData', v); // To all sockets
-        await delay(50)
+        await delay(100)
 
     }
 }

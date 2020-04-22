@@ -67,9 +67,9 @@ export function updateMainData (state, array) {
   Vue.set(state, 'mainData', [...array]) // [...array] Copiamos para prevenir cambios de terceros
 
   // Update del gráfico
-  Vue.set(state, 'data_grafico_1', 0, state.mainData[0]) // Velocidad
-  Vue.set(state, 'data_grafico_1', 1, state.mainData[1]) // Potencia (Consumo)
-  Vue.set(state, 'data_grafico_1', 2, state.mainData[2]) // Paneles IN (MPPT)
+  Vue.set(state.data_grafico_1, 0, state.mainData[0]) // Velocidad
+  Vue.set(state.data_grafico_1, 1, state.mainData[1]) // Potencia (Consumo)
+  Vue.set(state.data_grafico_1, 2, state.mainData[2]) // Paneles IN (MPPT)
 }
 
 export function updateKellyDer (state, array) {
