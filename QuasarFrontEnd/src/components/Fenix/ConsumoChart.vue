@@ -95,7 +95,7 @@ export default {
               refresh: 1, // Cada cuanto agregar un punto
               delay: 100, // Corrimiento a la derecha del grafico. Deve ser mayor que el refresh
               onRefresh: function (chart) {
-                console.log(chart)
+                // console.log(chart)
                 chart.config.data.datasets.forEach(function (dataset) {
                   dataset.data.push({
                     x: Date.now(),

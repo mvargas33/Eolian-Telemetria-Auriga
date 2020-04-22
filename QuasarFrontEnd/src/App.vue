@@ -6,6 +6,12 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  sockets: {
+    broadcast (data) {
+      console.log('broadcast event listened\n')
+      console.log(data)
+    }
+  }
 }
 </script>

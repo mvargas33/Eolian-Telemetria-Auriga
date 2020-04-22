@@ -18,7 +18,7 @@ export function updateTemps (context) {
 
 /* Actions reales que llaman a mutations reales */
 
-export function updateMainData (context, array) {
+export function socket_updateMainData (context, array) {
   context.commit('updateMainData', array)
 }
 

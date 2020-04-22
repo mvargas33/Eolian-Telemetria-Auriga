@@ -36,6 +36,7 @@ module.exports = {
 
   // add your custom rules here
   rules: {
+    'camelcase': 'off',
     // allow async-await
     'generator-star-spacing': 'off',
     // allow paren-less arrow functions

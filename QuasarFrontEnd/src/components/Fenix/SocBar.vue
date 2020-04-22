@@ -32,7 +32,7 @@ export default {
       var middle = (maxV + minV) / 2
       // var amount = (valor - minV) / (maxV - minV)
       var amount = 255 / (middle - minV)
-      console.log(amount)
+      // console.log(amount)
 
       // var color1 = [255, 0, 0]
       // var color2 = [0, 255, 0]
@@ -59,7 +59,7 @@ export default {
       // var b = (color2[2] - color1[2]) * amount + color1[2]
 
       var str = 'background-color: rgb(' + r + ',' + g + ',' + b + ');'
-      console.log(str)
+      // console.log(str)
       return str
     }
   }
