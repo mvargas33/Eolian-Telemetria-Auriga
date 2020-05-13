@@ -11,7 +11,11 @@ export default {
     mainData (data) {
       // console.log('broadcast event listened\n')
       // console.log(this.$store)
-      this.$store.dispatch('fenix/updateMainData', data.mainData)
+      console.log(data.data)
+      this.$store.dispatch('fenix/updateMainData', data.data)
+    },
+    hola (data) {
+      console.log(data)
     }
   }
 }

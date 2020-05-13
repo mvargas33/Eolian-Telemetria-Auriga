@@ -1,5 +1,6 @@
 import io.socket.emitter.Emitter;
 import io.socket.engineio.server.EngineIoServer;
+import io.socket.engineio.server.EngineIoServerOptions;
 import io.socket.socketio.server.SocketIoNamespace;
 import io.socket.socketio.server.SocketIoServer;
 import io.socket.socketio.server.SocketIoSocket;
@@ -12,7 +13,7 @@ import java.io.IOException;
 
 @WebServlet("/socket.io/*")
 public class SocketIoServlet extends HttpServlet {
-
+    private final EngineIoServerOptions engineIoServerOptions = EngineIoServerOptions.newFromDefault();
     private final EngineIoServer mEngineIoServer = new EngineIoServer();
     private final SocketIoServer mSocketIoServer = new SocketIoServer(mEngineIoServer);
 
@@ -49,7 +50,7 @@ public class SocketIoServlet extends HttpServlet {
 
     public static void main(String[] args) {
         SocketIoServlet socketIoServlet = new SocketIoServlet();
-
+        socketIoServlet.x();
 
     // Do something with namespace
     }

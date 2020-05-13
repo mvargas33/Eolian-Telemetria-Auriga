@@ -13,5 +13,6 @@
     <orderEntry type="library" name="json-simple-1.1" level="project" />
     <orderEntry type="library" name="SocketIO" level="project" />
     <orderEntry type="library" name="Servlet" level="project" />
+    <orderEntry type="library" name="SocketIO2" level="project" />
   </component>
 </module>
