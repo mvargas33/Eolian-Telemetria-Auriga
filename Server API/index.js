@@ -100,8 +100,8 @@ async function init(){
     while(true){
         //v.mainData[0] = Math.trunc(Math.random()*100);
         //console.log(v.mainData[0]);
-        //io.emit('mainData', v); // To all sockets
-        var v = random_Velocidad(v)
+        io.emit('mainData', data.mainData); // To all sockets
+        //var v = random_Velocidad(v)
         console.log(v)
         await delay(100)
 
