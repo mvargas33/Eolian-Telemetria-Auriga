@@ -16,10 +16,11 @@ export function updateVelocidad (state) {
 export function replaceMainData (state) {
   var a = [100, 3, 0.98, 80, 3.7, 3.6, 38, 20.5] // 8 [velocidad, potencia, mppt_in, soc, max_volt, min_volt, max_temp, min_temp]
   // Formateamos a tres decimales para visualizar bien
+  var decimales = 1E0
   var x = 0
   var l = a.length
   while (x < l) {
-    a[x] = Math.round(a[x] * 1000) / 1000
+    a[x] = Math.round(a[x] * decimales) / decimales
     x++
   }
   Vue.set(state, 'mainData', [...a]) // [..myArray] will prevent changes to the object from other source to change your source, so it's a good idea to implement in getters too. https://stackoverflow.com/questions/50767191/vuex-update-an-entire-array/50767787
@@ -55,11 +56,11 @@ export function updateTemps (state) {
 
 export function updateMainData (state, array) {
   // Formateamos a tres decimales para visualizar bien
-
+  var decimales = 1E1
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(array[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * decimales) / decimales
     x++
   }
 
@@ -74,11 +75,11 @@ export function updateMainData (state, array) {
 
 export function updateKellyDer (state, array) {
   // Formateamos a tres decimales para visualizar bien
-
+  var decimales = 1E1
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(array[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * decimales) / decimales
     x++
   }
 
@@ -91,11 +92,11 @@ export function updateKellyDer (state, array) {
 
 export function updateKellyIzq (state, array) {
   // Formateamos a tres decimales para visualizar bien
-
+  var decimales = 1E1
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(array[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * decimales) / decimales
     x++
   }
 
@@ -108,11 +109,11 @@ export function updateKellyIzq (state, array) {
 
 export function updateBms (state, array) {
   // Formateamos a tres decimales para visualizar bien
-
+  var decimales = 1E1
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(array[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * decimales) / decimales
     x++
   }
 
@@ -125,11 +126,11 @@ export function updateBms (state, array) {
 
 export function updateBmsTemp (state, array) {
   // Formateamos a tres decimales para visualizar bien
-
+  var decimales = 1E1
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(array[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * decimales) / decimales
     x++
   }
 
@@ -139,11 +140,11 @@ export function updateBmsTemp (state, array) {
 
 export function updateBmsVolt (state, array) {
   // Formateamos a tres decimales para visualizar bien
-
+  var decimales = 1E3
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(array[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * decimales) / decimales
     x++
   }
 
@@ -153,11 +154,11 @@ export function updateBmsVolt (state, array) {
 
 export function updateMppt1 (state, array) {
   // Formateamos a tres decimales para visualizar bien
-
+  var decimales = 1E0
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(array[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * decimales) / decimales
     x++
   }
 
@@ -167,11 +168,11 @@ export function updateMppt1 (state, array) {
 
 export function updateMppt2 (state, array) {
   // Formateamos a tres decimales para visualizar bien
-
+  var decimales = 1E0
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(array[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * decimales) / decimales
     x++
   }
 
@@ -181,11 +182,11 @@ export function updateMppt2 (state, array) {
 
 export function updateMppt3 (state, array) {
   // Formateamos a tres decimales para visualizar bien
-
+  var decimales = 1E0
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(array[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * decimales) / decimales
     x++
   }
 
@@ -195,11 +196,11 @@ export function updateMppt3 (state, array) {
 
 export function updateMppt4 (state, array) {
   // Formateamos a tres decimales para visualizar bien
-
+  var decimales = 1E0
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(array[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * decimales) / decimales
     x++
   }
 
@@ -209,11 +210,11 @@ export function updateMppt4 (state, array) {
 
 export function updatePotenciaMppt (state, array) {
   // Formateamos a tres decimales para visualizar bien
-
+  var decimales = 1E1
   var x = 0
   var l = array.length
   while (x < l) {
-    array[x] = Math.round(array[x] * 1000) / 1000
+    array[x] = Math.round(array[x] * decimales) / decimales
     x++
   }
 
