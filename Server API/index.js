@@ -55,56 +55,189 @@ server.listen(port, () => { // Pasamos una lambda que solo hace log
     console.log(`Servidor corriendo en http://localhost:${port}`) // Print inicial del servidor
 })
 
-
-var data = {
-    mainData: [56, 3.4, 1.024, 33, 4.048, 3.876, 34.5, 27.9], // 8 [velocidad, potencia, mppt_in, soc, max_volt, min_volt, max_temp, min_temp]
-    kelly_der: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], // 14 [ia, ib, ic, va, vb, vc, rpm, err_code, pwm, emr, motor_temp, kelly_temp, throttle, reverse]
-    kelly_izq: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], // 14 [ia, ib, ic, va, vb, vc, rpm, err_code, pwm, emr, motor_temp, kelly_temp, throttle, reverse]
-    bms: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], // 15 [SOC, current, inst_volt, open_volt, abs_current, max_volt, min_volt, max_temp, max_temp_id, min_temp, min_temp_id, avg_temp, internal_temp, max_volt_id, min_volt_id]
-    bms_temp: [0, 70, 60, 50, 40, 30, 20, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 60
-    bms_volt: [3.4, 3.5, 3.65, 3.75, 3.8, 3.9, 4.0, 4.1, 4.2, 4.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3.666, 0, 0, 0, 0], // 30
-    mppt1: [0, 1, 2, 3, 4, 5, 6, 7], // 8 [uin, iin, uout, blvr, ovt, noc, undv, temp]
-    mppt2: [0, 1, 2, 3, 4, 5, 6, 7], // 8
-    mppt3: [0, 1, 2, 3, 4, 5, 6, 7], // 8
-    mppt4: [0, 1, 2, 3, 4, 5, 6, 7], // 8
-    potencia_mppt: [0, 0, 0, 0], // 4 [pot_mppt1, pot_mppt2, pot_mppt3, pot_mppt4]
-    data_grafico_1: [0, 0, 0], // 3 [Velocidad, Consumo, Paneles IN]
-    data_grafico_2: [0, 0, 0] // 3 [Temp BMS, Temp Kelly_Der, Temp Kelly_Izq]
-  }
-
-function random_Velocidad(prev){
-    var max = 150;
-    var min = 0;
-    var array = new Array(Math.floor((max - min)));
-    // array.forEach(element => {
-    //     Math.floor(Math.random() * (max - min) + min);
-    // });
-    for (let index = 0; index < array.length; index++) {
-        array[index] = Math.floor(Math.random() * (max - min) + min);
-    }
-    var min = max + 1
-    for (let index = 0; index < array.length; index++) {
-        var d = array[index] - prev % (max-min)
-        //console.log(array[index])
-        if(d < min){
-            min = array[index];
-        }
+// function random_Velocidad(prev){
+//     var max = 150;
+//     var min = 0;
+//     var array = new Array(Math.floor((max - min)));
+//     // array.forEach(element => {
+//     //     Math.floor(Math.random() * (max - min) + min);
+//     // });
+//     for (let index = 0; index < array.length; index++) {
+//         array[index] = Math.floor(Math.random() * (max - min) + min);
+//     }
+//     var min = max + 1
+//     for (let index = 0; index < array.length; index++) {
+//         var d = array[index] - prev % (max-min)
+//         //console.log(array[index])
+//         if(d < min){
+//             min = array[index];
+//         }
         
+//     }
+//     return min;
+// }
+
+
+
+function randomArray(length, minValue, maxValue, sinuses, cosinuses, amplsin, amplcos, noise){
+    if(length <= 0){
+        return []
     }
-    return min;
+    var returnValues = []
+
+    for (let i = 0; i < length; i++) {
+        var newVal = 0;
+        // sin
+        for (let sin = 1; sin <= sinuses; sin++)
+        {
+            newVal += amplsin * Math.sin((2 * sin * i * Math.PI) / length);
+        }
+        // cos
+        for (let cos = 1; cos <= cosinuses; cos++)
+        {
+            newVal += amplcos * Math.cos((2 * cos * i * Math.PI) / length);
+        }
+        // noise
+        newVal += (noise * Math.random()) - (noise * Math.random());
+        returnValues.push(newVal);
+    }
+    // give offset so it be higher than 0
+    var ofs = Math.min(...returnValues);
+    if(ofs < minValue){
+        ofs *= -1;
+        for (let i = 0; i < length; i++) {
+            returnValues[i] += ofs;
+        }
+    }
+    // resize to be fit in 100
+    var max = Math.max(...returnValues);
+    if(max >= maxValue){
+        var scaler = max / maxValue;
+        for (let i = 0; i < length; i++) {
+            returnValues[i] /= scaler;
+        }
+    }
+    return returnValues;
 }
 
-var v = 50;
+
+
+//var speedArray = randomArray(numberOfPoints, 0, 150, Math.random()*10, Math.random()*10, Math.random() > 0.5 ? Math.random()*10 : Math.random()*-10, Math.random() > 0.5 ? Math.random()*10 : Math.random()*-10, 0);
+
+var mainData_MaxMin = [[0, 150], [0, 10], [0, 4], [0, 100], [3.4, 4.2], [3.4, 4.2], [0, 50], [0,50]]
+var kelly_der_MaxMin = [[0, 9], [0, 9], [0, 9], [0, 100], [0, 100], [0, 100], [0, 500], [0, 1], [0, 100], [0, 100], [0, 1], [0, 1]]
+var kelly_izq_MaxMin = [[0, 9], [0, 9], [0, 9], [0, 100], [0, 100], [0, 100], [0, 500], [0, 1], [0, 100], [0, 100], [0, 1], [0, 1]]
+var bms_MaxMin = [[0, 100], [0, 90], [80, 115], [80, 115], [0, 90], [3.4, 4.2], [3.4, 4.2], [0, 50], [0, 30], [0, 50], [0, 30], [0, 50], [0, 50], [0, 30], [0, 30]]
+var bms_temp_MaxMin = [[0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50]]
+var bms_volt_MaxMin = [[3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], ]
+var mppt1_MaxMin = [[0, 80], [0, 10], [80, 115], [0, 1], [0, 1], [0, 1], [0, 1], [0, 50]]
+var mppt2_MaxMin = [[0, 80], [0, 10], [80, 115], [0, 1], [0, 1], [0, 1], [0, 1], [0, 50]]
+var mppt3_MaxMin = [[0, 80], [0, 10], [80, 115], [0, 1], [0, 1], [0, 1], [0, 1], [0, 50]]
+var mppt4_MaxMin = [[0, 80], [0, 10], [80, 115], [0, 1], [0, 1], [0, 1], [0, 1], [0, 50]]
+var potencia_mppt_MaxMin = [[0, 450], [0, 450], [0, 450], [0, 450]]
+
+function genArrays(numberOfPoints, MaxMinArray){
+    var r = []
+    MaxMinArray.forEach(element => {
+        r.push(randomArray(numberOfPoints, element[0], element[1], Math.random()*10, Math.random()*10, Math.random() > 0.5 ? Math.random()*10 : Math.random()*-10, Math.random() > 0.5 ? Math.random()*10 : Math.random()*-10, 0))
+    });
+    return r;
+}
+
+function getIesimoArrayOneDimension(oneDimensionArray, i){
+    var r = []
+    oneDimensionArray.forEach(element => {
+        r.push(element[i])
+    });
+    return r;
+}
+
+function getDataIesimo(multiArray, i){
+    return {
+        mainData: getIesimoArrayOneDimension(multiArray.mainData, i),
+        kelly_der: getIesimoArrayOneDimension(multiArray.kelly_der, i),
+        kelly_izq: getIesimoArrayOneDimension(multiArray.kelly_izq, i),
+        bms: getIesimoArrayOneDimension(multiArray.bms, i),
+        bms_temp: getIesimoArrayOneDimension(multiArray.bms_temp, i),
+        bms_volt: getIesimoArrayOneDimension(multiArray.bms_volt, i),
+        mppt1: getIesimoArrayOneDimension(multiArray.mppt1, i),
+        mppt2: getIesimoArrayOneDimension(multiArray.mppt2, i),
+        mppt3: getIesimoArrayOneDimension(multiArray.mppt3, i),
+        mppt4: getIesimoArrayOneDimension(multiArray.mppt4, i),
+        potencia_mppt: getIesimoArrayOneDimension(multiArray.potencia_mppt, i)
+    }
+}
+
+var N = 100;
+var dataArray = {
+    mainData: genArrays(N, mainData_MaxMin),
+    kelly_der: genArrays(N, kelly_der_MaxMin),
+    kelly_izq: genArrays(N, kelly_izq_MaxMin),
+    bms: genArrays(N, bms_MaxMin),
+    bms_temp: genArrays(N, bms_temp_MaxMin),
+    bms_volt: genArrays(N, bms_volt_MaxMin),
+    mppt1: genArrays(N, mppt1_MaxMin),
+    mppt2: genArrays(N, mppt2_MaxMin),
+    mppt3: genArrays(N, mppt3_MaxMin),
+    mppt4: genArrays(N, mppt4_MaxMin),
+    potencia_mppt: genArrays(N, potencia_mppt_MaxMin)
+}
 
 async function init(){
+    var i = 0;
     while(true){
+        if(i >= N){
+            i = 0;
+        }
+        var data = getDataIesimo(dataArray, i);
+
+
         //v.mainData[0] = Math.trunc(Math.random()*100);
-        //console.log(v.mainData[0]);
+        //console.log(i)
+        //console.log(speedArray[i]);
+        //data.mainData[0] = speedArray[i];
+
+
         io.emit('mainData', data.mainData); // To all sockets
-        //var v = random_Velocidad(v)
-        console.log(v)
-        await delay(100)
+        await delay(10)
+        io.emit('kelly_der', data.kelly_der); // To all sockets
+        await delay(10)
+        io.emit('kelly_izq', data.kelly_izq); // To all sockets
+        await delay(10)
+        io.emit('bms', data.bms); // To all sockets
+        await delay(10)
+        io.emit('bms_temp', data.bms_temp); // To all sockets
+        await delay(10)
+        io.emit('bms_volt', data.bms_volt); // To all sockets
+        await delay(10)
+        io.emit('mppt1', data.mppt1); // To all sockets
+        await delay(10)
+        io.emit('mppt2', data.mppt2); // To all sockets
+        await delay(10)
+        io.emit('mppt3', data.mppt3); // To all sockets
+        await delay(10)
+        io.emit('mppt4', data.mppt4); // To all sockets
+        await delay(10)
+        io.emit('potencia_mppt', data.potencia_mppt); // To all sockets
+
+        i +=1;
+        
+        await delay(1000)
 
     }
 }
 init();
+
+// var data = {
+//     mainData: [56, 3.4, 1.024, 33, 4.048, 3.876, 34.5, 27.9], // 8 [velocidad, potencia, mppt_in, soc, max_volt, min_volt, max_temp, min_temp]
+//     kelly_der: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], // 14 [ia, ib, ic, va, vb, vc, rpm, err_code, pwm, emr, motor_temp, kelly_temp, throttle, reverse]
+//     kelly_izq: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13], // 14 [ia, ib, ic, va, vb, vc, rpm, err_code, pwm, emr, motor_temp, kelly_temp, throttle, reverse]
+//     bms: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], // 15 [SOC, current, inst_volt, open_volt, abs_current, max_volt, min_volt, max_temp, max_temp_id, min_temp, min_temp_id, avg_temp, internal_temp, max_volt_id, min_volt_id]
+//     bms_temp: [0, 70, 60, 50, 40, 30, 20, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // 60
+//     bms_volt: [3.4, 3.5, 3.65, 3.75, 3.8, 3.9, 4.0, 4.1, 4.2, 4.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3.666, 0, 0, 0, 0], // 30
+//     mppt1: [0, 1, 2, 3, 4, 5, 6, 7], // 8 [uin, iin, uout, blvr, ovt, noc, undv, temp]
+//     mppt2: [0, 1, 2, 3, 4, 5, 6, 7], // 8
+//     mppt3: [0, 1, 2, 3, 4, 5, 6, 7], // 8
+//     mppt4: [0, 1, 2, 3, 4, 5, 6, 7], // 8
+//     potencia_mppt: [0, 0, 0, 0], // 4 [pot_mppt1, pot_mppt2, pot_mppt3, pot_mppt4]
+//   }
