@@ -75,7 +75,7 @@ export function updateMainData (state, array) {
 
 export function updateKellyDer (state, array) {
   // Formateamos a tres decimales para visualizar bien
-  var decimales = 1E1
+  var decimales = 1E0
   var x = 0
   var l = array.length
   while (x < l) {
@@ -87,12 +87,13 @@ export function updateKellyDer (state, array) {
   Vue.set(state, 'kelly_der', [...array]) // [...array] Copiamos para prevenir cambios de terceros
 
   // Update del gráfico
-  Vue.set(state, 'data_grafico_2', 1, state.kelly_der[10]) // Temp Kelly Der
+  console.log(state.kelly_izq[10])
+  Vue.set(state.data_grafico_2, 1, state.kelly_der[10]) // Temp Kelly Der
 }
 
 export function updateKellyIzq (state, array) {
   // Formateamos a tres decimales para visualizar bien
-  var decimales = 1E1
+  var decimales = 1E0
   var x = 0
   var l = array.length
   while (x < l) {
@@ -104,7 +105,7 @@ export function updateKellyIzq (state, array) {
   Vue.set(state, 'kelly_izq', [...array]) // [...array] Copiamos para prevenir cambios de terceros
 
   // Update del gráfico
-  Vue.set(state, 'data_grafico_2', 2, state.kelly_izq[10]) // Temp Kelly Izq
+  Vue.set(state.data_grafico_2, 2, state.kelly_izq[10]) // Temp Kelly Izq
 }
 
 export function updateBms (state, array) {
@@ -121,7 +122,7 @@ export function updateBms (state, array) {
   Vue.set(state, 'bms', [...array]) // [...array] Copiamos para prevenir cambios de terceros
 
   // Update del gráfico
-  Vue.set(state, 'data_grafico_2', 0, state.bms[11]) // Average Temp BMS
+  Vue.set(state.data_grafico_2, 0, state.bms[11]) // Average Temp BMS
 }
 
 export function updateBmsTemp (state, array) {
