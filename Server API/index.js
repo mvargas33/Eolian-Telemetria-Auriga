@@ -102,21 +102,47 @@ function randomArray(length, minValue, maxValue, sinuses, cosinuses, amplsin, am
         returnValues.push(newVal);
     }
     // give offset so it be higher than 0
-    var ofs = Math.min(...returnValues);
-    if(ofs < minValue){
-        ofs *= -1;
-        for (let i = 0; i < length; i++) {
-            returnValues[i] += ofs;
-        }
+    // console.log(returnValues)
+    var min = Math.min(...returnValues);
+    // console.log(min)
+    for (let i = 0; i < returnValues.length; i++) {
+        returnValues[i] += - min;
     }
+    
+    // console.log(returnValues)
+
+    min = 0
+    //console.log(min)
+    //console.log(minValue)
+    //console.log(returnValues)
+    // if(min < minValue){
+    //     min *= -1;
+    //     for (let i = 0; i < length; i++) {
+    //         returnValues[i] += min + minValue;
+    //     }
+    //     //console.log(returnValues)
+    // }
     // resize to be fit in 100
     var max = Math.max(...returnValues);
-    if(max >= maxValue){
-        var scaler = max / maxValue;
-        for (let i = 0; i < length; i++) {
-            returnValues[i] /= scaler;
-        }
+    // if(max >= maxValue){
+    //     var scaler = max / maxValue;
+    //     for (let i = 0; i < length; i++) {
+    //         returnValues[i] /= scaler;
+    //     }
+    // }
+    // console.log(min)
+    // console.log(max)
+    // console.log(minValue)
+    // console.log(maxValue)
+    //console.log(returnValues)
+    for (let i = 0; i < returnValues.length; i++) {
+        returnValues[i] = minValue + (((maxValue - minValue)/(max - min)) * (returnValues[i] - min))
     }
+
+    // returnValues.forEach(element => {
+    //     element = minValue + (((maxValue - minValue)/(max - min)) * (element - min))
+    // });
+    //console.log(returnValues)
     return returnValues;
 }
 
@@ -125,8 +151,8 @@ function randomArray(length, minValue, maxValue, sinuses, cosinuses, amplsin, am
 //var speedArray = randomArray(numberOfPoints, 0, 150, Math.random()*10, Math.random()*10, Math.random() > 0.5 ? Math.random()*10 : Math.random()*-10, Math.random() > 0.5 ? Math.random()*10 : Math.random()*-10, 0);
 
 var mainData_MaxMin = [[0, 150], [0, 10], [0, 4], [0, 100], [3.4, 4.2], [3.4, 4.2], [0, 50], [0,50]]
-var kelly_der_MaxMin = [[0, 9], [0, 9], [0, 9], [0, 100], [0, 100], [0, 100], [0, 500], [0, 1], [0, 100], [0, 100], [0, 1], [0, 1]]
-var kelly_izq_MaxMin = [[0, 9], [0, 9], [0, 9], [0, 100], [0, 100], [0, 100], [0, 500], [0, 1], [0, 100], [0, 100], [0, 1], [0, 1]]
+var kelly_der_MaxMin = [[0, 9], [0, 9], [0, 9], [0, 100], [0, 100], [0, 100], [0, 500], [0, 9], [0, 1], [0, 1], [0, 100], [0, 100], [0, 1], [0, 1]] // 14 [ia, ib, ic, va, vb, vc, rpm, err_code, pwm, emr, motor_temp, kelly_temp, throttle, reverse]
+var kelly_izq_MaxMin = [[0, 9], [0, 9], [0, 9], [0, 100], [0, 100], [0, 100], [0, 500], [0, 9], [0, 1], [0, 1], [0, 100], [0, 100], [0, 1], [0, 1]] // 14 [ia, ib, ic, va, vb, vc, rpm, err_code, pwm, emr, motor_temp, kelly_temp, throttle, reverse]
 var bms_MaxMin = [[0, 100], [0, 90], [80, 115], [80, 115], [0, 90], [3.4, 4.2], [3.4, 4.2], [0, 50], [0, 30], [0, 50], [0, 30], [0, 50], [0, 50], [0, 30], [0, 30]]
 var bms_temp_MaxMin = [[0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50], [0, 50]]
 var bms_volt_MaxMin = [[3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], [3.4, 4.2], ]
@@ -222,7 +248,7 @@ async function init(){
 
         i +=1;
         
-        await delay(1000)
+        await delay(20)
 
     }
 }
