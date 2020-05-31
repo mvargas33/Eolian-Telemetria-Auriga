@@ -1,3 +1,5 @@
+package Sandboxes;
+
 import java.util.concurrent.*;
 import java.util.Random;
 
@@ -41,7 +43,7 @@ class Producer implements Runnable {
     }
     @Override
     public void run() {
-        // Producer produces a continuous stream of numbers for every 200 milli seconds
+        // Sandboxes.Producer produces a continuous stream of numbers for every 200 milli seconds
         while (true) {
             try {
                 int number = random.nextInt(1000);
@@ -64,7 +66,7 @@ class Consumer implements Runnable {
     }
     @Override
     public void run() {
-        // Consumer consumes numbers generated from Producer threads continuously
+        // Sandboxes.Consumer consumes numbers generated from Sandboxes.Producer threads continuously
         while(true){
             try {
                 int num = sharedQueue.take();
