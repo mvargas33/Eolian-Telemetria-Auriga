@@ -12,7 +12,7 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import org.json.simple.JSONObject;
 
-public class SocketIO {
+public class SocketIOSandBox {
     static private Socket socket;
     static final int PORT = 3000;
     static SocketIOServer server;
