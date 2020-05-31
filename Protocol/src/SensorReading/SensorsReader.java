@@ -1,6 +1,6 @@
 package SensorReading;
 
-import Components.Component;
+import Protocol.Components.Component;
 
 import java.util.HashMap;
 import java.util.LinkedList;

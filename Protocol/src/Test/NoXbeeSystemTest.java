@@ -1,6 +1,6 @@
 package Test;
 
-import Components.Component;
+import Protocol.Components.Component;
 import LocalSystems.DatabaseAdmin.DatabaseAdmin;
 import LocalSystems.LocalMasterAdmin;
 import LocalSystems.ServerAdmin.ServerAdmin;
@@ -11,7 +11,6 @@ import Protocol.Receiving.XbeeReceiver;
 import Protocol.Sending.SenderAdmin;
 import Protocol.Sending.XbeeSender;
 import SensorReading.RandomReader;
-import SensorReading.SensorsReader;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

@@ -1,6 +1,6 @@
 package Protocol.Initializer;
 
-import Components.Component;
+import Protocol.Components.Component;
 import Protocol.Messages.Message;
 
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.LinkedList;
  * Clase que se encarga sólo de genrar los Menssages para cada Componente según los parámetros de la red
  */
 public class Initializer {
-    private final LinkedList<Component> allComponents; // Components que son parte del sistema actual de telemetría
+    private final LinkedList<Component> allComponents; // Protocol.Components que son parte del sistema actual de telemetría
     private final int msgLimitSize;         // Parámetro de red: Límite del tamaño del mensaje en bits
     private final int msgLimitSizeInBytes;  // Parámetro de red: Límite del tamaño del mensaje en bytes
     private final char baseHeader; // Parámetro de red: Header de inicio de mensajes

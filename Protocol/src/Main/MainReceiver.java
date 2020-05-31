@@ -1,6 +1,6 @@
 package Main;
 
-import Components.Component;
+import Protocol.Components.Component;
 import LocalSystems.DatabaseAdmin.DatabaseAdmin;
 import LocalSystems.LocalMasterAdmin;
 import LocalSystems.ServerAdmin.ServerAdmin;
@@ -12,10 +12,8 @@ import Protocol.Receiving.XbeeReceiver;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class MainReceiver {
     public static void main(String ... args) throws Exception {

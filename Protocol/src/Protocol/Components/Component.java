@@ -1,4 +1,4 @@
-package Components;
+package Protocol.Components;
 
 import LocalSystems.LocalMasterAdmin;
 import Protocol.Messages.Message;

@@ -1,10 +1,9 @@
 package Main;
 
-import Components.Component;
+import Protocol.Components.Component;
 import Protocol.Initializer.Initializer;
 import Protocol.Sending.SenderAdmin;
 import Protocol.Sending.XbeeSender;
-import SensorReading.SensorsReader;
 import SensorReading.RandomReader;
 
 import java.util.HashMap;

@@ -1,12 +1,11 @@
 package Test;
 
-import Components.Component;
+import Protocol.Components.Component;
 import LocalSystems.LocalMasterAdmin;
 import Protocol.Initializer.Initializer;
 import Protocol.Receiving.XbeeReceiver;
 import Protocol.Sending.SenderAdmin;
 import Protocol.Sending.XbeeSender;
-import SensorReading.SensorsReader;
 
 import java.util.HashMap;
 import java.util.LinkedList;

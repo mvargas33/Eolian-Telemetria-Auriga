@@ -1,6 +1,6 @@
 package Protocol.Messages;
 
-import Components.Component;
+import Protocol.Components.Component;
 import Utilities.BitOperations;
 
 import java.util.LinkedList;
