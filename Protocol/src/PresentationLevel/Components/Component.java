@@ -41,8 +41,23 @@ public class Component {
     private SenderAdmin mySenderAdmin;                                      // SENDING : A quien informo de updates en valores para enviar
 
     private HashMap<Character, MessagesWithIndexes> hashOfMyMessagesWithIndexes;             // RECEIVING : Para extracción en O(1) y actualizar mis valores
-    private LocalMasterAdmin myLocalMasterAdmin;                            // RECEIVING : Queue admin que entrega info a DatabaseADmin y ServerAdmin
+    public LocalMasterAdmin myLocalMasterAdmin;                            // RECEIVING : Queue admin que entrega info a DatabaseADmin y ServerAdmin
 
+
+
+    /**
+     * Base Component, encargado de lecturas directas de sensores y envío de datos por SenderAdmin
+     * @param valores : Array de valores del componente
+     * @param bitsSignificativos : Array de bits significativos de cada valor en valores[]
+     * @param ID : ID del Componente
+     */
+    public Component(int[] valores, int[] bitsSignificativos, String ID){
+        this.ID = ID;
+        this.myValues = valores;
+        this.bitSig = bitsSignificativos;
+        this.listOfMyMessagesWithIndexes = new LinkedList<>();
+        this.hashOfMyMessagesWithIndexes = new HashMap<>();
+    }
 
     /**
      * Sender Component, encargado de lecturas directas de sensores y envío de datos por SenderAdmin
@@ -52,28 +67,38 @@ public class Component {
      * @param ID : ID del Componente
      */
     public Component(SenderAdmin mySenderAdmin, int[] valores, int[] bitsSignificativos, String ID) {
-        this.ID = ID;
-        this.myValues = valores;
-        this.bitSig = bitsSignificativos;
+        this(valores, bitsSignificativos, ID);
         this.mySenderAdmin = mySenderAdmin; // Thread de Sender Admin debe ser creado antes que todos los componentes.
-        this.listOfMyMessagesWithIndexes = new LinkedList<>();
-        this.hashOfMyMessagesWithIndexes = new HashMap<>();
+
     }
 
     /**
-     * Receiver Component, encargado de transformar Messages recibidos en valores e informar al LocalMasterAdmin
+     * Receiver Component (Outside solar car)
+     * Encargado de transformar Messages recibidos en valores e informar al LocalMasterAdmin
      * @param myLocalMasterAdmin : A quien informo sobre nuevos valores recibidos
      * @param valores : Array de valores del componente
      * @param bitsSignificativos : Array de bits significativos de cada valor en valores[]
      * @param ID : ID del Componente
      */
     public Component(LocalMasterAdmin myLocalMasterAdmin, int[] valores, int[] bitsSignificativos, String ID) {
-        this.ID = ID;
-        this.myValues = valores;
-        this.bitSig = bitsSignificativos;
+        this(valores, bitsSignificativos, ID);
         this.myLocalMasterAdmin = myLocalMasterAdmin; // Thread de myLocalMasterAdmin debe ser creado antes que todos los componentes.
-        this.listOfMyMessagesWithIndexes = new LinkedList<>();
-        this.hashOfMyMessagesWithIndexes = new HashMap<>();
+    }
+
+    /**
+     * Hybrid Component (inside solar car)
+     * Encargado de lecturas directas de sensores y envío de datos por SenderAdmin.
+     * Encargado de ponerse en cola en LocalMasterAdmin para display con lecturas directas.
+     * @param myLocalMasterAdmin A quien informo sobre nuevos valores para display
+     * @param mySenderAdmin A quien informa sobre nuevos valores para enviarse
+     * @param valores : Array de valores del componente
+     * @param bitsSignificativos : Array de bits significativos de cada valor en valores[]
+     * @param ID : ID del Componente
+     */
+    public Component(LocalMasterAdmin myLocalMasterAdmin, SenderAdmin mySenderAdmin, int[] valores, int[] bitsSignificativos, String ID) {
+        this(valores, bitsSignificativos, ID);
+        this.myLocalMasterAdmin = myLocalMasterAdmin; // Thread de myLocalMasterAdmin debe ser creado antes que todos los componentes.
+        this.mySenderAdmin = mySenderAdmin;
     }
 
 
@@ -111,7 +136,7 @@ public class Component {
      * SENDING: Recibe mensaje porque el componente ha actualizado sus valores. El componente debe tomar el objeto mensaje,
      * extraer los valores que le conciernen y hacer update de 'myRawBytes y 'myValues'.
      * Luego debe avisar a 'SenderAdmin' que lo revise para extraer todos sus valores y guardarlos en la base de
-     * datos y mostrar en la aplicación Web.
+     * datos y mostrar en la aplicación Web. Mensaje se pone en Queue de envío.
      * @param m : Mensaje que acaba de actualizarse
      */
     public void updateMsg( MessagesWithIndexes m ){
