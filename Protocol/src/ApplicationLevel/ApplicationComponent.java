@@ -18,14 +18,14 @@ public class ApplicationComponent {
     private final double[] maximosConDecimal; // Hardcodeados
 
     private int len; // Deducido. Se calcula una vez. Número de valores en componente. Se usa en varios for()
-    private int[] decimales; // Deducido. Se calcula una vez. Cantidad de decimales de los valores
-    private int[] offset; // Deducido. Se calcula una vez. Offset para llegar del mínimo al 0
-    private int[] delta; // Deducido. Se calcula una vez. Cantidad de valores a representar
-    private int[] bitSignificativos; // Deducido. Se calculauna vez. Cantidad mínima de bits para representar 'delta' valores
+    public int[] decimales; // Deducido. Se calcula una vez. Cantidad de decimales de los valores
+    public int[] offset; // Deducido. Se calcula una vez. Offset para llegar del mínimo al 0
+    public int[] delta; // Deducido. Se calcula una vez. Cantidad de valores a representar
+    public int[] bitSignificativos; // Deducido. Se calculauna vez. Cantidad mínima de bits para representar 'delta' valores
 
-    private double[] valoresRealesActuales; // Valores reales provenientes de lecturas reales. Se actualizan cada vez
+    public double[] valoresRealesActuales; // Valores reales provenientes de lecturas reales. Se actualizan cada vez
 
-    private int[] valoresAEnviar; // Valores en formato de capap de presentación.
+    public int[] valoresAEnviar; // Valores en formato de capap de presentación.
     //private double[] valoresRecibidos; // Valores decodeados de capa de presentación. Se usa en variable global para optimizar uso de memoria
 
     private Component myPresentationComponent;
@@ -56,8 +56,10 @@ public class ApplicationComponent {
         this.valoresAEnviar = new int[len];
 
         for (int i = 0; i < len; i++){
-            this.decimales[i] = Math.max(DoubleOperations.extractDecimals(minimosConDecimal[i]), DoubleOperations.extractDecimals(maximosConDecimal[i]));
-            this.offset[i] = (int) Math.floor(- Math.pow(minimosConDecimal[i], Math.pow(10, decimales[i])));
+            int min = DoubleOperations.extractDecimals(minimosConDecimal[i]);
+            int max = DoubleOperations.extractDecimals(maximosConDecimal[i]);
+            this.decimales[i] = Math.max(min, max);
+            this.offset[i] = (int) Math.floor(- (minimosConDecimal[i] * Math.pow(10, decimales[i])));
             this.delta[i] = (int) Math.floor(1 + (maximosConDecimal[i] - minimosConDecimal[i]) * Math.pow(10, decimales[i]));
             this.bitSignificativos[i] = (int) Math.ceil(Math.log(delta[i]) / Math.log(2));
         }
@@ -125,7 +127,7 @@ public class ApplicationComponent {
         for (int i = 0; i < len; i++) {
             this.valoresAEnviar[i] = (int) Math.floor( valoresRealesActuales[i] * Math.pow(10, decimales[i]) ) + offset[i];
         }
-        this.myPresentationComponent.replaceMyValues(this.valoresAEnviar);
+        //this.myPresentationComponent.replaceMyValues(this.valoresAEnviar);
     }
 
     /**

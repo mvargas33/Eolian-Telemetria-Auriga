@@ -15,7 +15,7 @@ public class DoubleOperations {
         int d = 0;
         double one = 1;
         double tolerance = Math.pow(10, -10); // 1E-10
-        double copy = d;
+        double copy = value;
 
         while(true){
             double rest = copy % one;
