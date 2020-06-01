@@ -1,12 +1,9 @@
-package Protocol.Sending;
+package PresentationLevel.Sending;
 
-import Protocol.Receiving.XbeeReceiver;
+import PresentationLevel.Receiving.XbeeReceiver;
 import Utilities.BitOperations;
-import com.digi.xbee.api.RemoteXBeeDevice;
 import com.digi.xbee.api.XBeeDevice;
-import com.digi.xbee.api.XBeeNetwork;
 import com.digi.xbee.api.exceptions.XBeeException;
-import com.digi.xbee.api.utils.HexUtils;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

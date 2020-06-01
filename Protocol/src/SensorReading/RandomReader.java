@@ -1,6 +1,6 @@
 package SensorReading;
 
-import Protocol.Components.Component;
+import PresentationLevel.Components.Component;
 //import SensorReading.SensorsReader;
 //import sun.management.Sensor;
 

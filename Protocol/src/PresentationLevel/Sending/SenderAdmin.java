@@ -1,7 +1,6 @@
-package Protocol.Sending;
+package PresentationLevel.Sending;
 
-import Protocol.Messages.Message;
-import Utilities.BitOperations;
+import PresentationLevel.Messages.Message;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

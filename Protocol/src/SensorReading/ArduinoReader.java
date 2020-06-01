@@ -1,6 +1,6 @@
 package SensorReading;
 
-import Protocol.Components.Component;
+import PresentationLevel.Components.Component;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;

@@ -1,4 +1,4 @@
-package Protocol.Receiving;
+package PresentationLevel.Receiving;
 
 import com.digi.xbee.api.XBeeDevice;
 import com.digi.xbee.api.exceptions.XBeeException;

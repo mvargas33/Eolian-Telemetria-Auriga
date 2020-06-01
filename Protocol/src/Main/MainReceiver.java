@@ -1,13 +1,13 @@
 package Main;
 
-import Protocol.Components.Component;
+import PresentationLevel.Components.Component;
 import LocalSystems.DatabaseAdmin.DatabaseAdmin;
 import LocalSystems.LocalMasterAdmin;
 import LocalSystems.ServerAdmin.ServerAdmin;
-import Protocol.Initializer.Initializer;
-import Protocol.Messages.Message;
-import Protocol.Receiving.ReceiverAdmin;
-import Protocol.Receiving.XbeeReceiver;
+import PresentationLevel.Initializer.Initializer;
+import PresentationLevel.Messages.Message;
+import PresentationLevel.Receiving.ReceiverAdmin;
+import PresentationLevel.Receiving.XbeeReceiver;
 //import com.sun.security.ntlm.Server;
 
 import java.util.HashMap;

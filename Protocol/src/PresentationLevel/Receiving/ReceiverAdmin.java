@@ -1,10 +1,9 @@
-package Protocol.Receiving;
+package PresentationLevel.Receiving;
 
-import Protocol.Messages.Message;
+import PresentationLevel.Messages.Message;
 import Utilities.BitOperations;
 
 import java.util.HashMap;
-import java.util.concurrent.BlockingQueue;
 
 // CONSUMER
 public class ReceiverAdmin implements Runnable{

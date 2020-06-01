@@ -1,6 +1,6 @@
 package LocalSystems;
 
-import Protocol.Components.Component;
+import PresentationLevel.Components.Component;
 import LocalSystems.DatabaseAdmin.DatabaseAdmin;
 import LocalSystems.ServerAdmin.ServerAdmin;
 

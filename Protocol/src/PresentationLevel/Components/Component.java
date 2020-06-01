@@ -1,8 +1,8 @@
-package Protocol.Components;
+package PresentationLevel.Components;
 
 import LocalSystems.LocalMasterAdmin;
-import Protocol.Messages.Message;
-import Protocol.Sending.SenderAdmin;
+import PresentationLevel.Messages.Message;
+import PresentationLevel.Sending.SenderAdmin;
 import Utilities.BitOperations;
 
 import java.util.HashMap;

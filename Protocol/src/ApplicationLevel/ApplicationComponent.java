@@ -1,6 +1,6 @@
 package ApplicationLevel;
 
-import Protocol.Components.Component;
+import PresentationLevel.Components.Component;
 
 /**
  * Será una clase usada como interfaz entre un Componente del Protocolo y los datos básicos que definen una componente.
@@ -9,7 +9,7 @@ import Protocol.Components.Component;
  * Cada SimpleComponent tiene un Component del protocolo asociado.
  * Se les asocia un SensorReader específico que, después de escalar, hará update directo del Component del Protocolo.
  */
-public class SimpleComponent {
+public class ApplicationComponent {
     private final String ID;
     private final double[] minimosConDecimal;
     private final double[] maximosConDecimal;
@@ -23,7 +23,7 @@ public class SimpleComponent {
      * @param minimosConDecimal Valores mínimos de cada valor del componente
      * @param maximosConDecimal Valores máximos de cada valor del componente
      */
-    public SimpleComponent(String id, double[] minimosConDecimal, double[] maximosConDecimal) {
+    public ApplicationComponent(String id, double[] minimosConDecimal, double[] maximosConDecimal) {
         this.ID = id;
         this.minimosConDecimal = minimosConDecimal;
         this.maximosConDecimal = maximosConDecimal;

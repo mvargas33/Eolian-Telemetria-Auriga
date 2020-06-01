@@ -1,7 +1,7 @@
-package Protocol.Initializer;
+package PresentationLevel.Initializer;
 
-import Protocol.Components.Component;
-import Protocol.Messages.Message;
+import PresentationLevel.Components.Component;
+import PresentationLevel.Messages.Message;
 
 import java.util.HashMap;
 import java.util.LinkedList;

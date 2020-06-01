@@ -1,11 +1,11 @@
 package Test;
 
-import Protocol.Components.Component;
+import PresentationLevel.Components.Component;
 import LocalSystems.LocalMasterAdmin;
-import Protocol.Initializer.Initializer;
-import Protocol.Receiving.XbeeReceiver;
-import Protocol.Sending.SenderAdmin;
-import Protocol.Sending.XbeeSender;
+import PresentationLevel.Initializer.Initializer;
+import PresentationLevel.Receiving.XbeeReceiver;
+import PresentationLevel.Sending.SenderAdmin;
+import PresentationLevel.Sending.XbeeSender;
 
 import java.util.HashMap;
 import java.util.LinkedList;

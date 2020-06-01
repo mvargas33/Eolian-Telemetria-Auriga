@@ -1,16 +1,11 @@
 package Test;
 
-import Protocol.Receiving.XbeeReceiver;
-import Utilities.BitOperations;
 import com.digi.xbee.api.XBeeDevice;
 import com.digi.xbee.api.exceptions.XBeeException;
 import com.digi.xbee.api.listeners.IDataReceiveListener;
 import com.digi.xbee.api.models.XBeeMessage;
-import com.digi.xbee.api.utils.HexUtils;
 
 import java.util.Arrays;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Clase que comprueba empíricamente la capacidad de transmisión de las Xbee en API mode
