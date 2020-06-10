@@ -1,6 +1,6 @@
 package Test;
 
-import ApplicationLevel.ApplicationComponent;
+import ApplicationLayer.ApplicationComponent;
 
 import static org.junit.jupiter.api.Assertions.*;
 

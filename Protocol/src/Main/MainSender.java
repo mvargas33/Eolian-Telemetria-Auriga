@@ -1,10 +1,10 @@
 package Main;
 
-import PresentationLevel.Components.Component;
-import PresentationLevel.Initializer.Initializer;
-import PresentationLevel.Sending.SenderAdmin;
-import PresentationLevel.Sending.XbeeSender;
-import SensorReading.RandomReader;
+import PresentationLayer.Components.Component;
+import PresentationLayer.Initializer.Initializer;
+import ZigBeeLayer.Sending.SenderAdmin;
+import ZigBeeLayer.Sending.XbeeSender;
+import ApplicationLayer.SensorReading.RandomReader;
 
 import java.util.HashMap;
 import java.util.LinkedList;

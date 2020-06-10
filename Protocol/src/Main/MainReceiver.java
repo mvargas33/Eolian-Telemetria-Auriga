@@ -1,13 +1,13 @@
 package Main;
 
-import PresentationLevel.Components.Component;
-import LocalSystems.DatabaseAdmin.DatabaseAdmin;
-import LocalSystems.LocalMasterAdmin;
-import LocalSystems.ServerAdmin.ServerAdmin;
-import PresentationLevel.Initializer.Initializer;
-import PresentationLevel.Messages.Message;
-import PresentationLevel.Receiving.ReceiverAdmin;
-import PresentationLevel.Receiving.XbeeReceiver;
+import PresentationLayer.Components.Component;
+import ApplicationLayer.LocalSystems.DatabaseAdmin.DatabaseAdmin;
+import ApplicationLayer.LocalSystems.LocalMasterAdmin;
+import ApplicationLayer.LocalSystems.ServerAdmin.ServerAdmin;
+import PresentationLayer.Initializer.Initializer;
+import PresentationLayer.Messages.Message;
+import ZigBeeLayer.Receiving.ReceiverAdmin;
+import ZigBeeLayer.Receiving.XbeeReceiver;
 //import com.sun.security.ntlm.Server;
 
 import java.util.HashMap;
