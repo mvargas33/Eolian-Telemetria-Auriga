@@ -1,5 +1,6 @@
 package Test.Sandboxes;
 
+import java.math.BigInteger;
 import java.security.Provider;
 import java.security.SecureRandom;
 import java.security.Security;
@@ -17,11 +18,14 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class ChaCha20Sandbox
 {
-    static String plainText = "hola";
-    static byte[] bytes = {0x00, 0x01, 0x02, 0x03};
 
     public static void main(String[] args) throws Exception
     {
+        // Plain text.
+        String text = "01234567890123456789012345678901";
+        byte[] e = text.getBytes();
+        System.out.println("Text length bytes: " + e.length);
+
         // Generate Key
         KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
         SecureRandom secureRandom = new SecureRandom();
@@ -29,72 +33,78 @@ public class ChaCha20Sandbox
         keyGenerator.init(keyBitSize, secureRandom);
         SecretKey key = keyGenerator.generateKey();
 
-        byte[] keyB = Base64.getDecoder().decode(key.getEncoded());
-        System.out.println("Key" + Base64.getEncoder().encodeToString(keyB) + " largo: " + Base64.getEncoder().encodeToString(keyB).length());
+        System.out.println("Key: " + new String(key.getEncoded()));
+        System.out.println("Bit length: " + key.getEncoded().length*8);
 
+        // Generating 128-bit IV.
+        byte[] iv = new byte[16];
+        SecureRandom random = new SecureRandom();
+        random.nextBytes(iv);
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
 
-        /*for (Provider provider: Security.getProviders()) {
-            System.out.println(provider.getName());
-            for (String key: provider.stringPropertyNames())
-                System.out.println("\t" + key + "\t" + provider.getProperty(key));
-        }
-        */
+        byte[] a = {(byte) 0b00000000,
+                    (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111,
+                    (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111,
+                    (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111,
+                    (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111};
+
+        BigInteger ivv = new BigInteger(a);
+        System.out.println(ivv);
+        BigInteger top = new BigInteger(a);
+        ivv = ivv.add(BigInteger.ONE).mod(top) ;
+        //ivv = ivv.add(BigInteger.ONE).mod(top) ;
+        System.out.println(ivv);
+
+        BigInteger randomm = new BigInteger(128, secureRandom);
+        byte[] array = randomm.toByteArray();
+        System.out.println(array.length);
+
 
         //String key64 = "Gz+06hC7o68d0GbiE9F9D82qh1uikxVBfFN6UrOWc/k=";
-        System.out.println("Original Text  : " + plainText);
+        System.out.println("Original Text  : " + text);
 
-        byte[] cipherText = encrypt(plainText.getBytes(), keyB);
-        System.out.println(cipherText.length);
+        byte[] cipherText = encrypt(e, key, ivParameterSpec);
+
         System.out.println("Encrypted Text : " + Base64.getEncoder().encodeToString(cipherText));
+        System.out.println("Length in bytes: " + cipherText.length);
 
-        String decryptedText = decrypt(cipherText, keyB);
+        String decryptedText = new String(decrypt(cipherText, key));
         System.out.println("DeCrypted Text : " + decryptedText);
 
     }
-r
-    public static byte[] encrypt(byte[] plaintext, byte[] key) throws Exception
-    {
-        byte[] nonceBytes = new byte[12];
 
-        // Get Cipher Instance
-        Cipher cipher = Cipher.getInstance("ChaCha20/None/NoPadding");
-        ChaCha20ParameterSpec chaCha20ParameterSpec = new ChaCha20ParameterSpec(nonceBytes, 1);
+    public static byte[] encrypt(byte[] clean, SecretKey key, IvParameterSpec ivParameterSpec) throws Exception {
+        // Encrypt.
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, key, ivParameterSpec);
+        byte[] encrypted = cipher.doFinal(clean);
 
-        // Create IvParamterSpec
-        //AlgorithmParameterSpec ivParameterSpec = new IvParameterSpec(nonceBytes);
+        // Combine IV and encrypted part.
+        byte[] encryptedIVAndText = new byte[16 + encrypted.length];
+        System.arraycopy(ivParameterSpec.getIV(), 0, encryptedIVAndText, 0, 16);
+        System.arraycopy(encrypted, 0, encryptedIVAndText, 16, encrypted.length);
 
-        // Create SecretKeySpec
-        SecretKeySpec keySpec = new SecretKeySpec(key, "ChaCha20");
-
-        // Initialize Cipher for ENCRYPT_MODE
-        cipher.init(Cipher.ENCRYPT_MODE, keySpec, chaCha20ParameterSpec);
-
-        // Perform Encryption
-        byte[] cipherText = cipher.doFinal(plaintext);
-
-        return cipherText;
+        // IV | Cipher Text
+        return encryptedIVAndText;
     }
 
-    public static String decrypt(byte[] cipherText, byte[] key) throws Exception
-    {
-        byte[] nonceBytes = new byte[12];
+    public static byte[] decrypt(byte[] encryptedIvTextBytes, SecretKey key) throws Exception {
+        // Extract IV.
+        byte[] iv = new byte[16];
+        System.arraycopy(encryptedIvTextBytes, 0, iv, 0, 16);
 
-        // Get Cipher Instance
-        Cipher cipher = Cipher.getInstance("ChaCha20/None/NoPadding");
-        ChaCha20ParameterSpec chaCha20ParameterSpec = new ChaCha20ParameterSpec(nonceBytes, 1);
+        // Extract encrypted part.
+        int encryptedSize = encryptedIvTextBytes.length - 16;
+        byte[] encryptedBytes = new byte[encryptedSize];
+        System.arraycopy(encryptedIvTextBytes, 16, encryptedBytes, 0, encryptedSize);
 
-        // Create IvParamterSpec
-        //AlgorithmParameterSpec ivParameterSpec = new IvParameterSpec(nonceBytes);
+        // IV and Key object.
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+        //SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
 
-        // Create SecretKeySpec
-        SecretKeySpec keySpec = new SecretKeySpec(key, "ChaCha20");
-
-        // Initialize Cipher for DECRYPT_MODE
-        cipher.init(Cipher.DECRYPT_MODE, keySpec, chaCha20ParameterSpec);
-
-        // Perform Decryption
-        byte[] decryptedText = cipher.doFinal(cipherText);
-
-        return new String(decryptedText);
+        // Decrypt.
+        Cipher cipherDecrypt = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipherDecrypt.init(Cipher.DECRYPT_MODE, key, ivParameterSpec);
+        return cipherDecrypt.doFinal(encryptedBytes);
     }
 }
