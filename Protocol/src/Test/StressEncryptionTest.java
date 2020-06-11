@@ -33,7 +33,7 @@ public class StressEncryptionTest {
         // Get IV end.
         byte[] ivEnd = new byte[ivEndSize];
         System.arraycopy(ivFull, 0, ivEnd, 0, ivEndSize); // byte[0] is the less significative byte in iv[]
-        System.out.println("IV End Calculated: " + BitOperations.ArraytoString(ivEnd));
+        //System.out.println("IV End Calculated: " + BitOperations.ArraytoString(ivEnd));
 
         // Combine IV and encrypted part.
         byte[] encryptedMACandIVAndText = new byte[macSize + ivEndSize + encrypted.length];
@@ -124,9 +124,9 @@ public class StressEncryptionTest {
                 (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111,
                 (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111}; // End
 
-        //ivRandom.nextBytes(ivStart);
-        //ivRandom.nextBytes(ivEnd);
-        BigInteger iv_end = new BigInteger(endingTop);
+        ivRandom.nextBytes(ivStart);
+        ivRandom.nextBytes(ivEnd);
+        BigInteger iv_end = new BigInteger(ivEnd);
 
         System.arraycopy(ivStart, 0, ivFull, 16-4, 4);
         System.arraycopy(ivEnd, 0, ivFull, 0, 12);
@@ -144,9 +144,9 @@ public class StressEncryptionTest {
 
         /* Test */
         int round_actual = 0;
-        int rounds_totales = 1;//100
+        int rounds_totales = 100;//100
         double[] promedio_rounds = new double[rounds_totales];
-        int target = 5; // Mensajes/segundo de la Xbee 64*1000
+        int target = 64*1000; // Mensajes/segundo de la Xbee 64*1000
 
         //double promedio = 0;
         long initial_time ;
@@ -160,22 +160,22 @@ public class StressEncryptionTest {
                 //System.out.println("Increment");
                 iv_end = iv_end.add(BigInteger.ONE).mod(endMod);
                 byte[] array = iv_end.toByteArray();
-                System.out.println("array: " + BitOperations.ArraytoString(array));
+                //System.out.println("array: " + BitOperations.ArraytoString(array));
                 if(array.length == 17-4){
                     System.arraycopy(array, 1, ivFull, 0, 16-4);
                 }else{
                     System.arraycopy(new byte[16-4], 0, ivFull, 0, 16-4); // Rellenar con 0s
                     System.arraycopy(array, 0, ivFull, 0, array.length);
                 }
-                System.out.println("IV Full: " + BitOperations.ArraytoString(ivFull));
-                System.out.println("IV Start: " + BitOperations.ArraytoString(ivStart));
+                //System.out.println("IV Full: " + BitOperations.ArraytoString(ivFull));
+                //System.out.println("IV Start: " + BitOperations.ArraytoString(ivStart));
                 //System.out.println(BitOperations.ArraytoString(ivFull));
                 //System.arraycopy(iv.toByteArray(), 1, ivFull, 0, 16); // A veces vienen 17 bytes porque el primero es de sólo 0 por el signo
                 //System.out.println(iv.toByteArray().length);
                 //System.out.println(BitOperations.ArraytoString(iv.toByteArray()));
                 byte[] cipherText = encrypt(text.getBytes(), key, ivFull, 12, 6);
                 byte[] result = decrypt(cipherText, key, ivStart,12, 6);
-                System.out.println("Result: " + new String(result));
+                //System.out.println("Result: " + new String(result));
                 paso++;
             }
             last_time = System.currentTimeMillis();
