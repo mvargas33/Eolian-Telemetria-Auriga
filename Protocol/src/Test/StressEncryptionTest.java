@@ -4,6 +4,7 @@ import Utilities.BitOperations;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
+import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import java.math.BigInteger;
@@ -11,43 +12,82 @@ import java.security.SecureRandom;
 import java.util.Arrays;
 
 public class StressEncryptionTest {
-    public static byte[] encrypt(byte[] clean, SecretKey key, IvParameterSpec ivParameterSpec) throws Exception {
+    public static byte[] encrypt(byte[] input, SecretKey key, byte[] ivFull, int ivEndSize, int macSize) throws Exception {
+        // MAC (6) || IV (12) || CIPHER TEXT (96) = (114 BYTES)
+        //System.out.println("IV Full: " + BitOperations.ArraytoString(ivFull));
+
         // Encrypt.
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipher.init(Cipher.ENCRYPT_MODE, key, ivParameterSpec);
-        byte[] encrypted = cipher.doFinal(clean);
+        cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(ivFull));
+        byte[] encrypted = cipher.doFinal(input);
+        //System.out.println("Cipher text: " + BitOperations.ArraytoString(encrypted));
+
+        // Get MAC.
+        Mac mac = Mac.getInstance("HMACMD5");
+        mac.init(key);
+        byte[] macCalculated = mac.doFinal(encrypted);
+        byte[] macConsidered = new byte[macSize];
+        System.arraycopy(macCalculated, 0, macConsidered, 0, macSize);
+        //System.out.println("Mac: " + BitOperations.ArraytoString(macConsidered));
+
+        // Get IV end.
+        byte[] ivEnd = new byte[ivEndSize];
+        System.arraycopy(ivFull, 0, ivEnd, 0, ivEndSize); // byte[0] is the less significative byte in iv[]
+        System.out.println("IV End Calculated: " + BitOperations.ArraytoString(ivEnd));
 
         // Combine IV and encrypted part.
-        byte[] encryptedIVAndText = new byte[16 + encrypted.length];
-        System.arraycopy(ivParameterSpec.getIV(), 0, encryptedIVAndText, 0, 16);
-        System.arraycopy(encrypted, 0, encryptedIVAndText, 16, encrypted.length);
+        byte[] encryptedMACandIVAndText = new byte[macSize + ivEndSize + encrypted.length];
+        System.arraycopy(macConsidered, 0, encryptedMACandIVAndText, 0, macSize); //Append MAC at start
+        System.arraycopy(ivEnd, 0, encryptedMACandIVAndText, macSize, ivEndSize); // Sppend just ivEndSize bits from IV
+        System.arraycopy(encrypted, 0, encryptedMACandIVAndText, macSize + ivEndSize, encrypted.length); // Cipher Text
 
-        // IV | Cipher Text
-        return encryptedIVAndText;
+        //System.out.println("Encrypted package: " + BitOperations.ArraytoString(encryptedMACandIVAndText));
+        return encryptedMACandIVAndText;
     }
 
-    public static byte[] decrypt(byte[] encryptedIvTextBytes, SecretKey key) throws Exception {
-        // Extract IV.
-        byte[] iv = new byte[16];
-        System.arraycopy(encryptedIvTextBytes, 0, iv, 0, 16);
+    public static byte[] decrypt(byte[] encryptedMacIvTextBytes, SecretKey key, byte[] ivStart, int ivEndSize, int macSize) throws Exception {
+        // MAC (7) || IV_END (11) || CIPHER TEXT (96) = (114 BYTES)
+        //System.out.println("IV start provided: " + BitOperations.ArraytoString(ivStart));
+
+        // Exctrat MAC.
+        byte[] macExtracted = new byte[macSize];
+        System.arraycopy(encryptedMacIvTextBytes, 0, macExtracted, 0, macSize);
+        //System.out.println("Mac extracted: " + BitOperations.ArraytoString(macExtracted));
 
         // Extract encrypted part.
-        int encryptedSize = encryptedIvTextBytes.length - 16;
+        int encryptedSize = encryptedMacIvTextBytes.length - macSize - ivEndSize;
         byte[] encryptedBytes = new byte[encryptedSize];
-        System.arraycopy(encryptedIvTextBytes, 16, encryptedBytes, 0, encryptedSize);
+        System.arraycopy(encryptedMacIvTextBytes, macSize + ivEndSize, encryptedBytes, 0, encryptedSize);
+        //System.out.println("Encrypted part: " + BitOperations.ArraytoString(encryptedBytes));
 
-        // IV and Key object.
-        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
-        //SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
+        // Check MAC
+        Mac mac = Mac.getInstance("HMACMD5");
+        mac.init(key);
+        byte[] macCalculated = mac.doFinal(encryptedBytes);
+        byte[] macConsidered = new byte[macSize];
+        System.arraycopy(macCalculated, 0, macConsidered, 0, macSize);
+        //System.out.println("Hmac-MD5 size:" + macCalculated.length);
+
+        if (!Arrays.equals(macExtracted, macConsidered)){
+            throw new Exception("Mac no coincide");
+        }
+
+        // Exctract FULL IV.
+        byte[] iv = new byte[16];
+        System.arraycopy(encryptedMacIvTextBytes, macSize, iv, 0, ivEndSize); // IV End (0 is less significative)
+        //System.out.println("IV end extracted: " + BitOperations.ArraytoString(iv));
+        System.arraycopy(ivStart, 0, iv, ivEndSize, ivStart.length);    // IV Start (more to right is more significative)
+        //System.out.println("IV full: " + BitOperations.ArraytoString(iv));
 
         // Decrypt.
         Cipher cipherDecrypt = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        cipherDecrypt.init(Cipher.DECRYPT_MODE, key, ivParameterSpec);
+        cipherDecrypt.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
         return cipherDecrypt.doFinal(encryptedBytes);
     }
 
     public static void main(String[] args) throws Exception{
-        String text = "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234"; // 95  bytes (+1 byte padding)
+        //String text = "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234"; // 95  bytes (+1 byte padding)
+        String text = "eolian";
         byte[] textBytes = text.getBytes();
 
         // Generate Key
@@ -59,29 +99,52 @@ public class StressEncryptionTest {
 
 
         // Constant for IV
-        byte[] top = {(byte) 0b00000000,
+        byte[] genTop = {(byte) 0b00000000,
                 (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111,
                 (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111,
                 (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111,
                 (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111};
-        BigInteger mod = new BigInteger(top);
+        BigInteger genMod = new BigInteger(genTop);
+
+        byte[] endingTop = {(byte) 0b00000000,
+                (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111,
+                (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111,
+                (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111};
+        BigInteger endMod = new BigInteger(endingTop);
 
         // Generate IV
         SecureRandom ivRandom = new SecureRandom();
-        byte[] ivByte = new byte[16];
-        //ivRandom.nextBytes(ivByte);
-        BigInteger iv = new BigInteger(top);
-        System.out.println(iv.toByteArray().length);
-        System.out.println(BitOperations.ArraytoString(iv.toByteArray()));
-        //System.arraycopy(iv.toByteArray(), 0, ivByte, 0, 16);
-        //System.out.println(BitOperations.ArraytoString(ivByte));
-        //IvParameterSpec ivParameterSpec = new IvParameterSpec(ivByte);
+        //BigInteger iv = new BigInteger(128, ivRandom);
+        //BigInteger iv = BigInteger.ZERO;
+        //byte[] array = iv.toByteArray();
+
+        byte[] ivFull = new byte[16];   // Full
+        byte[] ivStart = new byte[4];   // Start
+        byte[] ivEnd = new byte[12]; // End
+
+        //ivRandom.nextBytes(ivStart);
+        //ivRandom.nextBytes(ivEnd);
+        BigInteger iv_end = new BigInteger(ivEnd);
+
+        System.arraycopy(ivStart, 0, ivFull, 16-4, 4);
+        System.arraycopy(ivEnd, 0, ivFull, 0, 12);
+
+        //System.out.println("IV Full: " + BitOperations.ArraytoString(ivFull));
+        //System.out.println("IV Start: " + BitOperations.ArraytoString(ivStart));
+        //System.arraycopy(iv.toByteArray(), 5, ivEnd, 0, 12);
+        //ivRandom.nextBytes(ivFull);
+
+        //System.out.println(iv.toByteArray().length);
+        //System.out.println(BitOperations.ArraytoString(iv.toByteArray()));
+        //
+        //System.out.println(BitOperations.ArraytoString(ivFull));
+        //IvParameterSpec ivParameterSpec = new IvParameterSpec(ivFull);
 
         /* Test */
         int round_actual = 0;
-        int rounds_totales = 100;
+        int rounds_totales = 1;//100
         double[] promedio_rounds = new double[rounds_totales];
-        int target = 64*1000; // Mensajes/segundo de la Xbee
+        int target = 300; // Mensajes/segundo de la Xbee 64*1000
 
         //double promedio = 0;
         long initial_time ;
@@ -92,20 +155,24 @@ public class StressEncryptionTest {
             int paso = 0;
 
             while(paso < target){
-                iv = iv.add(BigInteger.ONE).mod(mod);
-                byte[] array = iv.toByteArray();
-                //System.out.println(BitOperations.ArraytoString(array));
-                if(iv.toByteArray().length >= 17){
-                    System.arraycopy(array, 0, ivByte, 0, 16);
+                //System.out.println("Increment");
+                iv_end = iv_end.add(BigInteger.ONE).mod(endMod);
+                byte[] array = iv_end.toByteArray();
+                System.out.println(BitOperations.ArraytoString(array));
+                if(array.length == 17-4){
+                    System.arraycopy(array, 1, ivFull, 0, 16-4);
                 }else{
-                    System.arraycopy(array, 0, ivByte, 0, array.length);
+                    System.arraycopy(array, 0, ivFull, 0, array.length);
                 }
-
-                //System.out.println(BitOperations.ArraytoString(ivByte));
-                //System.arraycopy(iv.toByteArray(), 1, ivByte, 0, 16); // A veces vienen 17 bytes porque el primero es de sólo 0 por el signo
+                System.out.println("IV Full: " + BitOperations.ArraytoString(ivFull));
+                System.out.println("IV Start: " + BitOperations.ArraytoString(ivStart));
+                //System.out.println(BitOperations.ArraytoString(ivFull));
+                //System.arraycopy(iv.toByteArray(), 1, ivFull, 0, 16); // A veces vienen 17 bytes porque el primero es de sólo 0 por el signo
                 //System.out.println(iv.toByteArray().length);
                 //System.out.println(BitOperations.ArraytoString(iv.toByteArray()));
-                byte[] cipherText = encrypt(textBytes, key, new IvParameterSpec(ivByte));
+                byte[] cipherText = encrypt(text.getBytes(), key, ivFull, 12, 6);
+                byte[] result = decrypt(cipherText, key, ivStart,12, 6);
+                System.out.println("Result: " + new String(result));
                 paso++;
             }
             last_time = System.currentTimeMillis();

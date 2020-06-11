@@ -1,5 +1,7 @@
 package Test.Sandboxes;
 
+import Utilities.BitOperations;
+
 import java.math.BigInteger;
 import java.security.Provider;
 import java.security.SecureRandom;
@@ -16,7 +18,7 @@ import javax.crypto.spec.ChaCha20ParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-public class ChaCha20Sandbox
+public class EncryptionSandbox
 {
 
     public static void main(String[] args) throws Exception
@@ -58,6 +60,7 @@ public class ChaCha20Sandbox
         BigInteger randomm = new BigInteger(128, secureRandom);
         byte[] array = randomm.toByteArray();
         System.out.println(array.length);
+        System.out.println(BitOperations.ArraytoString(array));
 
 
         //String key64 = "Gz+06hC7o68d0GbiE9F9D82qh1uikxVBfFN6UrOWc/k=";
