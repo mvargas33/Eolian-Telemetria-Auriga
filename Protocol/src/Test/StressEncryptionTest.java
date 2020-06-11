@@ -119,12 +119,14 @@ public class StressEncryptionTest {
         //byte[] array = iv.toByteArray();
 
         byte[] ivFull = new byte[16];   // Full
-        byte[] ivStart = new byte[4];   // Start
-        byte[] ivEnd = new byte[12]; // End
+        byte[] ivStart = {(byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111};   // Start
+        byte[] ivEnd = {(byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111,
+                (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111,
+                (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111}; // End
 
         //ivRandom.nextBytes(ivStart);
         //ivRandom.nextBytes(ivEnd);
-        BigInteger iv_end = new BigInteger(ivEnd);
+        BigInteger iv_end = new BigInteger(endingTop);
 
         System.arraycopy(ivStart, 0, ivFull, 16-4, 4);
         System.arraycopy(ivEnd, 0, ivFull, 0, 12);
@@ -144,7 +146,7 @@ public class StressEncryptionTest {
         int round_actual = 0;
         int rounds_totales = 1;//100
         double[] promedio_rounds = new double[rounds_totales];
-        int target = 300; // Mensajes/segundo de la Xbee 64*1000
+        int target = 5; // Mensajes/segundo de la Xbee 64*1000
 
         //double promedio = 0;
         long initial_time ;
@@ -158,10 +160,11 @@ public class StressEncryptionTest {
                 //System.out.println("Increment");
                 iv_end = iv_end.add(BigInteger.ONE).mod(endMod);
                 byte[] array = iv_end.toByteArray();
-                System.out.println(BitOperations.ArraytoString(array));
+                System.out.println("array: " + BitOperations.ArraytoString(array));
                 if(array.length == 17-4){
                     System.arraycopy(array, 1, ivFull, 0, 16-4);
                 }else{
+                    System.arraycopy(new byte[16-4], 0, ivFull, 0, 16-4); // Rellenar con 0s
                     System.arraycopy(array, 0, ivFull, 0, array.length);
                 }
                 System.out.println("IV Full: " + BitOperations.ArraytoString(ivFull));
