@@ -40,4 +40,8 @@ class CryptoTest {
         byte[] decryptedText = decryptor.decrypt(encryptedText);
         assertArrayEquals(plainText.getBytes(), decryptedText);
     }
+
+    // TODO: Test de casos límites superiores e inferiores para IV
+    // TODO: Fix MAC
+    // TODO: Probar para textos planos de distinto largo k = 16*m + 15, m entero positivo
 }
