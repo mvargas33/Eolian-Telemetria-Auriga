@@ -1,6 +1,6 @@
 package ZigBeeLayer.Receiving;
 
-import PresentationLayer.Messages.Message;
+import PresentationLayer.Packages.Messages.Message;
 import Utilities.BitOperations;
 
 import java.util.HashMap;

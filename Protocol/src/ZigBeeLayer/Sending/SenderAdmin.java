@@ -1,6 +1,6 @@
 package ZigBeeLayer.Sending;
 
-import PresentationLayer.Messages.Message;
+import PresentationLayer.Packages.Messages.Message;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

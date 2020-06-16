@@ -1,6 +1,6 @@
 package ApplicationLayer.SensorReading;
 
-import PresentationLayer.Components.Component;
+import PresentationLayer.Packages.Components.Component;
 
 import java.util.HashMap;
 

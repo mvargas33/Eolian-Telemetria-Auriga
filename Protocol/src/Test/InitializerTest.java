@@ -1,8 +1,8 @@
 package Test;
 
-import PresentationLayer.Components.Component;
+import PresentationLayer.Packages.Components.Component;
 import ApplicationLayer.LocalSystems.LocalMasterAdmin;
-import PresentationLayer.Initializer.Initializer;
+import PresentationLayer.Packages.Initializer.Initializer;
 import ZigBeeLayer.Receiving.XbeeReceiver;
 import ZigBeeLayer.Sending.SenderAdmin;
 import ZigBeeLayer.Sending.XbeeSender;

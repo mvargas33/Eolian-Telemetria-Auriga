@@ -1,6 +1,6 @@
-package PresentationLayer.Messages;
+package PresentationLayer.Packages.Messages;
 
-import PresentationLayer.Components.Component;
+import PresentationLayer.Packages.Components.Component;
 import Utilities.BitOperations;
 
 import java.util.LinkedList;

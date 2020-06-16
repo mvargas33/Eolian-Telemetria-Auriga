@@ -1,7 +1,7 @@
 package ApplicationLayer;
 
 import ApplicationLayer.LocalSystems.LocalMasterAdmin;
-import PresentationLayer.Components.Component;
+import PresentationLayer.Packages.Components.Component;
 import ZigBeeLayer.Sending.SenderAdmin;
 import Utilities.DoubleOperations;
 
@@ -118,7 +118,7 @@ public class ApplicationComponent {
 
     /**
      * SENDING DATA
-     * Calcula valores para capa de Presentación.
+     * Calcula valores para capa de Presentación. "Compresión".
      * Se usa variable global para optimizar uso de memoria
      */
     public void updatePresentationValues(){

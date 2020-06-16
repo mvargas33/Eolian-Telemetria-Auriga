@@ -1,11 +1,11 @@
 package Test;
 
-import PresentationLayer.Components.Component;
+import PresentationLayer.Packages.Components.Component;
 import ApplicationLayer.LocalSystems.DatabaseAdmin.DatabaseAdmin;
 import ApplicationLayer.LocalSystems.LocalMasterAdmin;
 import ApplicationLayer.LocalSystems.ServerAdmin.ServerAdmin;
-import PresentationLayer.Initializer.Initializer;
-import PresentationLayer.Messages.Message;
+import PresentationLayer.Packages.Initializer.Initializer;
+import PresentationLayer.Packages.Messages.Message;
 import ZigBeeLayer.Receiving.ReceiverAdmin;
 import ZigBeeLayer.Receiving.XbeeReceiver;
 import ZigBeeLayer.Sending.SenderAdmin;

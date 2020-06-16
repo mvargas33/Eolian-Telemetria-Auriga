@@ -1,7 +1,7 @@
 package Main;
 
-import PresentationLayer.Components.Component;
-import PresentationLayer.Initializer.Initializer;
+import PresentationLayer.Packages.Components.Component;
+import PresentationLayer.Packages.Initializer.Initializer;
 import ZigBeeLayer.Sending.SenderAdmin;
 import ZigBeeLayer.Sending.XbeeSender;
 import ApplicationLayer.SensorReading.RandomReader;

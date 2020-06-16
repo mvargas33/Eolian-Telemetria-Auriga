@@ -1,6 +1,6 @@
 package ApplicationLayer.LocalSystems;
 
-import PresentationLayer.Components.Component;
+import PresentationLayer.Packages.Components.Component;
 import ApplicationLayer.LocalSystems.DatabaseAdmin.DatabaseAdmin;
 import ApplicationLayer.LocalSystems.ServerAdmin.ServerAdmin;
 

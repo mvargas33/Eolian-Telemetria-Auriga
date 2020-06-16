@@ -12,7 +12,7 @@ import java.security.SecureRandom;
 import java.util.Arrays;
 
 public class StressEncryptionTest {
-    public static byte[] encrypt(byte[] input, SecretKey key, byte[] ivFull, int ivEndSize, int macSize) throws Exception {
+    public static byte[] encrypt(byte[] input, SecretKey key, byte[] ivFull, byte[] ivEnd, int ivEndSize, int macSize) throws Exception {
         // MAC (6) || IV (12) || CIPHER TEXT (96) = (114 BYTES)
         //System.out.println("IV Full: " + BitOperations.ArraytoString(ivFull));
 
@@ -31,11 +31,11 @@ public class StressEncryptionTest {
         //System.out.println("Mac: " + BitOperations.ArraytoString(macConsidered));
 
         // Get IV end.
-        byte[] ivEnd = new byte[ivEndSize];
-        System.arraycopy(ivFull, 0, ivEnd, 0, ivEndSize); // byte[0] is the less significative byte in iv[]
+        //byte[] ivEnd = new byte[ivEndSize];
+        //System.arraycopy(ivFull, 0, ivEnd, 0, ivEndSize); // byte[0] is the less significative byte in iv[]
         //System.out.println("IV End Calculated: " + BitOperations.ArraytoString(ivEnd));
 
-        // Combine IV and encrypted part.
+        // Combine MAC, IV_END and encrypted part.
         byte[] encryptedMACandIVAndText = new byte[macSize + ivEndSize + encrypted.length];
         System.arraycopy(macConsidered, 0, encryptedMACandIVAndText, 0, macSize); //Append MAC at start
         System.arraycopy(ivEnd, 0, encryptedMACandIVAndText, macSize, ivEndSize); // Sppend just ivEndSize bits from IV
@@ -97,6 +97,7 @@ public class StressEncryptionTest {
         keyGenerator.init(keyBitSize, secureRandom);
         SecretKey key = keyGenerator.generateKey();
 
+        byte[] zeros = new byte[16-4];
 
         // Constant for IV
         byte[] genTop = {(byte) 0b00000000,
@@ -156,16 +157,17 @@ public class StressEncryptionTest {
             initial_time = System.currentTimeMillis();
             int paso = 0;
 
+
             while(paso < target){
                 //System.out.println("Increment");
-                iv_end = iv_end.add(BigInteger.ONE).mod(endMod);
+                iv_end = iv_end.add(BigInteger.ONE).mod(endMod); // IV_END += 1
                 byte[] array = iv_end.toByteArray();
                 //System.out.println("array: " + BitOperations.ArraytoString(array));
-                if(array.length == 17-4){
-                    System.arraycopy(array, 1, ivFull, 0, 16-4);
-                }else{
-                    System.arraycopy(new byte[16-4], 0, ivFull, 0, 16-4); // Rellenar con 0s
-                    System.arraycopy(array, 0, ivFull, 0, array.length);
+                if(array.length == 17-4){ // Viene con bit de signo
+                    System.arraycopy(array, 1, ivFull, 0, 16-4); // No considero bit de signo
+                }else{ // Viene con 16-4 bytes O MENOS
+                    System.arraycopy(zeros, 0, ivFull, 0, 16-4); // Rellenar con 0s
+                    System.arraycopy(array, 0, ivFull, 0, array.length); // Copiar los bytes de IV_END
                 }
                 //System.out.println("IV Full: " + BitOperations.ArraytoString(ivFull));
                 //System.out.println("IV Start: " + BitOperations.ArraytoString(ivStart));
@@ -173,8 +175,8 @@ public class StressEncryptionTest {
                 //System.arraycopy(iv.toByteArray(), 1, ivFull, 0, 16); // A veces vienen 17 bytes porque el primero es de sólo 0 por el signo
                 //System.out.println(iv.toByteArray().length);
                 //System.out.println(BitOperations.ArraytoString(iv.toByteArray()));
-                byte[] cipherText = encrypt(text.getBytes(), key, ivFull, 12, 6);
-                byte[] result = decrypt(cipherText, key, ivStart,12, 6);
+                byte[] cipherText = encrypt(text.getBytes(), key, ivFull, array,12, 6);
+                //byte[] result = decrypt(cipherText, key, ivStart,12, 6);
                 //System.out.println("Result: " + new String(result));
                 paso++;
             }
