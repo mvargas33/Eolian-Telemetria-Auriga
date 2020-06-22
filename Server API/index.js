@@ -248,7 +248,7 @@ async function init(){
 
         i +=1;
         
-        await delay(20)
+        await delay(100)
 
     }
 }
