@@ -7,12 +7,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="JUnit" level="project" />
-    <orderEntry type="library" name="XbeeLibrary" level="project" />
-    <orderEntry type="library" name="HTTP" level="project" />
+    <orderEntry type="library" name="SocketIOJava" level="project" />
+    <orderEntry type="library" name="libs" level="project" />
     <orderEntry type="library" name="json-simple-1.1" level="project" />
-    <orderEntry type="library" name="SocketIO" level="project" />
-    <orderEntry type="library" name="Servlet" level="project" />
+    <orderEntry type="library" name="HTTP" level="project" />
+    <orderEntry type="library" name="JUnit" level="project" />
     <orderEntry type="library" name="SocketIO2" level="project" />
   </component>
 </module>

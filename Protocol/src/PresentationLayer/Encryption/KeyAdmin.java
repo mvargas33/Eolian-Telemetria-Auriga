@@ -70,4 +70,26 @@ public class KeyAdmin {
     public byte[] getKeyAsByteArray(){
         return this.key.getEncoded();
     }
+
+    /**
+     * Asigna a IV su máximo valor, para testing de casos bordes
+     */
+    public void genMaxIV(){
+        byte[] a = {
+                (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111,
+                (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111,
+                (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111,
+                (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111, (byte) 0b11111111};
+        System.arraycopy(a, 0, this.IV, 0, 16);
+    }
+
+    public void genMinIV(){
+        byte[] a = {
+                (byte) 0b00000000, (byte) 0b00000000, (byte) 0b00000000, (byte) 0b00000000,
+                (byte) 0b00000000, (byte) 0b00000000, (byte) 0b00000000, (byte) 0b00000000,
+                (byte) 0b00000000, (byte) 0b00000000, (byte) 0b00000000, (byte) 0b00000000,
+                (byte) 0b00000000, (byte) 0b00000000, (byte) 0b00000000, (byte) 0b00000000};
+        System.arraycopy(a, 0, this.IV, 0, 16);
+    }
+
 }
