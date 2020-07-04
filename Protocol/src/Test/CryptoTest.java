@@ -13,6 +13,39 @@ class CryptoTest {
     int MAC_SIG_BYTES = 6; // Estos valores son los más suceptibles a usar por el tamaño del mensaje de las Xbee
     int IV_SIG_BYTES = 12;
 
+    // Test de inicialización de llaves externas
+    @org.junit.jupiter.api.Test
+    void externalKeySetupForEncryptionDecryption() throws Exception {
+        // New Key
+        KeyAdmin keyAdmin = new KeyAdmin();
+        keyAdmin.genNewIV();
+        keyAdmin.genNewKey();
+        String key = keyAdmin.getKeyAsEncodedString();  // Exported Key
+        String IV = keyAdmin.getIVAsEncodedString();    // Exported IV (para IV start)
+
+        KeyAdmin keyAdmin2 = new KeyAdmin();
+        keyAdmin2.setKeyFromEncodedString(key);         // Imported Key
+        keyAdmin2.setIVFromEncodedString(IV);           // Imported IV
+
+        // Encryption/Decryption
+        String plainText = "012345678901234"; // 15 Bytes;
+        int CONTENT_SIG_BYTES = plainText.length();
+
+        CryptoAdmin encryptor = new CryptoAdmin(keyAdmin.getKey(), keyAdmin.getIV(), MAC_SIG_BYTES, IV_SIG_BYTES, CONTENT_SIG_BYTES); // keyAdmin 1
+        CryptoAdmin decryptor = new CryptoAdmin(keyAdmin2.getKey(), keyAdmin2.getIV(), MAC_SIG_BYTES, IV_SIG_BYTES, CONTENT_SIG_BYTES); // keyAdmin 2
+
+        int tests = 0;
+        byte[] encryptedText;
+        byte[] decryptedText;
+        while(tests < 1000) {
+            encryptedText = encryptor.encrypt(plainText.getBytes());
+            assertEquals((MAC_SIG_BYTES + IV_SIG_BYTES) % 16, (encryptedText.length % 16));
+            decryptedText = decryptor.decrypt(encryptedText);
+            assertArrayEquals(plainText.getBytes(), decryptedText);
+            tests++;
+        }
+    }
+
     // Test de stress
     @org.junit.jupiter.api.Test
     void simpleEncryptionDecryption() throws Exception {

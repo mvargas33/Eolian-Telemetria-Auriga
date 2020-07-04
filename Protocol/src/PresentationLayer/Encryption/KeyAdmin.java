@@ -2,8 +2,10 @@ package PresentationLayer.Encryption;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Base64;
 
 /**
  * Administador de generación de llaves para AES y el IV de CBC.
@@ -56,20 +58,40 @@ public class KeyAdmin {
     }
 
     /**
-     * Retorna key como string
-     * @return Key as string
+     * Retorna key como string en base 64
+     * @return Key como string base 64
      */
-    public String getKeyAsString(){
-        return this.key.toString();
+    public String getKeyAsEncodedString(){
+        return Base64.getEncoder().encodeToString(this.key.getEncoded());
     }
 
     /**
-     * Retorna key como byte array
-     * @return Key como bytearray
+     * Retorna IV como string en base 64
+     * @return IV como string base 64
      */
-    public byte[] getKeyAsByteArray(){
-        return this.key.getEncoded();
+    public String getIVAsEncodedString(){
+        return Base64.getEncoder().encodeToString(this.IV);
     }
+
+    /**
+     * Setea la key desde un string encodeado externo
+     * @param encodedKey Llave en formato string encodeado base 64
+     */
+    public void setKeyFromEncodedString(String encodedKey){
+        // decode the base64 encoded string
+        byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
+        // rebuild key using SecretKeySpec
+        this.key = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+    }
+
+    /**
+     * Setea la key desde un string encodeado externo
+     * @param encodedIV IV en formato string encodeado base 64
+     */
+    public void setIVFromEncodedString(String encodedIV){
+        this.IV= Base64.getDecoder().decode(encodedIV);
+    }
+
 
     /**
      * Asigna a IV su máximo valor, para testing de casos bordes
