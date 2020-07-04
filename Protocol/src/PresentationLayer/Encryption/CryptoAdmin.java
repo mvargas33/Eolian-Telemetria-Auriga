@@ -1,6 +1,7 @@
 package PresentationLayer.Encryption;
 
 
+
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import java.math.BigInteger;
@@ -110,7 +111,7 @@ public class CryptoAdmin {
         cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(IV));
         inputEncrypted = cipher.doFinal(input);
         // MAC.
-        fullMac = mac.doFinal(input);
+        fullMac = mac.doFinal(inputEncrypted); // Mac sobre cipher text
         System.arraycopy(fullMac, 0, macEnd, 0, MAC_SIG_BYTES);
         // Combine.
         System.arraycopy(macEnd, 0, fullMessage, 0, MAC_SIG_BYTES);
@@ -119,7 +120,7 @@ public class CryptoAdmin {
         // Change IV for a clean new encryption
         this.addOneToIVEND();
         // Return.
-        return this.fullMessage;
+        return fullMessage;
     }
 
     public byte[] decrypt(byte[] cipheredMessage) throws Exception {

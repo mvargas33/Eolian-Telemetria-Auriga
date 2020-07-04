@@ -30,8 +30,6 @@ class CryptoTest {
 
         encryptor = new CryptoAdmin(keyAdmin.getKey(), keyAdmin.getIV(), MAC_SIG_BYTES, IV_SIG_BYTES, CONTENT_SIG_BYTES);
         decryptor = new CryptoAdmin(keyAdmin.getKey(), keyAdmin.getIV(), MAC_SIG_BYTES, IV_SIG_BYTES, CONTENT_SIG_BYTES);
-
-
     }
 
     @org.junit.jupiter.api.Test
@@ -42,6 +40,5 @@ class CryptoTest {
     }
 
     // TODO: Test de casos límites superiores e inferiores para IV
-    // TODO: Fix MAC
     // TODO: Probar para textos planos de distinto largo k = 16*m + 15, m entero positivo
 }
