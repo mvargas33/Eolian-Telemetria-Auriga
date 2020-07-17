@@ -3,6 +3,7 @@ package ApplicationLayer;
 import PresentationLayer.Packages.Components.Component;
 import ZigBeeLayer.Sending.SenderAdmin;
 import Utilities.DoubleOperations;
+import org.json.JSONObject;
 
 /**
  * Será una clase usada como interfaz entre un Componente del Protocolo y los datos básicos que definen una componente.
@@ -12,9 +13,9 @@ import Utilities.DoubleOperations;
  * Se les asocia un SensorReader específico que, después de escalar, hará update directo del Component del Protocolo.
  */
 public class AppComponent{
-    private final String ID;
-    private final double[] minimosConDecimal; // Hardcodeados
-    private final double[] maximosConDecimal; // Hardcodeados
+    private String ID;
+    private double[] minimosConDecimal; // Hardcodeados
+    private double[] maximosConDecimal; // Hardcodeados
 
     private int len; // Deducido. Se calcula una vez. Número de valores en componente. Se usa en varios for()
     public int[] decimales; // Deducido. Se calcula una vez. Cantidad de decimales de los valores
@@ -23,14 +24,19 @@ public class AppComponent{
     public int[] bitSignificativos; // Deducido. Se calculauna vez. Cantidad mínima de bits para representar 'delta' valores
 
     public double[] valoresRealesActuales; // Valores reales provenientes de lecturas reales. Se actualizan cada vez
+    public JSONObject myJSON;
 
     public int[] valoresAEnviar; // Valores en formato de capap de presentación.
     //private double[] valoresRecibidos; // Valores decodeados de capa de presentación. Se usa en variable global para optimizar uso de memoria
 
     private Component myPresentationComponent;
 
-
-    private LocalMasterAdmin myLocalMasterAdmin; // Display de datos y base de datos deben estar en capa de aplicación
+    /**
+     * Inicia los objetos con constructores default
+     */
+    private AppComponent(){
+        this.myJSON = new JSONObject();
+    }
 
     /**
      * SimpleComponent sólo se caracteriza por sus valores mínimos, máximos, y su ID que se usará para muchas cosas.
@@ -40,6 +46,7 @@ public class AppComponent{
      * @param maximosConDecimal Valores máximos de cada valor del componente
      */
     public AppComponent(String id, double[] minimosConDecimal, double[] maximosConDecimal) {
+        this();
         this.ID = id;
         this.minimosConDecimal = minimosConDecimal;
         this.maximosConDecimal = maximosConDecimal;
@@ -97,6 +104,7 @@ public class AppComponent{
             throw new Exception("updateFromReading: Array de valores nuevo no tiene el mismo largo que preconfiguraciones");
         }
         this.valoresRealesActuales = newValoresReales;
+        this.myJSON.put(this.ID, this.valoresRealesActuales); // Update JSON para WebSocket
     }
 
 
@@ -140,6 +148,18 @@ public class AppComponent{
         /*for (int i = 0; i < len; i++) {
             this.valores
         }*/
+    }
+
+    public String getName() {
+        return this.ID;
+    }
+
+    public double[] getDoubleValues() {
+        return this.valoresRealesActuales;
+    }
+
+    public JSONObject getMyJSON(){
+        return this.myJSON;
     }
 
     /**
