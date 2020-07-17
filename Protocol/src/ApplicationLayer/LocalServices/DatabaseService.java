@@ -6,9 +6,10 @@ import PresentationLayer.Packages.Components.Component;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
-/*
-    Se encarga de guardar la información de los componentes a la base de datos.
-    Esta atento a los eventos (heads-up) de los componentes para actualizar la base de datos con un timestamp.
+/**
+ * Se encarga de guardar la información de los componentes a la base de datos.
+ * Debe haber una tabla para cada AppComponent en la base de datos.
+ * Hace insert de los datos actuales con un timestamp.
  */
 public class DatabaseService extends Service implements Runnable{
 

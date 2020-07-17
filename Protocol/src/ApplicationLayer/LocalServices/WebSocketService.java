@@ -16,9 +16,10 @@ import org.json.simple.JSONObject;
 import java.util.Arrays;
 
 
-/*
-    Se encarga de enviar la información de los componentes al servidor web para su visualización.
-    Esta atento a los eventos (heads-up) de los componentes para enviar información actualizada.
+/**
+ * Se encarga de enviar la información de los componentes al servidor web para su visualización.
+ * Para ello se basa en el sistema de eventos + JSONs de Websockets.
+ * Debe haber un listener para cada AppComponent, con nombre ID del AppComponent.
  */
 public class WebSocketService extends Service{
     SocketIOServer server; // Actuamos como servidor, Cliente es la App en Vuejs

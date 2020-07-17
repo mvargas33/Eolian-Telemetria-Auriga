@@ -6,11 +6,18 @@ import PresentationLayer.Packages.Components.Component;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
 
+/**
+ * Service repesenta los servicios locales que se corren en paralelo
+ * Por ejemplo: Visualización de datos o Almacenamiento de datos.
+ * La API son los AppComponents que se ponen en cola de los servicios.
+ * Luego los servicios consumen AppComponents sacando datos de ellos.
+ * Además cada servicio es un thread independiente, e implementa run().
+ */
 public abstract class Service implements Runnable{
-    BlockingQueue<AppComponent> componentsToBeChecked;
+    BlockingQueue<AppComponent> componentsToBeChecked; // Cola de AppComponents
 
     /**
-     * Constructor
+     * Constructor de objetos default
      */
     public Service(){
         this.componentsToBeChecked = new LinkedBlockingDeque<>();
