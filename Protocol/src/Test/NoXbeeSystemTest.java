@@ -1,9 +1,8 @@
 package Test;
 
 import PresentationLayer.Packages.Components.Component;
-import ApplicationLayer.LocalSystems.DatabaseAdmin.DatabaseAdmin;
-import ApplicationLayer.LocalSystems.LocalMasterAdmin;
-import ApplicationLayer.LocalSystems.ServerAdmin.ServerAdmin;
+import ApplicationLayer.LocalServices.DatabaseService;
+import ApplicationLayer.LocalServices.WebSocketService;
 import PresentationLayer.Packages.Initializer.Initializer;
 import PresentationLayer.Packages.Messages.Message;
 import ZigBeeLayer.Receiving.ReceiverAdmin;
@@ -144,9 +143,9 @@ class NoXbeeSystemTest {
         System.out.println(MPPT3_origen.printMessagesWithIndexes());
         System.out.println(BMS_TEMP_origen.printMessagesWithIndexes());
 
-        ServerAdmin serverAdmin = new ServerAdmin("http://localhost:3000/update");
-        DatabaseAdmin databaseAdmin = new DatabaseAdmin();
-        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(serverAdmin, databaseAdmin, false); // Todos los componentes lo deben conocer para ponerse en su Queue y que el LocalMasterAdmin los revise
+        WebSocketService webSocketService = new WebSocketService("http://localhost:3000/update");
+        DatabaseService databaseService = new DatabaseService();
+        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(webSocketService, databaseService, false); // Todos los componentes lo deben conocer para ponerse en su Queue y que el LocalMasterAdmin los revise
 
 
         int[] bitSig00 = {8, 8, 2, 8, 5, 21, 21, 21, 11, 22, 9};

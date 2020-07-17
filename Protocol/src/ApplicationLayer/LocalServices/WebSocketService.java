@@ -1,7 +1,9 @@
-package ApplicationLayer.LocalSystems.ServerAdmin;
+package ApplicationLayer.LocalServices;
 
 
 //import com.sun.org.apache.xpath.internal.operations.String;
+import ApplicationLayer.AppComponent;
+import PresentationLayer.Packages.Components.Component;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -15,12 +17,12 @@ import java.util.Arrays;
     Se encarga de enviar la información de los componentes al servidor web para su visualización.
     Esta atento a los eventos (heads-up) de los componentes para enviar información actualizada.
  */
-public class ServerAdmin {
+public class WebSocketService extends Service{
     private JSONObject json;
     private HttpPost request;
 
-
-    public ServerAdmin(java.lang.String serverDestinationURL) {
+    public WebSocketService(java.lang.String serverDestinationURL) {
+        super();
         this.json = new JSONObject(); // JSON de envío ed datos
         this.request = new HttpPost(serverDestinationURL);
         this.request.addHeader("content-type", "application/json");
@@ -41,8 +43,8 @@ public class ServerAdmin {
 
 
     public static void main(java.lang.String[] args) throws Exception {
-        ServerAdmin serverAdmin = new ServerAdmin("http://localhost:3000/update");
-        serverAdmin.sendToServer("BMS", new int[]{1, 2, 3, 4, 5});
+        WebSocketService webSocketService = new WebSocketService("http://localhost:3000/update");
+        webSocketService.sendToServer("BMS", new int[]{1, 2, 3, 4, 5});
 
         /*java.lang.String componentID = "BMS";
         double[] valores = {1.23, 2.33, 3, 4, 52.33, 6, 7.2, 8, 9.13};
@@ -73,5 +75,15 @@ public class ServerAdmin {
             //Deprecated
             // httpClient.getConnectionManager().shutdown();
         }*/
+    }
+
+
+    @Override
+    void serve(AppComponent c) {
+        try {
+            // Enviar evento a WebSocket del componente específico
+        }catch (Exception e){
+            e.printStackTrace(); // Sólo se hace print, el sistema no se puede caer
+        }
     }
 }

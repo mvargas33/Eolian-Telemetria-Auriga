@@ -1,6 +1,5 @@
 package ApplicationLayer;
 
-import ApplicationLayer.LocalSystems.LocalMasterAdmin;
 import PresentationLayer.Packages.Components.Component;
 import ZigBeeLayer.Sending.SenderAdmin;
 import Utilities.DoubleOperations;
@@ -12,7 +11,7 @@ import Utilities.DoubleOperations;
  * Cada SimpleComponent tiene un Component del protocolo asociado.
  * Se les asocia un SensorReader específico que, después de escalar, hará update directo del Component del Protocolo.
  */
-public class ApplicationComponent {
+public class AppComponent{
     private final String ID;
     private final double[] minimosConDecimal; // Hardcodeados
     private final double[] maximosConDecimal; // Hardcodeados
@@ -30,9 +29,8 @@ public class ApplicationComponent {
 
     private Component myPresentationComponent;
 
+
     private LocalMasterAdmin myLocalMasterAdmin; // Display de datos y base de datos deben estar en capa de aplicación
-
-
 
     /**
      * SimpleComponent sólo se caracteriza por sus valores mínimos, máximos, y su ID que se usará para muchas cosas.
@@ -41,7 +39,7 @@ public class ApplicationComponent {
      * @param minimosConDecimal Valores mínimos de cada valor del componente
      * @param maximosConDecimal Valores máximos de cada valor del componente
      */
-    public ApplicationComponent(String id, double[] minimosConDecimal, double[] maximosConDecimal) {
+    public AppComponent(String id, double[] minimosConDecimal, double[] maximosConDecimal) {
         this.ID = id;
         this.minimosConDecimal = minimosConDecimal;
         this.maximosConDecimal = maximosConDecimal;
@@ -152,5 +150,9 @@ public class ApplicationComponent {
         this.myLocalMasterAdmin
         return;
     }*/
+
+
+
+
 
 }

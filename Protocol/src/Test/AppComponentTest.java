@@ -1,17 +1,17 @@
 package Test;
 
-import ApplicationLayer.ApplicationComponent;
+import ApplicationLayer.AppComponent;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ApplicationComponentTest {
+class AppComponentTest {
 
     @org.junit.jupiter.api.Test
     void testAutomatedArraysCalculations() throws Exception {
         double[] min = {0.9, -99.99, 0};
         double[] max = {9.9, 100.01, 1};
 
-        ApplicationComponent a = new ApplicationComponent("BMS", min, max);
+        AppComponent a = new AppComponent("BMS", min, max);
         assertArrayEquals(new int[]{1, 2, 0}, a.decimales);
         assertArrayEquals(new int[]{-9, 9999, 0}, a.offset);
         assertArrayEquals(new int[]{91, 20001, 2}, a.delta);

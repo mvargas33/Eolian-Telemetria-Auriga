@@ -1,9 +1,8 @@
 package Test;
 
 import PresentationLayer.Packages.Components.Component;
-import ApplicationLayer.LocalSystems.DatabaseAdmin.DatabaseAdmin;
-import ApplicationLayer.LocalSystems.LocalMasterAdmin;
-import ApplicationLayer.LocalSystems.ServerAdmin.ServerAdmin;
+import ApplicationLayer.LocalServices.DatabaseService;
+import ApplicationLayer.LocalServices.WebSocketService;
 import PresentationLayer.Packages.Initializer.Initializer;
 import PresentationLayer.Packages.Messages.Message;
 import ZigBeeLayer.Receiving.ReceiverAdmin;
@@ -33,9 +32,9 @@ public class ArduinoLocalXbeeTest {
         /*------------------ Clases de recibir ------------------*/
 
         XbeeReceiver xbeeReceiver = new XbeeReceiver(BAUD_RATE, PORT_RECEIVER);
-        ServerAdmin serverAdmin = new ServerAdmin("http://localhost:3000/update");
-        DatabaseAdmin databaseAdmin = new DatabaseAdmin();
-        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(serverAdmin, databaseAdmin, serverON); // Todos los componentes lo deben conocer para ponerse en su Queue y que el LocalMasterAdmin los revise
+        WebSocketService webSocketService = new WebSocketService("http://localhost:3000/update");
+        DatabaseService databaseService = new DatabaseService();
+        LocalMasterAdmin localMasterAdmin = new LocalMasterAdmin(webSocketService, databaseService, serverON); // Todos los componentes lo deben conocer para ponerse en su Queue y que el LocalMasterAdmin los revise
 
         /*--------------------- Componentes ---------------------*/
         int[] valores_0 = {0, 0, 0, 0, 0};

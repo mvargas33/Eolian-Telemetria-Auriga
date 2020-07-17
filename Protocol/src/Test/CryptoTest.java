@@ -1,11 +1,7 @@
 package Test;
 
-import ApplicationLayer.ApplicationComponent;
 import PresentationLayer.Encryption.CryptoAdmin;
 import PresentationLayer.Encryption.KeyAdmin;
-import org.junit.jupiter.api.BeforeEach;
-
-import javax.crypto.SecretKey;
 
 import static org.junit.jupiter.api.Assertions.*;
 
