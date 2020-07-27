@@ -1,10 +1,6 @@
 package ApplicationLayer.LocalServices;
 
-import ApplicationLayer.AppComponent;
-import PresentationLayer.Packages.Components.Component;
-
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingDeque;
+import ApplicationLayer.AppComponents.AppComponent;
 
 /**
  * Se encarga de guardar la información de los componentes a la base de datos.

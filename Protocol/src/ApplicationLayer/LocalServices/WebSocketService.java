@@ -2,18 +2,9 @@ package ApplicationLayer.LocalServices;
 
 
 //import com.sun.org.apache.xpath.internal.operations.String;
-import ApplicationLayer.AppComponent;
-import PresentationLayer.Packages.Components.Component;
+import ApplicationLayer.AppComponents.AppComponent;
 import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.SocketIOServer;
-import io.socket.client.Socket;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.json.simple.JSONObject;
-
-import java.util.Arrays;
 
 
 /**
@@ -58,7 +49,7 @@ public class WebSocketService extends Service{
     @Override
     void serve(AppComponent c) {
         try {
-            server.getBroadcastOperations().sendEvent(c.getName(), c.getMyJSON()); // Enviar evento a WebSocket del componente específico
+            server.getBroadcastOperations().sendEvent(c.getID(), c.getMyJSON()); // Enviar evento a WebSocket del componente específico
         }catch (Exception e){
             e.printStackTrace(); // Sólo se hace print, el sistema no se puede caer
         }

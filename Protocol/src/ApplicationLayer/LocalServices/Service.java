@@ -1,7 +1,6 @@
 package ApplicationLayer.LocalServices;
 
-import ApplicationLayer.AppComponent;
-import PresentationLayer.Packages.Components.Component;
+import ApplicationLayer.AppComponents.AppComponent;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
