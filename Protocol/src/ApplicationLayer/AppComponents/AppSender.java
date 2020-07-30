@@ -1,6 +1,6 @@
 package ApplicationLayer.AppComponents;
 
-import PresentationLayer.Packages.Components.Component;
+import PresentationLayer.Packages.Components.State;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -18,11 +18,21 @@ public class AppSender extends  AppComponent implements Runnable{
      * @param maximosConDecimal Valores máximos de cada valor del componente
      * @param c                 Componente de capa interior correspondiente
      */
-    public AppSender(String id, double[] minimosConDecimal, double[] maximosConDecimal, Component c) {
+    public AppSender(String id, double[] minimosConDecimal, double[] maximosConDecimal, State c) {
         super(id, minimosConDecimal, maximosConDecimal, c);
         this.newValuesQueue = new LinkedBlockingQueue<>();
         this.valoresAEnviar = new int[len];
     }
+
+    /**
+     * Método que llaman los sensorsReaders para encolar nuevos valores del componente
+     * @param values Nuevo arreglo de valores para el componente
+     * @throws Exception Errores de put()
+     */
+    public void enqueueNewValues(double[] values) throws Exception{
+        this.newValuesQueue.put(values);
+    }
+
 
     /**
      * SENDING DATA
@@ -35,33 +45,32 @@ public class AppSender extends  AppComponent implements Runnable{
         for (int i = 0; i < len; i++) {
             this.valoresAEnviar[i] = (int) Math.floor( valoresRealesActuales[i] * Math.pow(10, decimales[i]) ) + offset[i];
         }
-        // Ejecutar llamadas de interfaz Componente-Mensaje hasta quedar en Queue de Xbee Sender
-        this.myPresentationComponent.replaceMyValues(this.valoresAEnviar);
+        // Ejecutar llamadas de interfaz State-Mensaje hasta quedar en Queue de Xbee Sender
+        this.myPresentationState.replaceMyValues(this.valoresAEnviar);
     }
 
     /**
-     * Método principal de cada App Component.
+     * Método principal de cada App State.
      * 1 : Lee de su buffer en busca de nuevos valores entregados por su SensorReader
      * 2 : Actualiza los valores localmente
      * 3 : Se coloca en cola del objeto WebSocketService y DatabaseService
-     * 4 : Hace las llamadas necesarias a Component-Message para hacer update de los mensajes
+     * 4 : Hace las llamadas necesarias a State-Message para hacer update de los mensajes
      * 5 : Si los mensajes están listos (todos los comp. que participan de él han actualizado una parte) se ponen los
      *     mensajes en cola de Xbee Sender (Objeto Message, no byte[])
      */
     @Override
     public void run() {
-        try {
-            while(true) {
+        while(true) {
+            try {
                 while (!newValuesQueue.isEmpty()) {
                     double[] newValues = newValuesQueue.poll(); // 1 : Leer buffer en busca de nuevos valores entregados
                     super.updateValues(newValues);              // 2: Actualizar valores localmente
                     super.informToServices();                   // 3: Mandar a ponerse en cola de servicios
                     this.updatePresentationValuesAndEnQueue();  // 4-5: Update de Messages asociados en capas inferiores/Ponerse en cola de envío
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }catch (Exception e){
-            e.printStackTrace();
         }
-
     }
 }

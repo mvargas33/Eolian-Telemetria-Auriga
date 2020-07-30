@@ -1,6 +1,6 @@
 package PresentationLayer.Packages.Initializer;
 
-import PresentationLayer.Packages.Components.Component;
+import PresentationLayer.Packages.Components.State;
 import PresentationLayer.Packages.Messages.Message;
 
 import java.util.HashMap;
@@ -10,13 +10,13 @@ import java.util.LinkedList;
  * Clase que se encarga sólo de genrar los Menssages para cada Componente según los parámetros de la red
  */
 public class Initializer {
-    private final LinkedList<Component> allComponents; // Protocol.Components que son parte del sistema actual de telemetría
+    private final LinkedList<State> allStates; // Protocol.Components que son parte del sistema actual de telemetría
     private final int msgLimitSize;         // Parámetro de red: Límite del tamaño del mensaje en bits
     private final int msgLimitSizeInBytes;  // Parámetro de red: Límite del tamaño del mensaje en bytes
     private final char baseHeader; // Parámetro de red: Header de inicio de mensajes
 
-    public Initializer(LinkedList<Component> allComponents, int msgLimitSize, int baseHeader){
-        this.allComponents = allComponents;
+    public Initializer(LinkedList<State> allStates, int msgLimitSize, int baseHeader){
+        this.allStates = allStates;
         this.msgLimitSize = msgLimitSize;
         this.msgLimitSizeInBytes = (int) Math.ceil(msgLimitSize / 8.0);
         this.baseHeader = (char) (baseHeader & 0x00FF);
@@ -28,19 +28,19 @@ public class Initializer {
      * @return HashMap de caracter, Mensaje
      */
     public HashMap<Character, Message> genMessages() throws Exception{
-        if (allComponents.size() == 0){
+        if (allStates.size() == 0){
             throw new Exception("No hay componentes en la lista de todos los Componentes");
         }
-        if(allComponents.get(0).getMyValues().length == 0){
+        if(allStates.get(0).getMyValues().length == 0){
             throw new Exception("El primer componente no tiene valores");
         }
-        if(allComponents.get(0).getBitSig().length == 0){
+        if(allStates.get(0).getBitSig().length == 0){
             throw new Exception("El primer componente no tiene array de Bits significativos");
         }
-        if(allComponents.get(0).getBitSig()[0] <= 0){
+        if(allStates.get(0).getBitSig()[0] <= 0){
             throw new Exception("El número de bits significativos es menor a cero, para primer valor de primer componente");
         }
-        if(msgLimitSize < allComponents.get(0).getBitSig()[0]){
+        if(msgLimitSize < allStates.get(0).getBitSig()[0]){
             throw new Exception("No se puede poner valor en Mensaje, bits significativos mayor a tamaño del mensaje");
         }
 
@@ -50,7 +50,7 @@ public class Initializer {
         //ArrayList<Message> messages = new ArrayList<>();          // For debugging purposes
 
         int iCompActual = 0;                                        // Indice de componentes
-        Component compActual = allComponents.get(iCompActual);      // Componente actual
+        State compActual = allStates.get(iCompActual);      // Componente actual
         int iValorAtual = 0;                                        // Indice en array de bitSig[]
         int[] arrayBitSigActual = compActual.getBitSig();           // Bits significativos actuales
         int tamanoBitSig = arrayBitSigActual.length;                // Cantidad de valores del Componente, para no recalcular
@@ -66,7 +66,7 @@ public class Initializer {
 
         mensajeActual.addComponent(compActual);                      // Añadimos primer componente
 
-        while(iCompActual < allComponents.size()){ // Mientras tenga componentes por revisar
+        while(iCompActual < allStates.size()){ // Mientras tenga componentes por revisar
 
             // Si me queda espacio en el mensaje actual Y Tengo un valor más en el Componente
             while(tamanoMsgActual < msgLimitSize - 8 & iValorAtual < tamanoBitSig){ // 8 Ultimos bits para CRC
@@ -91,9 +91,9 @@ public class Initializer {
                 iCompActual++; // Siguiente componente
                 componentNumber++; // Avanzo en comp number
 
-                if(iCompActual < allComponents.size()){ // Si me queda otro componente por revisar
+                if(iCompActual < allStates.size()){ // Si me queda otro componente por revisar
 
-                    compActual = allComponents.get(iCompActual); // Paso al siguiente componente
+                    compActual = allStates.get(iCompActual); // Paso al siguiente componente
                     iValorAtual = 0; // Parto del indice 0
                     arrayBitSigActual = compActual.getBitSig(); // Extraigo array de bits significativos
                     tamanoBitSig = arrayBitSigActual.length; // Para no recalcular

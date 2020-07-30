@@ -1,6 +1,8 @@
-package ApplicationLayer.SensorReading;
+package ApplicationLayer.SensorReading.FenixArduinoReader;
 
-import PresentationLayer.Packages.Components.Component;
+import ApplicationLayer.AppComponents.AppSender;
+import ApplicationLayer.SensorReading.SensorsReader;
+import PresentationLayer.Packages.Components.State;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
@@ -22,10 +24,10 @@ public class ArduinoReader extends SensorsReader implements SerialPortEventListe
     private String inputLine; // Buffer RAW de lectura
     private ArrayList<String> buffer; // Aquí se ponen los siguientes split de números doubles
     private String header; // Lectura del primer split
-    private Component actualComponentInRead; // Espacio para guardar el componente actual
+    private State actualStateInRead; // Espacio para guardar el componente actual
 
-    public ArduinoReader(HashMap<String, Component> allComponents, LinkedList<Component> componentLinkedList, String PORT, int BAUD_RATE, int TIME_OUT) {
-        super(allComponents, componentLinkedList);
+    public ArduinoReader(AppSender myComponent, long readingDelayInMS, String PORT, int BAUD_RATE, int TIME_OUT) {
+        super(myComponent, readingDelayInMS);
         this.PORT_NAMES = new String[]{
                 "/dev/tty.usbserial-A9007UX1", // Mac OS X
                 "/dev/ttyUSB0", // Linux
@@ -86,17 +88,30 @@ public class ArduinoReader extends SensorsReader implements SerialPortEventListe
             serialPort.close();
         }
     }
+    // TODO: Refactor para nuevo modelo. No es prioridad aún
+
+    @Override
+    public double[] read() {
+        return new double[0];
+    }
+
+    @Override
+    public void serialEvent(SerialPortEvent serialPortEvent) {
+
+    }
 
     /**
      * Listener de cuando hay datos en el bus Serial
      * @param oEvent : Evento
      */
+
+    /*
     @Override
     public void serialEvent(SerialPortEvent oEvent) {
         if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) { // Evento de data available
             try {
                 inputLine = null;
-                actualComponentInRead = null;
+                actualStateInRead = null;
                 while (input.ready()) {
                     inputLine = input.readLine(); // Se lee la primera línea completa
 
@@ -105,7 +120,7 @@ public class ArduinoReader extends SensorsReader implements SerialPortEventListe
                     header = inputLine.substring(pos, end); // Leer primer valor
                     pos = end + 1;
 
-                    Component c = allComponents.get(header);
+                    State c = allComponents.get(header);
 
                     if(c != null){ // Si leí un componente que existe acá también
                         System.out.println("Leído el componente: " + c.getID());
@@ -132,19 +147,6 @@ public class ArduinoReader extends SensorsReader implements SerialPortEventListe
             }
         }
         // Ignore all the other eventTypes, but you should consider the other ones.
-    }
+    }*/
 
-    /**
-     * Debe estar siempre antento al puerto serial, leer y actualizar componentes
-     */
-    @Override
-    public void run() {
-        while(true){
-            try {
-                Thread.sleep(1000000); // El Listener del puerto serial serialEvent() se ejecuta cada vez que hay algo en el serial
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-    }
 }

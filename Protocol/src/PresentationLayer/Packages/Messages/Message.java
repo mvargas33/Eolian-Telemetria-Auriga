@@ -1,6 +1,6 @@
 package PresentationLayer.Packages.Messages;
 
-import PresentationLayer.Packages.Components.Component;
+import PresentationLayer.Packages.Components.State;
 import Utilities.BitOperations;
 
 import java.util.LinkedList;
@@ -14,7 +14,7 @@ public class Message {
     private char header;
     private int largoEnBytes;
     private byte[] bytes;
-    private LinkedList<Component> myComponents;
+    private LinkedList<State> myStates;
     // Para ver que todos los componentes actualizaron el mensaje, después se enva
     private int allComponentsUpdated; // Entero que cambia cada vez
     private int numOfComponents; // Para generar valor inicial
@@ -26,21 +26,21 @@ public class Message {
         this.bytes = new byte[largoEnBytes];
         this.bytes[0] = (byte) header;          // Primer byte es el header
         this.bytes[largoEnBytes - 1] = 0;       // Último byte es el CRC-8
-        this.myComponents = new LinkedList<>();
+        this.myStates = new LinkedList<>();
         this.allComponentsUpdated = 0; // Flag de salida del mensaje, si quedan componentes que no han actualizado mensaje, este no sale
         this.numOfComponents = 0; // Para designar bits en allComponentsUpdated, este es el bit asignado también
         this.initialValue = 0;
     }
 /*
-    public Message(char header, int largoEnBytes, LinkedList<Component> components){
+    public Message(char header, int largoEnBytes, LinkedList<State> components){
         this.Message(header, largoEnBytes);
-        this.myComponents = components;
+        this.myStates = components;
     }
 */
     /*-------------------------------------------------- INITIALIZING -------------------------------------------------*/
 
-    public void addComponent(Component c){
-        this.myComponents.add(c);
+    public void addComponent(State c){
+        this.myStates.add(c);
         this.numOfComponents++;
         this.initialValue = ~ (((int) Math.pow(2,numOfComponents)) - 1); // Valor reset de allComponentsUpdated, al estilo 11111111.....11111100000, con 0's numOfComponents
         this.allComponentsUpdated = this.initialValue;
@@ -85,7 +85,7 @@ public class Message {
     public void updateRawBytes(byte[] newBytes){
         this.bytes = newBytes; // Update myself
         // Notify my components to check at my values
-        for (Component c: this.myComponents
+        for (State c: this.myStates
              ) {
             c.updateMyValues(this.header); // Mírame! Me actualicé
         }

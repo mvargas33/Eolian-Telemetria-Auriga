@@ -14,7 +14,7 @@ import java.util.LinkedList;
     Sending:    Recive información directa del DataAdmin (lecturals locales). Luego avisa a sus mensajes que se actualicen.
                 Luego ellos se ponen en contacto con QueueAdmin para ser enviados.
  */
-public class Component {
+public class State {
     /* Estructura necesaria para guardar correlación mensage-componente, guarda que intervalos de bits de un mensaje le conciernen a qué intervalos de bits en este componente */
     public class MessagesWithIndexes {
         Message message; // RAW bits
@@ -32,7 +32,7 @@ public class Component {
         }
     }
 
-    private String ID; // Component ID, can be the name
+    private String ID; // State ID, can be the name
     private int[] myValues;     // True values
     private int[] bitSig;     // Bits significativos, MUST match myvalues[] lenght
 
@@ -45,12 +45,12 @@ public class Component {
 
 
     /**
-     * Base Component, encargado de lecturas directas de sensores y envío de datos por SenderAdmin
+     * Base State, encargado de lecturas directas de sensores y envío de datos por SenderAdmin
      * @param valores : Array de valores del componente
      * @param bitsSignificativos : Array de bits significativos de cada valor en valores[]
      * @param ID : ID del Componente
      */
-    public Component(int[] valores, int[] bitsSignificativos, String ID){
+    public State(int[] valores, int[] bitsSignificativos, String ID){
         this.ID = ID;
         this.myValues = valores;
         this.bitSig = bitsSignificativos;
@@ -59,33 +59,33 @@ public class Component {
     }
 
     /**
-     * Sender Component, encargado de lecturas directas de sensores y envío de datos por SenderAdmin
+     * Sender State, encargado de lecturas directas de sensores y envío de datos por SenderAdmin
      * @param mySenderAdmin : A quien informa sobre nuevos valores leídos
      * @param valores : Array de valores del componente
      * @param bitsSignificativos : Array de bits significativos de cada valor en valores[]
      * @param ID : ID del Componente
      */
-    public Component(SenderAdmin mySenderAdmin, int[] valores, int[] bitsSignificativos, String ID) {
+    public State(SenderAdmin mySenderAdmin, int[] valores, int[] bitsSignificativos, String ID) {
         this(valores, bitsSignificativos, ID);
         this.mySenderAdmin = mySenderAdmin; // Thread de Sender Admin debe ser creado antes que todos los componentes.
 
     }
 
     /**
-     * Receiver Component (Outside solar car)
+     * Receiver State (Outside solar car)
      * Encargado de transformar Messages recibidos en valores e informar al LocalMasterAdmin
      * @param myLocalMasterAdmin : A quien informo sobre nuevos valores recibidos
      * @param valores : Array de valores del componente
      * @param bitsSignificativos : Array de bits significativos de cada valor en valores[]
      * @param ID : ID del Componente
      */
-    public Component(LocalMasterAdmin myLocalMasterAdmin, int[] valores, int[] bitsSignificativos, String ID) {
+    public State(LocalMasterAdmin myLocalMasterAdmin, int[] valores, int[] bitsSignificativos, String ID) {
         this(valores, bitsSignificativos, ID);
         this.myLocalMasterAdmin = myLocalMasterAdmin; // Thread de myLocalMasterAdmin debe ser creado antes que todos los componentes.
     }
 
     /**
-     * Hybrid Component (inside solar car)
+     * Hybrid State (inside solar car)
      * Encargado de lecturas directas de sensores y envío de datos por SenderAdmin.
      * Encargado de ponerse en cola en LocalMasterAdmin para display con lecturas directas.
      * @param myLocalMasterAdmin A quien informo sobre nuevos valores para display
@@ -94,7 +94,7 @@ public class Component {
      * @param bitsSignificativos : Array de bits significativos de cada valor en valores[]
      * @param ID : ID del Componente
      */
-    public Component(LocalMasterAdmin myLocalMasterAdmin, SenderAdmin mySenderAdmin, int[] valores, int[] bitsSignificativos, String ID) {
+    public State(LocalMasterAdmin myLocalMasterAdmin, SenderAdmin mySenderAdmin, int[] valores, int[] bitsSignificativos, String ID) {
         this(valores, bitsSignificativos, ID);
         this.myLocalMasterAdmin = myLocalMasterAdmin; // Thread de myLocalMasterAdmin debe ser creado antes que todos los componentes.
         this.mySenderAdmin = mySenderAdmin;
@@ -232,7 +232,7 @@ public class Component {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append("Component ID       : ");sb.append(this.ID);sb.append("\n");
+        sb.append("State ID       : ");sb.append(this.ID);sb.append("\n");
         sb.append("Valores            : ");sb.append(valuesToString());sb.append("\n");
         sb.append("Bits significativos: ");sb.append(bitSigToString());sb.append("\n");
         return sb.toString();

@@ -1,41 +1,55 @@
 package ApplicationLayer.SensorReading;
 
-import PresentationLayer.Packages.Components.Component;
+import ApplicationLayer.AppComponents.AppComponent;
+import ApplicationLayer.AppComponents.AppSender;
+import PresentationLayer.Packages.Components.State;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public abstract class SensorsReader implements Runnable {
-    HashMap<String, Component> allComponents;
-    LinkedList<Component> componentLinkedList;
+    public AppSender myComponent;  // Componente al cual le encolará valores nuevos
+    private long currentTime;               // Tiempos para verificar delay
+    private long lastTime;
+    private final long delayTime;
+    private double[] values;                // Por optimización de memoria
 
     /**
-     * Constructor para Testing
-     *
-     * @param allComponents : HashMap de componentes
+     * Constructor base. Todos los SensorReaders están linkeados a un sólo AppSender. No funcionan con receivers
+     * @param myComponent AppComponent linkeado
+     * @param readingDelayInMS Frecuencia de muestre
      */
-    public SensorsReader(HashMap<String, Component> allComponents) {
-        this.allComponents = allComponents;
+    public SensorsReader(AppSender myComponent, long readingDelayInMS) {
+        this.myComponent = myComponent;
+        this.lastTime = System.currentTimeMillis();
+        this.delayTime = readingDelayInMS;
     }
 
     /**
-     * Constructor para generar datos random
-     * @param allComponents : HashMap de Componentes
-     * @param componentLinkedList : Linked list de Componentes
+     * Métodos que deben implementar todos los tipos de lectores.
+     * @return array de valores double[] con los nuevos valores del componente
      */
-    public SensorsReader(HashMap<String, Component> allComponents, LinkedList<Component> componentLinkedList) {
-        this.allComponents = allComponents;
-        this.componentLinkedList = componentLinkedList;
-    }
-
+    public abstract double[] read();
 
     /**
-     * Actualiza el array de enteros de un componente por el array de 'newValues'
-     *
-     * @param componentName : Componente a actualizar
-     * @param newValues     : Nuevos valores a poner en array de componente
+     * 0: Verifica que haya pasado tiempo suficiente para volver a leer.
+     * 1: Lee nuevos valores.
+     * 2: Los encola en el AppSender correspondiente.
+     * 3: Actualiza tiempos de lectura
      */
-    public void updateDirectly(String componentName, int[] newValues) {
-        allComponents.get(componentName).replaceMyValues(newValues);
+    @Override
+    public void run() {
+            while (true){
+                try{
+                    currentTime = System.currentTimeMillis();
+                    if(currentTime - lastTime >= this.delayTime){   // 0: Si ya pasó el tiempo de delay y me toca leer
+                        this.values = this.read();                  // 1: Leer nuevos valores
+                        myComponent.enqueueNewValues(values);       // 2: Encola nuevos valores
+                        lastTime = currentTime;                     // 3: Actualiza tiempos de lectura
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
     }
 }

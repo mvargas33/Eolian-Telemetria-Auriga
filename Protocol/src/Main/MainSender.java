@@ -1,10 +1,10 @@
 package Main;
 
-import PresentationLayer.Packages.Components.Component;
+import PresentationLayer.Packages.Components.State;
 import PresentationLayer.Packages.Initializer.Initializer;
 import ZigBeeLayer.Sending.SenderAdmin;
 import ZigBeeLayer.Sending.XbeeSender;
-import ApplicationLayer.SensorReading.RandomReader;
+import ApplicationLayer.SensorReading.RandomReaders.RandomReader;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -32,12 +32,12 @@ public class MainSender {
         // 1 2 3 4  5  6  7   8   9   10   11
         int[] valores = {200, 189, 0, 111, 30};
         int[] bitSig = {8, 8, 2, 8, 5};
-        Component BMS_origen = new Component(senderAdmin, valores, bitSig, "BMS_ORIGEN");
+        State BMS_origen = new State(senderAdmin, valores, bitSig, "BMS_ORIGEN");
 
-        HashMap<String, Component> allComponents = new HashMap<>();
+        HashMap<String, State> allComponents = new HashMap<>();
         allComponents.put(BMS_origen.getID(), BMS_origen);
 
-        LinkedList<Component> listAllComponents_origen = new LinkedList<>();
+        LinkedList<State> listAllComponents_origen = new LinkedList<>();
         listAllComponents_origen.add(BMS_origen);
 
         /*--------------------- Inicializador ---------------------*/

@@ -1,8 +1,7 @@
 package ApplicationLayer.AppComponents;
 
 import ApplicationLayer.LocalServices.Service;
-import PresentationLayer.Packages.Components.Component;
-import ZigBeeLayer.Sending.SenderAdmin;
+import PresentationLayer.Packages.Components.State;
 import Utilities.DoubleOperations;
 import org.json.JSONObject;
 
@@ -12,11 +11,11 @@ import java.util.LinkedList;
  * Será una clase usada como interfaz entre un Componente del Protocolo y los datos básicos que definen una componente.
  * Se podrán cargar datos desde un archivo de configuración a esta componente.
  * Puede decirse que esta Componente está en la capa de aplicación.
- * Cada AppComponent tiene un Component del protocolo asociado.
- * Se les asocia un SensorReader específico que, después de escalar, hará update directo del Component del Protocolo.
+ * Cada AppComponent tiene un State del protocolo asociado.
+ * Se les asocia un SensorReader específico que, después de escalar, hará update directo del State del Protocolo.
  */
 public class AppComponent{
-    public String ID;
+    public String ID;                       // ID del Componente. Ej: "BMS"
     public double[] minimosConDecimal;      // Hardcodeados del input del usuario
     public double[] maximosConDecimal;      // Hardcodeados del input del usuario
 
@@ -29,7 +28,7 @@ public class AppComponent{
     public double[] valoresRealesActuales;  // Valores reales provenientes de lecturas reales. Se actualizan cada vez
     public JSONObject myJSON;               // JSON Object de los valoresRealesActuales, re-usado por WebSocketService para enviar data por eventos
 
-    Component myPresentationComponent;      // Componente correspondiente de capa inferior
+    State myPresentationState;              // Estado correspondiente de capa inferior
     LinkedList<Service> mySubscriptions;    // Servicios a los que les comunico mis updates
 
     /**
@@ -40,13 +39,13 @@ public class AppComponent{
     }
 
     /**
-     * SimpleComponent sólo se caracteriza por sus valores mínimos, máximos, y su ID que se usará para muchas cosas.
-     * Incluyendo el nombre de eventos en Socket.IO
-     * @param id Nombre del SimpleComponente
+     * AppComponent sólo se caracteriza por sus valores mínimos, máximos, y su ID que se usará para muchas cosas (eventos de socket.io por ejemplo).
+     * Debe tener asociado un State de la capa inferior.
+     * @param id Nombre del AppComponent
      * @param minimosConDecimal Valores mínimos de cada valor del componente
      * @param maximosConDecimal Valores máximos de cada valor del componente
      */
-    public AppComponent(String id, double[] minimosConDecimal, double[] maximosConDecimal, Component myComponent) {
+    public AppComponent(String id, double[] minimosConDecimal, double[] maximosConDecimal, State myState) {
         this();
         this.ID = id;
         this.minimosConDecimal = minimosConDecimal;
@@ -69,7 +68,7 @@ public class AppComponent{
             this.bitSignificativos[i] = (int) Math.ceil(Math.log(delta[i]) / Math.log(2));
         }
 
-        this.myPresentationComponent = myComponent;
+        this.myPresentationState = myState;
     }
 
     /**
@@ -83,7 +82,7 @@ public class AppComponent{
         if(newValoresReales.length != len){
             throw new Exception("updateFromReading: Array de valores nuevo no tiene el mismo largo que preconfiguraciones");
         }
-        this.valoresRealesActuales = newValoresReales;
+        this.valoresRealesActuales = newValoresReales; // TODO: Analizar eficiencia: si reemplaza puntero, o valor a valor, o si se crean objetos nuevos
         this.updateMyJSON(); // Update JSON para WebSocket
     }
 
@@ -106,7 +105,7 @@ public class AppComponent{
     }
 
     /**
-     * Retorna el ID del AppComponent (= ID del Component de capa inferior)
+     * Retorna el ID del AppComponent (= ID del State de capa inferior)
      * @return ID tipo String del AppComponent
      */
     public String getID() {
@@ -115,7 +114,7 @@ public class AppComponent{
 
     /**
      * Retorna un JSON con par (id_componente, double [] valores_actuales)
-     * Método que usan los localServices
+     * Método que usan los localServices como socket.io
      * @return {ID_Component, double [] valores_actuales}
      */
     public JSONObject getMyJSON(){

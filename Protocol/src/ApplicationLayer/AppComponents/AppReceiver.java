@@ -1,6 +1,6 @@
 package ApplicationLayer.AppComponents;
 
-import PresentationLayer.Packages.Components.Component;
+import PresentationLayer.Packages.Components.State;
 import PresentationLayer.Packages.Messages.Message;
 
 import java.util.concurrent.BlockingQueue;
@@ -18,7 +18,7 @@ public class AppReceiver extends AppComponent implements Runnable{
      * @param maximosConDecimal Valores máximos de cada valor del componente
      * @param c                 Componente de capa interior correspondiente
      */
-    public AppReceiver(String id, double[] minimosConDecimal, double[] maximosConDecimal, Component c) {
+    public AppReceiver(String id, double[] minimosConDecimal, double[] maximosConDecimal, State c) {
         super(id, minimosConDecimal, maximosConDecimal, c);
         this.messageQueue = new LinkedBlockingDeque<>();
     }
@@ -42,9 +42,9 @@ public class AppReceiver extends AppComponent implements Runnable{
     }
 
     /**
-     * Método principal de cada App Component.
+     * Método principal de cada App State.
      * 1 : Lee de su buffer en busca de nuevos mensajes arrivados (Objetos Messages, no byte[])
-     * 2 : Usa la interfaz Component-Message para actualizar los valores locales que le conciernen del mensaje, en componente presentación
+     * 2 : Usa la interfaz State-Message para actualizar los valores locales que le conciernen del mensaje, en componente presentación
      * 3 : Update de double[] locales
      * 4 : Se coloca en cola del objeto WebSocketService y DatabaseService
      */
@@ -54,8 +54,8 @@ public class AppReceiver extends AppComponent implements Runnable{
             while(true){
                 while(!messageQueue.isEmpty()){
                     Message m = messageQueue.poll();                                // 1 : Leer buffer en busca de nuevos valores entregados
-                    this.myPresentationComponent.updateMyValues(m.getHeader());     // 2 : Update int[] de Componente presentación
-                    this.updateFromReceiving(myPresentationComponent.getMyValues());// 3 : Update double[] de valores reales
+                    this.myPresentationState.updateMyValues(m.getHeader());         // 2 : Update int[] de Componente presentación
+                    this.updateFromReceiving(myPresentationState.getMyValues());    // 3 : Update double[] de valores reales
                     super.informToServices();                                       // 4 : Informar a suscripciones
                 }
             }

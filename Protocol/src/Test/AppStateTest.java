@@ -4,7 +4,7 @@ import ApplicationLayer.AppComponents.AppComponent;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AppComponentTest {
+class AppStateTest {
 
     @org.junit.jupiter.api.Test
     void testAutomatedArraysCalculations() throws Exception {

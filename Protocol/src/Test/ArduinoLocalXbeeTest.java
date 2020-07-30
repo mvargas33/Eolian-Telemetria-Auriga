@@ -1,6 +1,6 @@
 package Test;
 
-import PresentationLayer.Packages.Components.Component;
+import PresentationLayer.Packages.Components.State;
 import ApplicationLayer.LocalServices.DatabaseService;
 import ApplicationLayer.LocalServices.WebSocketService;
 import PresentationLayer.Packages.Initializer.Initializer;
@@ -9,7 +9,7 @@ import ZigBeeLayer.Receiving.ReceiverAdmin;
 import ZigBeeLayer.Receiving.XbeeReceiver;
 import ZigBeeLayer.Sending.SenderAdmin;
 import ZigBeeLayer.Sending.XbeeSender;
-import ApplicationLayer.SensorReading.ArduinoReader;
+import ApplicationLayer.SensorReading.FenixArduinoReader.ArduinoReader;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -39,9 +39,9 @@ public class ArduinoLocalXbeeTest {
         /*--------------------- Componentes ---------------------*/
         int[] valores_0 = {0, 0, 0, 0, 0};
         int[] bitSig_0 = {16, 8, 8, 8, 1};
-        Component BMS_destino = new Component(localMasterAdmin, valores_0, bitSig_0, "BMS_DESTINO");
+        State BMS_destino = new State(localMasterAdmin, valores_0, bitSig_0, "BMS_DESTINO");
 
-        LinkedList<Component> listAllComponents_destino = new LinkedList<>();
+        LinkedList<State> listAllComponents_destino = new LinkedList<>();
         listAllComponents_destino.add(BMS_destino);
 
         /*--------------------- Inicializador ---------------------*/
@@ -80,12 +80,12 @@ public class ArduinoLocalXbeeTest {
         // 1 2 3 4  5  6  7   8   9   10   11
         int[] valores = {0, 0, 0, 0, 0};
         int[] bitSig =  {16, 8, 8, 8, 1};
-        Component BMS_origen = new Component(senderAdmin, valores, bitSig, "BMS_ORIGEN");
+        State BMS_origen = new State(senderAdmin, valores, bitSig, "BMS_ORIGEN");
 
-        HashMap<String, Component> allComponents = new HashMap<>();
+        HashMap<String, State> allComponents = new HashMap<>();
         allComponents.put(BMS_origen.getID(), BMS_origen);
 
-        LinkedList<Component> listAllComponents_origen = new LinkedList<>();
+        LinkedList<State> listAllComponents_origen = new LinkedList<>();
         listAllComponents_origen.add(BMS_origen);
 
         /*--------------------- Inicializador ---------------------*/

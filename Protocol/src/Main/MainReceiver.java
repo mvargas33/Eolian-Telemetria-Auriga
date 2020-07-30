@@ -1,6 +1,6 @@
 package Main;
 
-import PresentationLayer.Packages.Components.Component;
+import PresentationLayer.Packages.Components.State;
 import ApplicationLayer.LocalServices.DatabaseService;
 import ApplicationLayer.LocalServices.WebSocketService;
 import PresentationLayer.Packages.Initializer.Initializer;
@@ -33,9 +33,9 @@ public class MainReceiver {
         /*--------------------- Componentes ---------------------*/
         int[] valores_0 = {0, 0, 0, 0, 0};
         int[] bitSig_0 = {8, 8, 2, 8, 5};
-        Component BMS_destino = new Component(localMasterAdmin, valores_0, bitSig_0, "BMS_DESTINO");
+        State BMS_destino = new State(localMasterAdmin, valores_0, bitSig_0, "BMS_DESTINO");
 
-        LinkedList<Component> listAllComponents_destino = new LinkedList<>();
+        LinkedList<State> listAllComponents_destino = new LinkedList<>();
         listAllComponents_destino.add(BMS_destino);
 
         /*--------------------- Inicializador ---------------------*/
