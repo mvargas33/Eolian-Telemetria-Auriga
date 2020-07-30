@@ -1,6 +1,9 @@
 package ApplicationLayer.AppComponents;
 
 import PresentationLayer.Packages.Components.State;
+import PresentationLayer.Packages.Components.StateReceiver;
+import PresentationLayer.Packages.Components.StateSender;
+import ZigBeeLayer.Sending.SenderAdmin;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -8,6 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class AppSender extends  AppComponent implements Runnable{
     private final BlockingQueue<double[]> newValuesQueue; // Cola de valores nuevos puestos por el Sensor Reader
     public int[] valoresAEnviar;            // Valores en formato de capa de presentación. (Sólo por optimización de memoria)
+    StateSender myPresentationState;              // Estado correspondiente de capa inferior
 
     /**
      * SimpleComponent sólo se caracteriza por sus valores mínimos, máximos, y su ID que se usará para muchas cosas.
@@ -16,12 +20,14 @@ public class AppSender extends  AppComponent implements Runnable{
      * @param id                Nombre del SimpleComponente
      * @param minimosConDecimal Valores mínimos de cada valor del componente
      * @param maximosConDecimal Valores máximos de cada valor del componente
-     * @param c                 Componente de capa interior correspondiente
      */
-    public AppSender(String id, double[] minimosConDecimal, double[] maximosConDecimal, State c) {
-        super(id, minimosConDecimal, maximosConDecimal, c);
+    public AppSender(String id, double[] minimosConDecimal, double[] maximosConDecimal, SenderAdmin mySenderAdmin) {
+        super(id, minimosConDecimal, maximosConDecimal);
         this.newValuesQueue = new LinkedBlockingQueue<>();
         this.valoresAEnviar = new int[len];
+
+        // Crea estado de capa inferior, con los datos deducidos de esta capa.
+        this.myPresentationState = new StateSender(id, this.valoresAEnviar, this.bitSignificativos, mySenderAdmin);
     }
 
     /**

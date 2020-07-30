@@ -28,7 +28,6 @@ public class AppComponent{
     public double[] valoresRealesActuales;  // Valores reales provenientes de lecturas reales. Se actualizan cada vez
     public JSONObject myJSON;               // JSON Object de los valoresRealesActuales, re-usado por WebSocketService para enviar data por eventos
 
-    State myPresentationState;              // Estado correspondiente de capa inferior
     LinkedList<Service> mySubscriptions;    // Servicios a los que les comunico mis updates
 
     /**
@@ -45,7 +44,7 @@ public class AppComponent{
      * @param minimosConDecimal Valores mínimos de cada valor del componente
      * @param maximosConDecimal Valores máximos de cada valor del componente
      */
-    public AppComponent(String id, double[] minimosConDecimal, double[] maximosConDecimal, State myState) {
+    public AppComponent(String id, double[] minimosConDecimal, double[] maximosConDecimal) {
         this();
         this.ID = id;
         this.minimosConDecimal = minimosConDecimal;
@@ -67,8 +66,6 @@ public class AppComponent{
             this.delta[i] = (int) Math.floor(1 + (maximosConDecimal[i] - minimosConDecimal[i]) * Math.pow(10, decimales[i]));
             this.bitSignificativos[i] = (int) Math.ceil(Math.log(delta[i]) / Math.log(2));
         }
-
-        this.myPresentationState = myState;
     }
 
     /**

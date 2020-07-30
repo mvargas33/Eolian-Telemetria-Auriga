@@ -1,6 +1,7 @@
 package ApplicationLayer.AppComponents;
 
 import PresentationLayer.Packages.Components.State;
+import PresentationLayer.Packages.Components.StateReceiver;
 import PresentationLayer.Packages.Messages.Message;
 
 import java.util.concurrent.BlockingQueue;
@@ -8,6 +9,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 public class AppReceiver extends AppComponent implements Runnable{
     private final BlockingQueue<Message> messageQueue; // Cola de mensajes arrivados. XbeeReceiver los pone acá
+    StateReceiver myPresentationState;              // Estado correspondiente de capa inferior
 
     /**
      * SimpleComponent sólo se caracteriza por sus valores mínimos, máximos, y su ID que se usará para muchas cosas.
@@ -16,11 +18,13 @@ public class AppReceiver extends AppComponent implements Runnable{
      * @param id                Nombre del SimpleComponente
      * @param minimosConDecimal Valores mínimos de cada valor del componente
      * @param maximosConDecimal Valores máximos de cada valor del componente
-     * @param c                 Componente de capa interior correspondiente
      */
-    public AppReceiver(String id, double[] minimosConDecimal, double[] maximosConDecimal, State c) {
-        super(id, minimosConDecimal, maximosConDecimal, c);
+    public AppReceiver(String id, double[] minimosConDecimal, double[] maximosConDecimal) {
+        super(id, minimosConDecimal, maximosConDecimal);
         this.messageQueue = new LinkedBlockingDeque<>();
+
+        // Crea estado de capa inferior, con los datos deducidos de esta capa. Lo más importante son los bits significativos.
+        this.myPresentationState = new StateReceiver(this.ID, new int[this.len], this.bitSignificativos);
     }
 
     /**
