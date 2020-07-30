@@ -35,6 +35,7 @@ public class SenderAdmin implements Runnable{
         while(!this.messagesToSend.isEmpty()) {
             Message m = this.messagesToSend.poll(); // Saco mensaje
             byte[] b = m.getBytes(); // Saco sus bytes
+            // TODO: Encriptar
             //BitOperations.appendCRC(b); // Append de CRC
 
             myXbeeSender.putByteInQueue(b); // Lo pongo en la Queue de envío

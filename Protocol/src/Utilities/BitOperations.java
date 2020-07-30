@@ -19,14 +19,6 @@ public class BitOperations {
     }
 
     /**
-     * Realiza cálculo de CRC y coloca el resultado en últimos dos bytes del arreglo
-     * @param raw : byte[] al cual recalcular CRC
-     */
-    public static void appendCRC(byte[] raw){
-
-    }
-
-    /**
      * Coloca en 'rawBytes' los 'bitSig[i]' bits sinificativos del valor 'source[i]', para cada i comenzando en el bit
      * 'bitSig_inicio' de 'bitSig', desde el bit 'rawBytes_inicio' de 'rawBytes'.
      * @param source : valores reales a poner en 'rawBytes' según los bits significativos de 'bitsSig'

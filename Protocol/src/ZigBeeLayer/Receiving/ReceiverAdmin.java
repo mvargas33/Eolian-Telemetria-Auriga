@@ -9,7 +9,7 @@ import java.util.HashMap;
 // CONSUMER
 public class ReceiverAdmin implements Runnable{
     private XbeeReceiver xbeeReceiver; // Quien debe recibir mensajes y solo eso, ponerlos en la lista
-    private HashMap<Character, Message> allMessages; // Diccionario con todos los mensajes del sistema
+    private HashMap<Character, ReceivedMessage> allMessages; // Diccionario con todos los mensajes del sistema
     private final int id;
 
     /**
@@ -18,7 +18,7 @@ public class ReceiverAdmin implements Runnable{
      * @param xbeeReceiver : Quien tiene la Queue de bytes[] a consumir
      * @param allMessages : Diccionario con todos los mensajes
      */
-    public ReceiverAdmin(int id, XbeeReceiver xbeeReceiver, HashMap<Character, Message> allMessages){
+    public ReceiverAdmin(int id, XbeeReceiver xbeeReceiver, HashMap<Character, ReceivedMessage> allMessages){
         this.id = id;
         this.xbeeReceiver = xbeeReceiver;
         this.allMessages = allMessages;
@@ -38,7 +38,7 @@ public class ReceiverAdmin implements Runnable{
 
             if(crc == b[largo - 1]){ // Check CRC
                 char header = (char) b[0];
-                ReceivedMessage m = (ReceivedMessage) this.allMessages.get(header);
+                ReceivedMessage m = this.allMessages.get(header);
                 m.updateRawBytes(b); // Esto hace llamada en cadena hasta que todos los componentes que se actualizaron queden en la Queue de LocalMasterAdmin
             }
         }
