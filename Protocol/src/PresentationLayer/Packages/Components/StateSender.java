@@ -1,6 +1,7 @@
 package PresentationLayer.Packages.Components;
 
 import PresentationLayer.Packages.Messages.Message;
+import PresentationLayer.Packages.Messages.SentMessage;
 import Utilities.BitOperations;
 import ZigBeeLayer.Sending.SenderAdmin;
 
@@ -23,7 +24,7 @@ public class StateSender extends State{
         this.listOfMyMessagesWithIndexes = new LinkedList<>();
     }
 
-    /*---------------------------------------------------- SENDING ----------------------------------------------------*/
+    /*-------------------------------------------------- INITIALIZING --------------------------------------------------*/
 
     /**
      * Añade un Mensaje e informacion extra a este Componente. Para que luego sepa como actualizarse, sabiendo que
@@ -37,6 +38,8 @@ public class StateSender extends State{
     public void addNewMessage(Message m, int raw_inicio, int raw_fin, int bitSigInicio, int componentNumber){
         this.listOfMyMessagesWithIndexes.add(new MessagesWithIndexes(m,raw_inicio, raw_fin,bitSigInicio, componentNumber));
     }
+
+    /*---------------------------------------------------- SENDING ----------------------------------------------------*/
 
     /**
      * UPDATE: Reemplazo directo de array values[] del componente.
@@ -68,8 +71,9 @@ public class StateSender extends State{
         BitOperations.updateByteArrayFromValues(myValues, bytes, bitSig, m.myBitSig_inicio,  m.raw_inicio, m.raw_fin); // Update Messsage con lo que me corresponde
         //m.message.updateRawBytes(bytes); // TODO: Ver si esta linea es necesaria | Reemplazo directo de bytes de mensaje
         //m.message.bytes = bytes; // Update myself
-        m.message.marcarActualizacionDeComponente(m.componentNumber); // Marcar que este componente esta rdy en mensaje
-        if(m.message.isReadyToSend()){ // Si yo fui el último que faltaba para enviar el mensaje, calculo CRC8 y lo pongo en la queue
+        SentMessage mm = (SentMessage) m.message;
+        mm.marcarActualizacionDeComponente(m.componentNumber); // Marcar que este componente esta rdy en mensaje
+        if(mm.isReadyToSend()){ // Si yo fui el último que faltaba para enviar el mensaje, calculo CRC8 y lo pongo en la queue
             byte crc = BitOperations.calcCRC8(m.message.getBytes(), m.message.getLargoEnBytes() - 2); // Se calcula hasta antes del ultimo byte
             m.message.getBytes()[m.message.getLargoEnBytes() - 1] = crc; // Update del CRC
             // TODO: Encriptar acá con ChaCha20 o Salsa20

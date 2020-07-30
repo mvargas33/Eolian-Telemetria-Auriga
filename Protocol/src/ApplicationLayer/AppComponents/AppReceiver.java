@@ -28,6 +28,19 @@ public class AppReceiver extends AppComponent implements Runnable{
     }
 
     /**
+     * Método que llaman los ReceiverAdmin para encolar nuevos mensajes del componente
+     * @param message Nuevo arreglo de valores para el componente
+     * @throws Exception Errores de put()
+     */
+    public void enqueueNewMessages(Message message){
+        try {
+            this.messageQueue.put(message);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * RECEIVING DATA
      * Método que ejecuta un Componente de capa de Presentación, para avisarle al Componente de Aplicación que llegaron nuevos valores.
      * Traduce los valores de la capa inferior a valores reales en double.

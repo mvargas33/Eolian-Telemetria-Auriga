@@ -21,7 +21,7 @@ public class StateReceiver extends State{
         this.hashOfMyMessagesWithIndexes = new HashMap<>();
     }
 
-    /*--------------------------------------------------- RECEIVING ---------------------------------------------------*/
+    /*-------------------------------------------------- INITIALIZING --------------------------------------------------*/
 
     /**
      * Añade un Mensaje e informacion extra a este Componente. Para que luego sepa como actualizarse, sabiendo que
@@ -35,6 +35,8 @@ public class StateReceiver extends State{
     public void addNewMessage(Message m, int raw_inicio, int raw_fin, int bitSigInicio, int componentNumber){
         this.hashOfMyMessagesWithIndexes.put(m.getHeader(), new MessagesWithIndexes(m,raw_inicio, raw_fin,bitSigInicio, componentNumber));
     }
+
+    /*--------------------------------------------------- RECEIVING ---------------------------------------------------*/
 
     /**
      * Toma un mensaje, luego busca en su diccionario los bytes de ese mensaje que le corresponden. Luego hace update de

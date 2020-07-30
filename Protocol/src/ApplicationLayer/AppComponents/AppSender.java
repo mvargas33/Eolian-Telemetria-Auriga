@@ -35,8 +35,12 @@ public class AppSender extends  AppComponent implements Runnable{
      * @param values Nuevo arreglo de valores para el componente
      * @throws Exception Errores de put()
      */
-    public void enqueueNewValues(double[] values) throws Exception{
-        this.newValuesQueue.put(values);
+    public void enqueueNewValues(double[] values){
+        try {
+            this.newValuesQueue.put(values);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

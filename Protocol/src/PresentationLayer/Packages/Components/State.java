@@ -15,6 +15,7 @@ import java.util.LinkedList;
                 Luego ellos se ponen en contacto con QueueAdmin para ser enviados.
  */
 public abstract class State {
+
     /* Estructura necesaria para guardar correlación mensage-state, guarda que intervalos de bits de un mensaje le conciernen a qué intervalos de bits en este componente */
     public class MessagesWithIndexes {
         Message message;        // RAW bits

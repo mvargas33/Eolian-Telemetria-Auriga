@@ -11,14 +11,14 @@ import java.util.LinkedList;
  *  Adem&aacute;s le pertenecen a uno o m&aacute;s componentes, ellos saben que bits le corresponen del mensaje.
 */
 public class Message {
-    private char header;
-    private int largoEnBytes;
-    private byte[] bytes;
-    private LinkedList<State> myStates;
+    char header;
+    int largoEnBytes;
+    byte[] bytes;
+
     // Para ver que todos los componentes actualizaron el mensaje, después se enva
-    private int allComponentsUpdated; // Entero que cambia cada vez
-    private int numOfComponents; // Para generar valor inicial
-    private int initialValue; // Valor reset de allComponentsUpdated, al estilo 11111111.....11111100000, con 0's numOfComponents
+    int allComponentsUpdated; // Entero que cambia cada vez
+    int numOfComponents; // Para generar valor inicial
+    int initialValue; // Valor reset de allComponentsUpdated, al estilo 11111111.....11111100000, con 0's numOfComponents
 
     public Message(char header, int largoEnBytes){
         this.header = header;
@@ -26,7 +26,7 @@ public class Message {
         this.bytes = new byte[largoEnBytes];
         this.bytes[0] = (byte) header;          // Primer byte es el header
         this.bytes[largoEnBytes - 1] = 0;       // Último byte es el CRC-8
-        this.myStates = new LinkedList<>();
+
         this.allComponentsUpdated = 0; // Flag de salida del mensaje, si quedan componentes que no han actualizado mensaje, este no sale
         this.numOfComponents = 0; // Para designar bits en allComponentsUpdated, este es el bit asignado también
         this.initialValue = 0;
@@ -37,59 +37,6 @@ public class Message {
         this.myStates = components;
     }
 */
-    /*-------------------------------------------------- INITIALIZING -------------------------------------------------*/
-
-    public void addComponent(State c){
-        this.myStates.add(c);
-        this.numOfComponents++;
-        this.initialValue = ~ (((int) Math.pow(2,numOfComponents)) - 1); // Valor reset de allComponentsUpdated, al estilo 11111111.....11111100000, con 0's numOfComponents
-        this.allComponentsUpdated = this.initialValue;
-    }
-
-    /*--------------------------------------------------- RECEIVING ---------------------------------------------------*/
-
-    /**
-     * Marca en allComponentsUpdated con el bit asignado, pasando de 111 ... 000 a 111 ... 010 si el bit asignado fue 1.
-     * Cuando todos los componentes hayan invocado este metodo, entonces allComponentsUpdated valdra -1 : 111 ... 111
-     * Se usa para que el mensaje sólo este 'listo' cuando todos los componentes invoquen este metodo
-     * @param bitAsignado : Bit asignado del componente que invoca este método
-     */
-    public void marcarActualizacionDeComponente(int bitAsignado){
-        int mask = 1 << bitAsignado;
-        allComponentsUpdated |= mask; // Se hace OR con el bit señalado, que representa el componente bit-ésimo del mensaje
-    }
-
-
-    /**
-     * Retorna true si todos los componentes han actualizado su parte en este mensaje.
-     * Si falta un componente por actualizarse, entonces el mensaje no está listo para enviarse
-     * Además resetea el valor de allComponentsUpdated al estar en true
-     * @return true si todos los componentes actualziaron su bit en allComponentsUpdated, diciendo que estan listos
-     */
-    public boolean isReadyToSend(){
-        if(allComponentsUpdated == -1){ // 111111111111 ... 1111111111111111)
-            allComponentsUpdated = initialValue; // Reset
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    /*--------------------------------------------------- RECEIVING ---------------------------------------------------*/
-
-    /**
-     * Actualiza los bytes del Mensaje por los actualizados. Luego llama a uno a uno todos los componentes que le corresponden
-     * para que miren el mensaje y estos extraigan los bits que necesiten.
-     * @param newBytes : Valores actualizados de los bytes del mensaje
-     */
-    public void updateRawBytes(byte[] newBytes){
-        this.bytes = newBytes; // Update myself
-        // Notify my components to check at my values
-        for (State c: this.myStates
-             ) {
-            c.updateMyValues(this.header); // Mírame! Me actualicé
-        }
-    }
 
     /*--------------------------------------------------- RESOURCES ---------------------------------------------------*/
 

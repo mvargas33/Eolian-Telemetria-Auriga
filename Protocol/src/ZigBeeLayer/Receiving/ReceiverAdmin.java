@@ -1,6 +1,7 @@
 package ZigBeeLayer.Receiving;
 
 import PresentationLayer.Packages.Messages.Message;
+import PresentationLayer.Packages.Messages.ReceivedMessage;
 import Utilities.BitOperations;
 
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class ReceiverAdmin implements Runnable{
 
             if(crc == b[largo - 1]){ // Check CRC
                 char header = (char) b[0];
-                Message m = this.allMessages.get(header);
+                ReceivedMessage m = (ReceivedMessage) this.allMessages.get(header);
                 m.updateRawBytes(b); // Esto hace llamada en cadena hasta que todos los componentes que se actualizaron queden en la Queue de LocalMasterAdmin
             }
         }
