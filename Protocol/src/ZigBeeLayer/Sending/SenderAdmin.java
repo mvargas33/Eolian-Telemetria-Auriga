@@ -1,5 +1,6 @@
 package ZigBeeLayer.Sending;
 
+import PresentationLayer.Encryption.CryptoAdmin;
 import PresentationLayer.Packages.Messages.Message;
 
 import java.util.concurrent.BlockingQueue;
@@ -9,10 +10,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class SenderAdmin implements Runnable{
     private BlockingQueue<Message> messagesToSend;
     private XbeeSender myXbeeSender;
+    private CryptoAdmin myCryptoAdmin;
 
-    public SenderAdmin(XbeeSender xbeeSender){
+    public SenderAdmin(XbeeSender xbeeSender, CryptoAdmin myCryptoAdmin){
         this.messagesToSend = new LinkedBlockingQueue<>();
         this.myXbeeSender = xbeeSender; // Thread de xbeeSender debe ser creado antes que SenderAdmin
+        this.myCryptoAdmin = myCryptoAdmin; // Encargado de proveer métodos de encriptación y HMAC
     }
 
     /**
@@ -28,17 +31,14 @@ public class SenderAdmin implements Runnable{
     }
 
     /**
-     * Saca mensajes de la Queue de Mensajes, saca el byte[] del mensaje y le hace append de CRC.
+     * Saca mensajes de la Queue de Mensajes, saca el byte[] del mensaje y lo encripta con HMAC
      * Luego pone el byte[] con CRC en la Queue de envío del XbeeSender
      */
     public void putMessageInByteQueue(){
         while(!this.messagesToSend.isEmpty()) {
-            Message m = this.messagesToSend.poll(); // Saco mensaje
-            byte[] b = m.getBytes(); // Saco sus bytes
-            // TODO: Encriptar
-            //BitOperations.appendCRC(b); // Append de CRC
-
-            myXbeeSender.putByteInQueue(b); // Lo pongo en la Queue de envío
+            Message m = this.messagesToSend.poll();                 // Saco mensaje
+            byte[] b = this.myCryptoAdmin.encrypt(m.getBytes());    // Saco sus bytes y los encripto. Añado HMAC también
+            myXbeeSender.putByteInQueue(b);                         // Lo pongo en la Queue de envío
         }
     }
 

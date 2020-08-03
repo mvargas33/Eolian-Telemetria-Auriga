@@ -26,7 +26,7 @@ public class StateReceiver extends State{
     /**
      * Añade un Mensaje e informacion extra a este Componente. Para que luego sepa como actualizarse, sabiendo que
      * bit le corresponden. Se añade como MessageWithHeader en un Map para tener coste O(1).
-     * @param m Message
+     * @param m Message: MUST BE ReceivedMessage CLASS
      * @param raw_inicio Bit de inicio en Mensaje
      * @param raw_fin Bit de fin en Mensaje
      * @param bitSigInicio Bit de inicio en componente

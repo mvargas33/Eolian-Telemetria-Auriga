@@ -119,11 +119,15 @@ public class CryptoAdmin {
      * @return HMAC | IV | CIPHERED MSG
      * @throws Exception excepciones de encriptación
      */
-    public byte[] encrypt(byte[] input) throws Exception {
+    public byte[] encrypt(byte[] input) {
         //System.out.println("FULL IV SRC: " + BitOperations.ArraytoString(this.IV));
         // Encrypt.
-        this.cipher.init(Cipher.ENCRYPT_MODE, this.key, new IvParameterSpec(this.IV));
-        this.inputEncrypted = this.cipher.doFinal(input);
+        try{
+            this.cipher.init(Cipher.ENCRYPT_MODE, this.key, new IvParameterSpec(this.IV)); // Re-init porque IV cambia cada vez
+            this.inputEncrypted = this.cipher.doFinal(input);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         // MAC.
         this.fullMac = this.mac.doFinal(this.inputEncrypted); // Mac sobre cipher text
         System.arraycopy(this.fullMac, 0, this.macEnd, 0, this.MAC_SIG_BYTES);
@@ -165,8 +169,12 @@ public class CryptoAdmin {
         //System.out.println("FULL IV DST: " + BitOperations.ArraytoString(IV));
 
         // Decrypt.
-        this.cipher.init(Cipher.DECRYPT_MODE, this.key, new IvParameterSpec(IV));
-        this.inputPlainText = this.cipher.doFinal(this.inputEncrypted);
+        try {
+            this.cipher.init(Cipher.DECRYPT_MODE, this.key, new IvParameterSpec(IV));
+            this.inputPlainText = this.cipher.doFinal(this.inputEncrypted);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return this.inputPlainText;
     }
 

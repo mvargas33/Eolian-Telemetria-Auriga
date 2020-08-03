@@ -1,5 +1,6 @@
 package ZigBeeLayer.Receiving;
 
+import PresentationLayer.Encryption.CryptoAdmin;
 import PresentationLayer.Packages.Messages.Message;
 import PresentationLayer.Packages.Messages.ReceivedMessage;
 import Utilities.BitOperations;
@@ -11,6 +12,7 @@ public class ReceiverAdmin implements Runnable{
     private XbeeReceiver xbeeReceiver; // Quien debe recibir mensajes y solo eso, ponerlos en la lista
     private HashMap<Character, ReceivedMessage> allMessages; // Diccionario con todos los mensajes del sistema
     private final int id;
+    private CryptoAdmin myCryptoAdmin;
 
     /**
      *
@@ -18,10 +20,11 @@ public class ReceiverAdmin implements Runnable{
      * @param xbeeReceiver : Quien tiene la Queue de bytes[] a consumir
      * @param allMessages : Diccionario con todos los mensajes
      */
-    public ReceiverAdmin(int id, XbeeReceiver xbeeReceiver, HashMap<Character, ReceivedMessage> allMessages){
+    public ReceiverAdmin(int id, XbeeReceiver xbeeReceiver, HashMap<Character, ReceivedMessage> allMessages, CryptoAdmin myCryptoAdmin){
         this.id = id;
         this.xbeeReceiver = xbeeReceiver;
         this.allMessages = allMessages;
+        this.myCryptoAdmin = myCryptoAdmin;
     }
 
     /**
@@ -29,18 +32,14 @@ public class ReceiverAdmin implements Runnable{
      * Hace update de bytes[] del mensaje y luego ejecuta cadena de llamados para actualización de los componentes correspondientes.
      * DEBE CHECKEAR CRC DEL MENSAJE
      */
-    public void consumeByteArrayFromQueue(){
+    public void consumeByteArrayFromQueue() throws Exception{
         while(!this.xbeeReceiver.isQueueEmpty()){
-            byte[] b = this.xbeeReceiver.consumeByteFromQueue();
-            int largo = b.length;
-            // TODO: Desencriptar con ChaCha20 o Salsa20
-            byte crc = BitOperations.calcCRC8(b, largo - 2); // Hasta antes del CRC que viene en mensaje
+            byte[] b = this.xbeeReceiver.consumeByteFromQueue();        // Extraer bytes RAW
+            byte[] unEncryptedBytes = this.myCryptoAdmin.decrypt(b);    // Desencriptar mensaje
 
-            if(crc == b[largo - 1]){ // Check CRC
-                char header = (char) b[0];
-                ReceivedMessage m = this.allMessages.get(header);
-                m.updateRawBytes(b); // Esto hace llamada en cadena hasta que todos los componentes que se actualizaron queden en la Queue de LocalMasterAdmin
-            }
+            char header = (char) unEncryptedBytes[0];                   // Extraer header
+            ReceivedMessage m = this.allMessages.get(header);
+            m.updateRawBytes(unEncryptedBytes); // Esto hace llamada en cadena hasta que todos los componentes que se actualizaron queden en la Queue de LocalMasterAdmin
         }
     }
 

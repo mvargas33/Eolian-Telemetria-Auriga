@@ -8,10 +8,12 @@ import ApplicationLayer.SensorReading.SensorsReader;
  */
 public abstract class CANReader extends SensorsReader {
     private final CANReaderCoordinator myCoordinator;
+    public double[] newvalues;
 
     public CANReader(AppSender myComponent, long readingDelayInMS, CANReaderCoordinator myCoordinator) {
         super(myComponent, readingDelayInMS);
         this.myCoordinator = myCoordinator;
+        this.newvalues = null;
     }
 
     /**
@@ -22,6 +24,11 @@ public abstract class CANReader extends SensorsReader {
 
     @Override
     public double[] read() {
-        return myCoordinator.accessCANAndRead(this);
+        myCoordinator.enQueueForBUS(this);
+        while(newvalues == null){
+            // TODO, EN VEZ DE BUSY WAITING, USAR ASYNC FUNCTIONS
+        }
+        // Ya tengo valores nuevos
+
     }
 }

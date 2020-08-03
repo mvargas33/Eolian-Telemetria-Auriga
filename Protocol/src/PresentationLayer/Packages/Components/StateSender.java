@@ -29,7 +29,7 @@ public class StateSender extends State{
     /**
      * Añade un Mensaje e informacion extra a este Componente. Para que luego sepa como actualizarse, sabiendo que
      * bit le corresponden. Se añade como MessageWithHeader en un Map para tener coste O(1).
-     * @param m Message
+     * @param m Message: MUST BE SentMessage CLASS
      * @param raw_inicio Bit de inicio en Mensaje
      * @param raw_fin Bit de fin en Mensaje
      * @param bitSigInicio Bit de inicio en componente
@@ -74,8 +74,8 @@ public class StateSender extends State{
         SentMessage mm = (SentMessage) m.message;
         mm.marcarActualizacionDeComponente(m.componentNumber); // Marcar que este componente esta rdy en mensaje
         if(mm.isReadyToSend()){ // Si yo fui el último que faltaba para enviar el mensaje, calculo CRC8 y lo pongo en la queue
-            byte crc = BitOperations.calcCRC8(m.message.getBytes(), m.message.getLargoEnBytes() - 2); // Se calcula hasta antes del ultimo byte
-            m.message.getBytes()[m.message.getLargoEnBytes() - 1] = crc; // Update del CRC
+            //byte crc = BitOperations.calcCRC8(m.message.getBytes(), m.message.getLargoEnBytes() - 2); // Se calcula hasta antes del ultimo byte
+            //m.message.getBytes()[m.message.getLargoEnBytes() - 1] = crc; // Update del CRC
             // TODO: Encriptar acá con ChaCha20 o Salsa20
             this.mySenderAdmin.putMessageInQueue(m.message); // Poner en Queue de Sender Admin
         }
