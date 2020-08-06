@@ -22,13 +22,13 @@ public abstract class CANReader extends SensorsReader {
      */
     public abstract double[] actualRead();
 
-    @Override
-    public double[] read() {
-        myCoordinator.enQueueForBUS(this);
-        while(newvalues == null){
-            // TODO, EN VEZ DE BUSY WAITING, USAR ASYNC FUNCTIONS
-        }
-        // Ya tengo valores nuevos
-
-    }
+//    @Override
+//    public double[] read() {
+//        myCoordinator.enQueueForBUS(this);
+//        while(newvalues == null){
+//            // TODO, EN VEZ DE BUSY WAITING, USAR ASYNC FUNCTIONS
+//        }
+//        // Ya tengo valores nuevos
+//
+//    }
 }

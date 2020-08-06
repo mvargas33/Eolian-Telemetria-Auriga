@@ -10,7 +10,7 @@ import java.util.LinkedList;
  *  Los mensajes tienen un identificador y un largo definido.
  *  Adem&aacute;s le pertenecen a uno o m&aacute;s componentes, ellos saben que bits le corresponen del mensaje.
 */
-public class Message {
+public abstract class Message {
     char header;
     int largoEnBytes;
     byte[] bytes;
@@ -25,7 +25,7 @@ public class Message {
         this.largoEnBytes = largoEnBytes;
         this.bytes = new byte[largoEnBytes];
         this.bytes[0] = (byte) header;          // Primer byte es el header
-        this.bytes[largoEnBytes - 1] = 0;       // Último byte es el CRC-8
+        //this.bytes[largoEnBytes - 1] = 0;       // Último byte es el CRC-8
 
         this.allComponentsUpdated = 0; // Flag de salida del mensaje, si quedan componentes que no han actualizado mensaje, este no sale
         this.numOfComponents = 0; // Para designar bits en allComponentsUpdated, este es el bit asignado también
@@ -37,6 +37,7 @@ public class Message {
         this.myStates = components;
     }
 */
+    public abstract void addState(State state);
 
     /*--------------------------------------------------- RESOURCES ---------------------------------------------------*/
 

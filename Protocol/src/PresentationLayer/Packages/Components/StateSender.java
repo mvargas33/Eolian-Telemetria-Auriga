@@ -76,7 +76,6 @@ public class StateSender extends State{
         if(mm.isReadyToSend()){ // Si yo fui el último que faltaba para enviar el mensaje, calculo CRC8 y lo pongo en la queue
             //byte crc = BitOperations.calcCRC8(m.message.getBytes(), m.message.getLargoEnBytes() - 2); // Se calcula hasta antes del ultimo byte
             //m.message.getBytes()[m.message.getLargoEnBytes() - 1] = crc; // Update del CRC
-            // TODO: Encriptar acá con ChaCha20 o Salsa20
             this.mySenderAdmin.putMessageInQueue(m.message); // Poner en Queue de Sender Admin
         }
     }

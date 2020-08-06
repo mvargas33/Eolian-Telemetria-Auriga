@@ -1,4 +1,4 @@
-package Test;
+package Test.UnitTests;
 
 import PresentationLayer.Encryption.CryptoAdmin;
 import PresentationLayer.Encryption.KeyAdmin;

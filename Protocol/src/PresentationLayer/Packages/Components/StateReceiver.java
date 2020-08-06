@@ -1,5 +1,6 @@
 package PresentationLayer.Packages.Components;
 
+import ApplicationLayer.AppComponents.AppReceiver;
 import PresentationLayer.Packages.Messages.Message;
 import Utilities.BitOperations;
 
@@ -7,7 +8,7 @@ import java.util.HashMap;
 
 public class StateReceiver extends State{
     private HashMap<Character, MessagesWithIndexes> hashOfMyMessagesWithIndexes;             // RECEIVING : Para extracción en O(1) y actualizar mis valores
-
+    private AppReceiver myAppReceiver;
 
     /**
      * Base State, encargado de lecturas directas de sensores y envío de datos por SenderAdmin
@@ -34,6 +35,14 @@ public class StateReceiver extends State{
      */
     public void addNewMessage(Message m, int raw_inicio, int raw_fin, int bitSigInicio, int componentNumber){
         this.hashOfMyMessagesWithIndexes.put(m.getHeader(), new MessagesWithIndexes(m,raw_inicio, raw_fin,bitSigInicio, componentNumber));
+    }
+
+    public void setAppReceiver(AppReceiver appReceiver){
+        this.myAppReceiver = appReceiver;
+    }
+
+    public AppReceiver getAppReceiver(){
+        return this.myAppReceiver;
     }
 
     /*--------------------------------------------------- RECEIVING ---------------------------------------------------*/

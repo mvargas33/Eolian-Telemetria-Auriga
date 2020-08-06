@@ -7,17 +7,21 @@ import PresentationLayer.Packages.Components.StateReceiver;
 import java.util.LinkedList;
 
 public class ReceivedMessage extends Message{
-    private LinkedList<AppReceiver> myAppComponentes;
+    private LinkedList<StateReceiver> myStates;
 
     public ReceivedMessage(char header, int largoEnBytes) {
         super(header, largoEnBytes);
-        this.myAppComponentes = new LinkedList<>();
+        this.myStates = new LinkedList<>();
     }
 
     /*-------------------------------------------------- INITIALIZING -------------------------------------------------*/
 
-    public void addAppReceiver(AppReceiver c){
-        this.myAppComponentes.add(c);
+    /**
+     * Añande un StateRecevier a la lista de StateReceivers
+     * @param c StateReceiver!
+     */
+    public void addState(State c){
+        this.myStates.add((StateReceiver) c);
         this.numOfComponents++;
         this.initialValue = ~ (((int) Math.pow(2,numOfComponents)) - 1); // Valor reset de allComponentsUpdated, al estilo 11111111.....11111100000, con 0's numOfComponents
         this.allComponentsUpdated = this.initialValue;
@@ -33,9 +37,9 @@ public class ReceivedMessage extends Message{
     public void updateRawBytes(byte[] newBytes){
         this.bytes = newBytes; // Update myself
         // Notify my components to check at my values
-        for (AppReceiver a: this.myAppComponentes
+        for (StateReceiver s: this.myStates
         ) {
-            a.enqueueNewMessages(this); // Se pone en cola de cada AppComponent para que haga llamadas a sus States que lo actualicen
+            s.getAppReceiver().enqueueNewMessages(this); // Se pone en cola de cada AppComponent para que haga llamadas a sus States que lo actualicen
         }
     }
 }

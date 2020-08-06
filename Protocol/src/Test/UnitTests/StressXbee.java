@@ -1,4 +1,4 @@
-package Test;
+package Test.UnitTests;
 
 import com.digi.xbee.api.XBeeDevice;
 import com.digi.xbee.api.exceptions.XBeeException;

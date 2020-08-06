@@ -1,4 +1,4 @@
-package Test;
+package Test.UnitTests;
 
 import Utilities.BitOperations;
 

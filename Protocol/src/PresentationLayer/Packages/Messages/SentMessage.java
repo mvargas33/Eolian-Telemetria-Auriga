@@ -16,8 +16,12 @@ public class SentMessage extends Message{
 
     /*-------------------------------------------------- INITIALIZING -------------------------------------------------*/
 
-    public void addComponent(StateSender c){
-        this.myStates.add(c);
+    /**
+     * Añande un stateSender a la lista de stateSenders
+     * @param c StateSender!
+     */
+    public void addState(State c){
+        this.myStates.add((StateSender) c);
         this.numOfComponents++;
         this.initialValue = ~ (((int) Math.pow(2,numOfComponents)) - 1); // Valor reset de allComponentsUpdated, al estilo 11111111.....11111100000, con 0's numOfComponents
         this.allComponentsUpdated = this.initialValue;
