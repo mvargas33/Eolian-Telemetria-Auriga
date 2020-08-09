@@ -5,13 +5,16 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="9" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="SocketIOJava" level="project" />
-    <orderEntry type="library" name="libs" level="project" />
     <orderEntry type="library" name="json-simple-1.1" level="project" />
     <orderEntry type="library" name="HTTP" level="project" />
     <orderEntry type="library" name="JUnit" level="project" />
     <orderEntry type="library" name="SocketIO2" level="project" />
+    <orderEntry type="library" name="rxtx-2.2" level="project" />
+    <orderEntry type="library" name="slf4j-api-1.7.12" level="project" />
+    <orderEntry type="library" name="slf4j-nop-1.7.12" level="project" />
+    <orderEntry type="library" name="xbee-java-library-1.3.0" level="project" />
   </component>
 </module>

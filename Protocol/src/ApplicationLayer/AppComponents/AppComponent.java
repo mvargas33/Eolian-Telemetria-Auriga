@@ -35,6 +35,7 @@ public class AppComponent{
      */
     private AppComponent(){
         this.myJSON = new JSONObject();
+        this.mySubscriptions = new LinkedList<>();
     }
 
     /**

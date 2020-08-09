@@ -10,18 +10,16 @@ import java.util.HashMap;
 // CONSUMER
 public class ReceiverAdmin implements Runnable{
     private XbeeReceiver xbeeReceiver; // Quien debe recibir mensajes y solo eso, ponerlos en la lista
-    private HashMap<Character, ReceivedMessage> allMessages; // Diccionario con todos los mensajes del sistema
-    private final int id;
+    private HashMap<Character, Message> allMessages; // Diccionario con todos los mensajes del sistema
     private CryptoAdmin myCryptoAdmin;
 
     /**
      *
-     * @param id : ID del thread que corre ReceiverAdmin
+
      * @param xbeeReceiver : Quien tiene la Queue de bytes[] a consumir
      * @param allMessages : Diccionario con todos los mensajes
      */
-    public ReceiverAdmin(int id, XbeeReceiver xbeeReceiver, HashMap<Character, ReceivedMessage> allMessages, CryptoAdmin myCryptoAdmin){
-        this.id = id;
+    public ReceiverAdmin(XbeeReceiver xbeeReceiver, HashMap<Character, Message> allMessages, CryptoAdmin myCryptoAdmin){
         this.xbeeReceiver = xbeeReceiver;
         this.allMessages = allMessages;
         this.myCryptoAdmin = myCryptoAdmin;
@@ -38,7 +36,7 @@ public class ReceiverAdmin implements Runnable{
             byte[] unEncryptedBytes = this.myCryptoAdmin.decrypt(b);    // Desencriptar mensaje
 
             char header = (char) unEncryptedBytes[0];                   // Extraer header
-            ReceivedMessage m = this.allMessages.get(header);
+            ReceivedMessage m = (ReceivedMessage) this.allMessages.get(header);
             m.updateRawBytes(unEncryptedBytes); // Esto hace llamada en cadena hasta que todos los componentes que se actualizaron queden en la Queue de LocalMasterAdmin
         }
     }

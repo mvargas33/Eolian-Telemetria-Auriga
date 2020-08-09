@@ -31,8 +31,8 @@ public class RandomReader extends SensorsReader implements Runnable{
     public double[] read() {
         double[] max = this.myComponent.maximosConDecimal;
         double[] min = this.myComponent.minimosConDecimal;
-        double[] random = new double[max.length];
-        for (int i = 0; i < random.length; i++) {
+        double[] random = new double[this.myComponent.len];
+        for (int i = 0; i < this.myComponent.len; i++) {
             random[i] = min[i] + (max[i] - min[i]) * this.r.nextDouble(); // Generar valor random en el rango adecuado
         }
         return random;

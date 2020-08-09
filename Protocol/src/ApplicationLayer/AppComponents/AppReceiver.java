@@ -25,7 +25,13 @@ public class AppReceiver extends AppComponent implements Runnable{
 
         // Crea estado de capa inferior, con los datos deducidos de esta capa. Lo más importante son los bits significativos.
         this.myPresentationState = new StateReceiver(this.ID, new int[this.len], this.bitSignificativos);
+        this.myPresentationState.setAppReceiver(this);
     }
+
+    public State getState(){
+        return this.myPresentationState;
+    }
+
 
     /**
      * Método que llaman los ReceiverAdmin para encolar nuevos mensajes del componente
