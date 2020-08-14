@@ -8,20 +8,26 @@ import ZigBeeLayer.Sending.SenderAdmin;
 import java.util.LinkedList;
 
 public class StateSender extends State{
-    private final SenderAdmin mySenderAdmin;
+    private SenderAdmin mySenderAdmin;
     private LinkedList<MessagesWithIndexes> listOfMyMessagesWithIndexes;    // SENDING : Para uso en for() y actualizar mensajes que me corresponden
 
     /**
      * Sender State, encargado de lecturas directas de sensores y envío de datos por SenderAdmin
-     * @param mySenderAdmin : A quien informa sobre nuevos valores leídos
      * @param valores : Array de valores del componente
      * @param bitsSignificativos : Array de bits significativos de cada valor en valores[]
      * @param ID : ID del Componente
      */
-    public StateSender(String ID, int[] valores, int[] bitsSignificativos, SenderAdmin mySenderAdmin) {
+    public StateSender(String ID, int[] valores, int[] bitsSignificativos) {
         super(ID, valores, bitsSignificativos);
-        this.mySenderAdmin = mySenderAdmin; // Thread de Sender Admin debe ser creado antes que todos los componentes.
         this.listOfMyMessagesWithIndexes = new LinkedList<>();
+    }
+
+    /**
+     * El senderAdmin se setea a posteriori
+     * @param mySenderAdmin: A quien informa sobre nuevos valores leídos
+     */
+    public void setMySenderAdmin(SenderAdmin mySenderAdmin){
+        this.mySenderAdmin = mySenderAdmin; // Thread de Sender Admin debe ser creado antes que todos los componentes.
     }
 
     /*-------------------------------------------------- INITIALIZING --------------------------------------------------*/

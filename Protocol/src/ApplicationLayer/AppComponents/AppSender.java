@@ -21,13 +21,21 @@ public class AppSender extends  AppComponent implements Runnable{
      * @param minimosConDecimal Valores mínimos de cada valor del componente
      * @param maximosConDecimal Valores máximos de cada valor del componente
      */
-    public AppSender(String id, double[] minimosConDecimal, double[] maximosConDecimal, SenderAdmin mySenderAdmin) {
+    public AppSender(String id, double[] minimosConDecimal, double[] maximosConDecimal) {
         super(id, minimosConDecimal, maximosConDecimal);
         this.newValuesQueue = new LinkedBlockingQueue<>();
         this.valoresAEnviar = new int[len];
 
         // Crea estado de capa inferior, con los datos deducidos de esta capa.
-        this.myPresentationState = new StateSender(id, this.valoresAEnviar, this.bitSignificativos, mySenderAdmin);
+        this.myPresentationState = new StateSender(id, this.valoresAEnviar, this.bitSignificativos);
+    }
+
+    /**
+     * SenderAdmin se setea a posteriori. Para poder crear el AppSender por separado
+     * @param mySenderAdmin : A quien se informa sobre nuevos valores y se pone ne cola
+     */
+    public void setSenderAdmin(SenderAdmin mySenderAdmin){
+        this.myPresentationState.setMySenderAdmin(mySenderAdmin);
     }
 
     public State getState(){

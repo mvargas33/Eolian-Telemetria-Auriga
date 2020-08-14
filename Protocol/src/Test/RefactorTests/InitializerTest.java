@@ -35,14 +35,14 @@ class InitializerTest {
     int CONTENT_SIG_BYTES = 16*5 + 15; // 5 bloques de 16 bytes, + 1 bloque de 15 bytes + 1 bloque de 16 bytes (MAC+IV)
 
     // Xbee common parameters
-    int XBEE_BAUD = 9600;
+    int XBEE_BAUD = 230400;
 
-    // Protocol parameters
+    // Protocol paramseters
     int MSG_SIZE_BITS = 8*(16*5);
     int FIRST_HEADER = 56;
 
     // Data parameters
-    int READ_FRECUENCY = 1000; // 1000ms = 1seg
+    int READ_FRECUENCY = 1; // 1000ms = 1seg
 
     /**
      * Ejecutarlo para cambiar las keys de sender/receiver
@@ -79,12 +79,16 @@ class InitializerTest {
         // Main AppComponents and readers
         double[] bms_min = {0, 0.0, -100.01, 5.01};
         double[] bms_max = {1, 10.0, 100.01, 9.01};
-        AppSender bms = new AppSender("BMS", bms_min, bms_max, senderAdmin);
+        AppSender bms = new AppSender("BMS", bms_min, bms_max);
+
+        bms.setSenderAdmin(senderAdmin);
         RandomReader bms_reader = new RandomReader(bms, READ_FRECUENCY);
 
         double[] motor_min = {0, 0, 0.01, -100.01};
         double[] motor_max = {1, 1, 300.01, 100.01};
-        AppSender motor = new AppSender("MOTOR", motor_min, motor_max, senderAdmin);
+        AppSender motor = new AppSender("MOTOR", motor_min, motor_max);
+
+        motor.setSenderAdmin(senderAdmin);
         RandomReader motor_reader = new RandomReader(motor, READ_FRECUENCY);
 
         // Lista de AppSenders para suscribir todos a servicios

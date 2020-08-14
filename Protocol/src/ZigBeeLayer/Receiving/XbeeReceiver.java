@@ -26,10 +26,11 @@ public class XbeeReceiver implements Runnable{
 
         @Override
         public void dataReceived(XBeeMessage xbeeMessage) {
-            System.out.format("From %s >> %s | %s%n", xbeeMessage.getDevice().get64BitAddress(),
-                    HexUtils.prettyHexString(HexUtils.byteArrayToHexString(xbeeMessage.getData())),
-                    new String(xbeeMessage.getData()));
+            //System.out.format("From %s >> %s | %s%n", xbeeMessage.getDevice().get64BitAddress(),
+                    //HexUtils.prettyHexString(HexUtils.byteArrayToHexString(xbeeMessage.getData())),
+                    //new String(xbeeMessage.getData()));
             try{
+                System.out.println("Recibido.");
                 this.bytesReceived.put(xbeeMessage.getData()); // Pone datos en la Queue compartida por esta clase y XbeeReceiver
             }catch (Exception e){
                 e.printStackTrace();
