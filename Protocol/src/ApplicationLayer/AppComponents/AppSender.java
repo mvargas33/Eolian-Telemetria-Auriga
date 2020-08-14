@@ -1,7 +1,6 @@
 package ApplicationLayer.AppComponents;
 
 import PresentationLayer.Packages.Components.State;
-import PresentationLayer.Packages.Components.StateReceiver;
 import PresentationLayer.Packages.Components.StateSender;
 import ZigBeeLayer.Sending.SenderAdmin;
 
@@ -21,8 +20,8 @@ public class AppSender extends  AppComponent implements Runnable{
      * @param minimosConDecimal Valores mínimos de cada valor del componente
      * @param maximosConDecimal Valores máximos de cada valor del componente
      */
-    public AppSender(String id, double[] minimosConDecimal, double[] maximosConDecimal) {
-        super(id, minimosConDecimal, maximosConDecimal);
+    public AppSender(String id, double[] minimosConDecimal, double[] maximosConDecimal, String[] nombreParametros) {
+        super(id, minimosConDecimal, maximosConDecimal, nombreParametros);
         this.newValuesQueue = new LinkedBlockingQueue<>();
         this.valoresAEnviar = new int[len];
 

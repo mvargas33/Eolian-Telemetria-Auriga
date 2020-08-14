@@ -1,7 +1,6 @@
 package ApplicationLayer.AppComponents;
 
 import ApplicationLayer.LocalServices.Service;
-import PresentationLayer.Packages.Components.State;
 import Utilities.DoubleOperations;
 import org.json.JSONObject;
 
@@ -27,6 +26,7 @@ public class AppComponent{
 
     public double[] valoresRealesActuales;  // Valores reales provenientes de lecturas reales. Se actualizan cada vez
     public JSONObject myJSON;               // JSON Object de los valoresRealesActuales, re-usado por WebSocketService para enviar data por eventos
+    public String[] nombreParametros;       // Nombre de parámetros de cada valorRealActual, por ejemplo "Velocidad" se relaciona con ínidice 0 de valoresRealesActuales
 
     LinkedList<Service> mySubscriptions;    // Servicios a los que les comunico mis updates
 
@@ -44,12 +44,14 @@ public class AppComponent{
      * @param id Nombre del AppComponent
      * @param minimosConDecimal Valores mínimos de cada valor del componente
      * @param maximosConDecimal Valores máximos de cada valor del componente
+     * @param nombreParametros Nombre de los parámetros del componente actual
      */
-    public AppComponent(String id, double[] minimosConDecimal, double[] maximosConDecimal) {
+    public AppComponent(String id, double[] minimosConDecimal, double[] maximosConDecimal, String[] nombreParametros) {
         this();
         this.ID = id;
         this.minimosConDecimal = minimosConDecimal;
         this.maximosConDecimal = maximosConDecimal;
+        this.nombreParametros = nombreParametros;
 
         this.len = minimosConDecimal.length;
         this.decimales = new int[len];

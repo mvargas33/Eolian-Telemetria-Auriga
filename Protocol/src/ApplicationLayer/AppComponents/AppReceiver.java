@@ -19,8 +19,8 @@ public class AppReceiver extends AppComponent implements Runnable{
      * @param minimosConDecimal Valores mínimos de cada valor del componente
      * @param maximosConDecimal Valores máximos de cada valor del componente
      */
-    public AppReceiver(String id, double[] minimosConDecimal, double[] maximosConDecimal) {
-        super(id, minimosConDecimal, maximosConDecimal);
+    public AppReceiver(String id, double[] minimosConDecimal, double[] maximosConDecimal, String[] nombreParametros) {
+        super(id, minimosConDecimal, maximosConDecimal, nombreParametros);
         this.messageQueue = new LinkedBlockingDeque<>();
 
         // Crea estado de capa inferior, con los datos deducidos de esta capa. Lo más importante son los bits significativos.

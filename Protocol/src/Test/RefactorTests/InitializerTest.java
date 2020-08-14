@@ -79,14 +79,16 @@ class InitializerTest {
         // Main AppComponents and readers
         double[] bms_min = {0, 0.0, -100.01, 5.01};
         double[] bms_max = {1, 10.0, 100.01, 9.01};
-        AppSender bms = new AppSender("BMS", bms_min, bms_max);
+        String[] bms_params = {"",""};
+        AppSender bms = new AppSender("BMS", bms_min, bms_max, bms_params);
 
         bms.setSenderAdmin(senderAdmin);
         RandomReader bms_reader = new RandomReader(bms, READ_FRECUENCY);
 
         double[] motor_min = {0, 0, 0.01, -100.01};
         double[] motor_max = {1, 1, 300.01, 100.01};
-        AppSender motor = new AppSender("MOTOR", motor_min, motor_max);
+        String[] motor_params = {"",""};
+        AppSender motor = new AppSender("MOTOR", motor_min, motor_max, motor_params);
 
         motor.setSenderAdmin(senderAdmin);
         RandomReader motor_reader = new RandomReader(motor, READ_FRECUENCY);
@@ -145,11 +147,13 @@ class InitializerTest {
         // Main AppComponents and readers
         double[] bms_min = {0, 0.0, -100.01, 5.01};
         double[] bms_max = {1, 10.0, 100.01, 9.01};
-        AppReceiver bms = new AppReceiver("BMS_R", bms_min, bms_max);
+        String[] bms_params = {"",""};
+        AppReceiver bms = new AppReceiver("BMS_R", bms_min, bms_max, bms_params);
 
         double[] motor_min = {0, 0, 0.01, -100.01};
         double[] motor_max = {1, 1, 300.01, 100.01};
-        AppReceiver motor = new AppReceiver("MOTOR_R", motor_min, motor_max);
+        String[] motor_params = {"",""};
+        AppReceiver motor = new AppReceiver("MOTOR_R", motor_min, motor_max, motor_params);
 
         // Lista de AppReceiver para suscribir todos a servicios
         LinkedList<AppReceiver> list = new LinkedList<>();
