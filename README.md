@@ -8,6 +8,8 @@ This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 Inter
 
 Our aim as a team is to share this software as an academic material, and contribute to solar car's community. We also want to give attribution to the people who put the effort to make this software possible. You may license your contributions to adaptations of this BY-SA 4.0 work under [GPLv3 Licence][GPLv3], it's BY-SA 4.0 compatible.
 
+[GPLv3]: https://www.gnu.org/licenses/gpl-3.0.html
+
 # Eolian Auriga Telemetry System
 The telemetry system runs in a Raspberry Pi inside the car. On one hand, it uses a Java Application to receive data from the car and other logistics tasks. On the other hand, it runs a VueJS application to visualize data and interact with the users. The system uses a middleware written in JS to communicate back-end and front-end.
 
