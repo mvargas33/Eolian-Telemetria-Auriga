@@ -138,4 +138,17 @@ public class AppComponent{
         this.myJSON.put(this.ID, this.valoresRealesActuales); // Update JSON para WebSocket
     }
 
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.ID);
+        sb.append("\n");
+        for(int i = 0; i < len; i++){
+            sb.append(this.nombreParametros[i]);
+            sb.append(" : [");sb.append(this.minimosConDecimal[i]);sb.append(" | ");sb.append(this.maximosConDecimal[i]);sb.append("] ");
+            sb.append(this.valoresRealesActuales[i]);
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 }

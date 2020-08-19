@@ -26,3 +26,13 @@ NOTE 2: There may be problem with linux due to the slashes in directory paths. J
 
 
 # How to CSV->AppComponent
+
+- Set up a String with the path `src/ExcelToAppComponent/YOUR_CSVS_PATH`
+- Use the static class `CSVToAppComponent`in initilializers as follows
+
+`
+String dir = "src/ExcelToAppComponent/YOUR_CSVS_PATH";
+List<AppSender> appSenders = CSVToAppComponent.CSVs_to_AppSenders(dir); \\ or
+List<AppReceiver> appReceivers = CSVToAppComponent.CSVs_to_AppReceivers(dir);`
+
+- Then continue the initialization.
