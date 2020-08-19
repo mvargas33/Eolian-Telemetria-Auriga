@@ -2,7 +2,7 @@ package ApplicationLayer.AppComponents;
 
 import ApplicationLayer.LocalServices.Service;
 import Utilities.DoubleOperations;
-import org.json.JSONObject;
+import org.json.simple.JSONObject;
 
 import java.util.LinkedList;
 
@@ -135,7 +135,7 @@ public class AppComponent{
      * @throws Exception Posibles errores de json.put()
      */
     public void updateMyJSON() throws Exception{
-        this.myJSON.put(this.ID, this.valoresRealesActuales); // Update JSON para WebSocket
+        this.myJSON.put("data", this.valoresRealesActuales); // Update JSON para WebSocket
     }
 
     @Override

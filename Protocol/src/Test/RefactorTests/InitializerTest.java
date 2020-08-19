@@ -4,7 +4,9 @@ import ApplicationLayer.AppComponents.AppComponent;
 import ApplicationLayer.AppComponents.AppReceiver;
 import ApplicationLayer.AppComponents.AppSender;
 import ApplicationLayer.LocalServices.PrintService;
+import ApplicationLayer.LocalServices.WebSocketService;
 import ApplicationLayer.SensorReading.RandomReaders.RandomReader;
+import ExcelToAppComponent.CSVToAppComponent;
 import PresentationLayer.Encryption.CryptoAdmin;
 import PresentationLayer.Encryption.KeyAdmin;
 import PresentationLayer.Packages.Components.State;
@@ -23,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -42,7 +45,11 @@ class InitializerTest {
     int FIRST_HEADER = 56;
 
     // Data parameters
-    int READ_FRECUENCY = 1; // 1000ms = 1seg
+    int READ_FRECUENCY = 2000; // 1000ms = 1seg
+
+    // WebSockets parameters
+    int SOCKET_PORT = 3000;
+    String HOSTNAME = "localhost";
 
     /**
      * Ejecutarlo para cambiar las keys de sender/receiver
@@ -76,7 +83,7 @@ class InitializerTest {
         XbeeSender xbeeSender = new XbeeSender(XBEE_BAUD, XBEE_PORT);
         SenderAdmin senderAdmin = new SenderAdmin(xbeeSender, cryptoAdmin);
 
-        // Main AppComponents and readers
+        /*// Main AppComponents and readers
         double[] bms_min = {0, 0.0, -100.01, 5.01};
         double[] bms_max = {1, 10.0, 100.01, 9.01};
         String[] bms_params = {"",""};
@@ -95,12 +102,19 @@ class InitializerTest {
 
         // Lista de AppSenders para suscribir todos a servicios
         LinkedList<AppSender> list = new LinkedList<>();
-        list.add(bms);list.add(motor);
+        list.add(bms);list.add(motor);*/
+
+        String dir = "src/ExcelToAppComponent/Eolian_fenix";
+        List<AppSender> appSenders = CSVToAppComponent.CSVs_to_AppSenders(dir);
 
         // Lista de estados de capa inferior para incializar mensajes-state
         LinkedList<State> state_list = new LinkedList<>();
-        for (AppSender as: list) {
-            state_list.add(as.getState());
+        LinkedList<RandomReader> randomReaders = new LinkedList<>();
+
+        for (AppSender as: appSenders) {
+            as.setSenderAdmin(senderAdmin); // Add senderAdmin
+            state_list.add(as.getState());  // Extract State from presentationLayer
+            randomReaders.add(new RandomReader(as, READ_FRECUENCY));    // Add a random reader
         }
 
         // Initializer of States/Messages
@@ -113,22 +127,20 @@ class InitializerTest {
 
         // High Level Services
         PrintService printService = new PrintService();
+        WebSocketService webSocketService = new WebSocketService(SOCKET_PORT, HOSTNAME);
 
-        for (AppComponent ac: list) {
-            ac.subscribeToService(printService);
-        }
+        for (AppComponent ac: appSenders) { ac.subscribeToService(printService); ac.subscribeToService(webSocketService);}
 
         // Execute threads
-        ExecutorService mainExecutor = Executors.newFixedThreadPool(7);
+        ExecutorService mainExecutor = Executors.newFixedThreadPool(2+appSenders.size()+randomReaders.size()+2);
 
         // Init threads
         mainExecutor.submit(xbeeSender);
         mainExecutor.submit(senderAdmin);
-        mainExecutor.submit(bms);
-        mainExecutor.submit(motor);
-        mainExecutor.submit(bms_reader);
-        mainExecutor.submit(motor_reader);
+        for (AppSender as: appSenders ) { mainExecutor.submit(as); }
+        for (RandomReader rd:randomReaders) {mainExecutor.submit(rd);}
         mainExecutor.submit(printService);
+        mainExecutor.submit(webSocketService);
 
         /////////////////////////// ShutDown //////////////////////////
         mainExecutor.shutdown();
@@ -144,7 +156,7 @@ class InitializerTest {
         CryptoAdmin cryptoAdmin = setupCryptoAdmin();
         XbeeReceiver xbeeReceiver = new XbeeReceiver(XBEE_BAUD, XBEE_PORT);
 
-        // Main AppComponents and readers
+        /*// Main AppComponents and readers
         double[] bms_min = {0, 0.0, -100.01, 5.01};
         double[] bms_max = {1, 10.0, 100.01, 9.01};
         String[] bms_params = {"",""};
@@ -157,11 +169,15 @@ class InitializerTest {
 
         // Lista de AppReceiver para suscribir todos a servicios
         LinkedList<AppReceiver> list = new LinkedList<>();
-        list.add(bms);list.add(motor);
+        list.add(bms);list.add(motor);*/
+
+        String dir = "src/ExcelToAppComponent/Eolian_fenix";
+        List<AppReceiver> appReceivers = CSVToAppComponent.CSVs_to_AppReceivers(dir);
 
         // Lista de estados de capa inferior para incializar mensajes-state
         LinkedList<State> state_list = new LinkedList<>();
-        for (AppReceiver as: list) {
+        for (AppReceiver as: appReceivers) {
+            as.ID = as.ID + "_R";
             state_list.add(as.getState());
         }
 
@@ -175,18 +191,15 @@ class InitializerTest {
         // High Level Services
         PrintService printService = new PrintService();
 
-        for (AppComponent ac: list) {
-            ac.subscribeToService(printService);
-        }
+        for (AppComponent ac: appReceivers) { ac.subscribeToService(printService); }
 
         // Execute threads
-        ExecutorService mainExecutor = Executors.newFixedThreadPool(7);
+        ExecutorService mainExecutor = Executors.newFixedThreadPool(2+appReceivers.size()+1);
 
         // Init threads
         mainExecutor.submit(xbeeReceiver);
         mainExecutor.submit(receiverAdmin);
-        mainExecutor.submit(bms);
-        mainExecutor.submit(motor);
+        for (AppReceiver ap: appReceivers ) { mainExecutor.submit(ap); }
         mainExecutor.submit(printService);
 
         /////////////////////////// ShutDown //////////////////////////
@@ -207,6 +220,6 @@ class InitializerTest {
     public static void main(String[] args) throws Exception {
         InitializerTest it = new InitializerTest();
         it.senderSetup();
-        it.receiverSetup();
+        //it.receiverSetup();
     }
 }

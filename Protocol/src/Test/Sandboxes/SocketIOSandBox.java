@@ -67,7 +67,7 @@ public class SocketIOSandBox {
 
         server.start();
         while (true){
-            // server.getBroadcastOperations().sendEvent("hola", "hola front-end");
+            server.getBroadcastOperations().sendEvent("hola", "hola front-end");
             server.getBroadcastOperations().sendEvent("mainData", json);
             Thread.sleep(1000);
         }
