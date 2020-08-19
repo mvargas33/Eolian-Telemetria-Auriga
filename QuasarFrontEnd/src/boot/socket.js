@@ -24,7 +24,7 @@ import store from '../store/index.js'
 
 Vue.use(new VueSocketIO({
   debug: true,
-  connection: 'http://190.45.34.49:3000', // 190.45.34.49:3000 | localhost:3000
+  connection: 'http://localhost:3000', // 190.45.34.49:3000 | localhost:3000
   vuex: {
     store,
     actionPrefix: 'SOCKET_',
