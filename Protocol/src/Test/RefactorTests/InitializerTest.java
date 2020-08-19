@@ -20,6 +20,7 @@ import ZigBeeLayer.Receiving.ReceiverAdmin;
 import ZigBeeLayer.Receiving.XbeeReceiver;
 import ZigBeeLayer.Sending.SenderAdmin;
 import ZigBeeLayer.Sending.XbeeSender;
+import com.digi.xbee.api.XBeeDevice;
 import org.junit.jupiter.api.Test;
 
 import java.security.NoSuchAlgorithmException;
@@ -37,15 +38,20 @@ class InitializerTest {
     int IV_SIG_BYTES = 12;
     int CONTENT_SIG_BYTES = 16*5 + 15; // 5 bloques de 16 bytes, + 1 bloque de 15 bytes + 1 bloque de 16 bytes (MAC+IV)
 
+    double MSG_RAW_SIZE_BYTES = CONTENT_SIG_BYTES + 1 + IV_SIG_BYTES + MAC_SIG_BYTES; // Tamaño de cada mensaje. Se usa para estimar delays lectura
+
     // Xbee common parameters
     int XBEE_BAUD = 230400;
+    double XBEE_MAX_BYTES_PER_SEC_LIMIT = 7200; // Sólo puede enviar 7200 bytes por segundo A ESTE BAUDRATE y tamaño de mensaje de 114 bytes. Dato empírico
+    double XBEE_MAX_MSG_PER_SEC_LIMIT = (XBEE_MAX_BYTES_PER_SEC_LIMIT/MSG_RAW_SIZE_BYTES) ;       // Mensajes por segundo (63.1) que puede enviar la Xbee a ese baudrate y tamaño de mensaje. (-1) Para holgura
+    double XBEE_MAX_MSG_PERIOD_MS = ((1.0/XBEE_MAX_MSG_PER_SEC_LIMIT) * 1000) + 1;  // Delay en MS del Xbee (16ms). (+1) para holgura
 
     // Protocol paramseters
     int MSG_SIZE_BITS = 8*(16*5);
     int FIRST_HEADER = 56;
 
     // Data parameters
-    int READ_FRECUENCY = 2000; // 1000ms = 1seg
+    int READ_PERIOD = 0; // 1000ms = 1seg
 
     // WebSockets parameters
     int SOCKET_PORT = 3000;
@@ -80,29 +86,8 @@ class InitializerTest {
 
         // Object initialization
         CryptoAdmin cryptoAdmin = setupCryptoAdmin();
-        XbeeSender xbeeSender = new XbeeSender(XBEE_BAUD, XBEE_PORT);
+        XbeeSender xbeeSender = new XbeeSender(XBEE_BAUD, XBEE_PORT, (int) MSG_RAW_SIZE_BYTES);
         SenderAdmin senderAdmin = new SenderAdmin(xbeeSender, cryptoAdmin);
-
-        /*// Main AppComponents and readers
-        double[] bms_min = {0, 0.0, -100.01, 5.01};
-        double[] bms_max = {1, 10.0, 100.01, 9.01};
-        String[] bms_params = {"",""};
-        AppSender bms = new AppSender("BMS", bms_min, bms_max, bms_params);
-
-        bms.setSenderAdmin(senderAdmin);
-        RandomReader bms_reader = new RandomReader(bms, READ_FRECUENCY);
-
-        double[] motor_min = {0, 0, 0.01, -100.01};
-        double[] motor_max = {1, 1, 300.01, 100.01};
-        String[] motor_params = {"",""};
-        AppSender motor = new AppSender("MOTOR", motor_min, motor_max, motor_params);
-
-        motor.setSenderAdmin(senderAdmin);
-        RandomReader motor_reader = new RandomReader(motor, READ_FRECUENCY);
-
-        // Lista de AppSenders para suscribir todos a servicios
-        LinkedList<AppSender> list = new LinkedList<>();
-        list.add(bms);list.add(motor);*/
 
         String dir = "src/ExcelToAppComponent/Eolian_fenix";
         List<AppSender> appSenders = CSVToAppComponent.CSVs_to_AppSenders(dir);
@@ -114,16 +99,26 @@ class InitializerTest {
         for (AppSender as: appSenders) {
             as.setSenderAdmin(senderAdmin); // Add senderAdmin
             state_list.add(as.getState());  // Extract State from presentationLayer
-            randomReaders.add(new RandomReader(as, READ_FRECUENCY));    // Add a random reader
         }
 
         // Initializer of States/Messages
         SenderInitializer senderInitializer = new SenderInitializer(state_list,MSG_SIZE_BITS, FIRST_HEADER);
-        senderInitializer.genMessages();
+        HashMap<Character, Message> map = senderInitializer.genMessages();
 
-        // Check map
-        //StateSender bms_State = (StateSender) bms.getState();
-        //System.out.println(bms_State.printMessagesWithIndexes());
+        // Delay reading calc
+        int numberOfMessagesToBeSend = map.size();
+        double bytesToBeSend = numberOfMessagesToBeSend * MSG_RAW_SIZE_BYTES;
+        this.READ_PERIOD = (int) (numberOfMessagesToBeSend * XBEE_MAX_MSG_PERIOD_MS + 10.0);
+        //this.READ_PERIOD = 358;
+
+        System.out.println("Messages to send of 114 bytes: " + numberOfMessagesToBeSend + " In bytes: " + bytesToBeSend);
+        System.out.println("Delay of each Message: " + READ_PERIOD);
+
+        // Random reader
+        for (AppSender as: appSenders) {
+            System.out.println(as.getMessages().size());
+            randomReaders.add(new RandomReader(as, READ_PERIOD * as.getMessages().size())); // DELAY * # MSG IN PARTICIPATION
+        }
 
         // High Level Services
         PrintService printService = new PrintService();
@@ -135,17 +130,54 @@ class InitializerTest {
         ExecutorService mainExecutor = Executors.newFixedThreadPool(2+appSenders.size()+randomReaders.size()+2);
 
         // Init threads
-        mainExecutor.submit(xbeeSender);
+        //mainExecutor.submit(xbeeSender);
         mainExecutor.submit(senderAdmin);
         for (AppSender as: appSenders ) { mainExecutor.submit(as); }
         for (RandomReader rd:randomReaders) {mainExecutor.submit(rd);}
-        mainExecutor.submit(printService);
-        mainExecutor.submit(webSocketService);
+        //mainExecutor.submit(printService);
+        //mainExecutor.submit(webSocketService);
 
         /////////////////////////// ShutDown //////////////////////////
         mainExecutor.shutdown();
 
-        System.out.println("END");
+        XBeeDevice myDevice = new XBeeDevice(XBEE_PORT, XBEE_BAUD);
+        myDevice.open();
+        byte[] data = new byte[114];
+        while(true) {
+            try {
+                myDevice.sendBroadcastData(data);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        /////////////////////////// Control delays //////////////////////////
+        /*int queueSizeAnterior = 0;
+        int queueSizeActual = 0;
+        int threshhold = 0;
+        int confirmaciones = 0;
+        while(true){
+            Thread.sleep(1000);
+            queueSizeActual = xbeeSender.getQueueSize();
+            if(queueSizeActual > queueSizeAnterior){
+                if(confirmaciones == 5){ // 5 confirmaciones seguidas
+                    threshhold = this.READ_PERIOD;
+                    this.READ_PERIOD = this.READ_PERIOD * 2;
+                    confirmaciones = 0;
+                }else{
+                    confirmaciones += 1;
+                }
+            }else{
+                confirmaciones = 0; // basta 1 vez que baje la cola para reiniciar el contador
+                if (this.READ_PERIOD - 10 > threshhold){
+                    this.READ_PERIOD -= 10;
+                }
+            }
+            System.out.println("New period: " + this.READ_PERIOD+ " Last queue size: " + queueSizeActual);
+            for (RandomReader rd:randomReaders) {rd.setDelayTime(this.READ_PERIOD * rd.getMyComponent().getMessages().size());}
+            queueSizeAnterior = queueSizeActual;
+        }*/
+
+        //System.out.println("END");
     }
 
     void receiverSetup() throws Exception {
@@ -156,20 +188,6 @@ class InitializerTest {
         CryptoAdmin cryptoAdmin = setupCryptoAdmin();
         XbeeReceiver xbeeReceiver = new XbeeReceiver(XBEE_BAUD, XBEE_PORT);
 
-        /*// Main AppComponents and readers
-        double[] bms_min = {0, 0.0, -100.01, 5.01};
-        double[] bms_max = {1, 10.0, 100.01, 9.01};
-        String[] bms_params = {"",""};
-        AppReceiver bms = new AppReceiver("BMS_R", bms_min, bms_max, bms_params);
-
-        double[] motor_min = {0, 0, 0.01, -100.01};
-        double[] motor_max = {1, 1, 300.01, 100.01};
-        String[] motor_params = {"",""};
-        AppReceiver motor = new AppReceiver("MOTOR_R", motor_min, motor_max, motor_params);
-
-        // Lista de AppReceiver para suscribir todos a servicios
-        LinkedList<AppReceiver> list = new LinkedList<>();
-        list.add(bms);list.add(motor);*/
 
         String dir = "src/ExcelToAppComponent/Eolian_fenix";
         List<AppReceiver> appReceivers = CSVToAppComponent.CSVs_to_AppReceivers(dir);

@@ -88,6 +88,15 @@ public class StateSender extends State{
     /*--------------------------------------------------- RESOURCES ---------------------------------------------------*/
 
     /**
+     * Retorna la lista de mensajes con índices. Se usa para estimar delays
+     * @return Lista de mensajes con índices
+     */
+    public LinkedList<MessagesWithIndexes> getListOfMyMessagesWithIndexes(){
+        return this.listOfMyMessagesWithIndexes;
+    }
+
+
+    /**
      * Retorna la representación en String de los mensajes que tiene este componente
      * @return : String de mensajes con indices del componente actual
      */

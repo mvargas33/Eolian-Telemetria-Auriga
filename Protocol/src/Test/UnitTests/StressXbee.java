@@ -42,11 +42,11 @@ public class StressXbee {
 
         // Constantes
         String PORT_RECEIVE = "COM4";
-        String PORT_SEND = "COM6";
-        int BAUD_RATE = 2400;
+        String PORT_SEND = "COM3";
+        int BAUD_RATE = 230400;
 
         // ------------------- RECEIVER ------------------- //
-        XBeeDevice myDeviceR = new XBeeDevice(PORT_RECEIVE, BAUD_RATE);
+        /*XBeeDevice myDeviceR = new XBeeDevice(PORT_RECEIVE, BAUD_RATE);
 
         // Esto abre la Xbee y añade el Listener, nada más, la deja abierta cosa que cada vez que llegue un mensaje, se activa el listener
         try {
@@ -56,7 +56,7 @@ public class StressXbee {
         } catch (XBeeException e) {
             e.printStackTrace();
             System.exit(1);
-        }
+        }*/
 
         // ------------------- SENDER ------------------- //
         XBeeDevice myDevice; // Xbee para envío de bytes
@@ -68,15 +68,18 @@ public class StressXbee {
         // Stress TEST
         int intentos_por_largo = 1000;
         int intento_actual = 0;
-        int largo_actual = 1; // en Bytes
+        int largo_actual = 114; // en Bytes
         int largo_max = 114; // MAX VALOR POSIBLE, SINO XBEE TIRA ERROR: Error: Data payload too large (0x74)
 
         double[] promedio_mensajes_sec = new double[largo_max];
         long initial_time ;
         long last_time ;
 
+        String str_data = "";
+        for (int i = 0; i < largo_max; i++){
+            str_data += "0";
+        }
 
-        String str_data = "0";
         byte[] data = str_data.getBytes();
 
         // El mensaje crece cada vez

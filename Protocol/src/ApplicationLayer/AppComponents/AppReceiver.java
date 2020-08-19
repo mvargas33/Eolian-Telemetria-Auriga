@@ -28,6 +28,10 @@ public class AppReceiver extends AppComponent implements Runnable{
         this.myPresentationState.setAppReceiver(this);
     }
 
+    /**
+     * Retorna el StateReceiver. Se usa para inicializar el state con mensajes
+     * @return StateReceiver
+     */
     public State getState(){
         return this.myPresentationState;
     }

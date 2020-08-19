@@ -11,7 +11,7 @@ public abstract class SensorsReader implements Runnable {
     public AppSender myComponent;  // Componente al cual le encolará valores nuevos
     private long currentTime;               // Tiempos para verificar delay
     private long lastTime;
-    private final long delayTime;
+    private long delayTime;
     private double[] values;                // Por optimización de memoria
 
     /**
@@ -30,6 +30,18 @@ public abstract class SensorsReader implements Runnable {
      * @return array de valores double[] con los nuevos valores del componente
      */
     public abstract double[] read();
+
+    /**
+     * Para control de delay
+     * @param delayTimeMS
+     */
+    public synchronized void setDelayTime(long delayTimeMS){
+        this.delayTime = delayTimeMS;
+    }
+
+    public synchronized AppSender getMyComponent(){
+        return this.myComponent;
+    }
 
     /**
      * 0: Verifica que haya pasado tiempo suficiente para volver a leer.

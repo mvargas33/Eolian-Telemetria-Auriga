@@ -9,37 +9,46 @@ export default {
   name: 'App',
   sockets: {
     mainData (data) {
-      // console.log('broadcast event listened\n')
+      console.log('broadcast event listened\n')
       // console.log(this.$store)
       console.log(data)
-      this.$store.dispatch('fenix/updateMainData', data)
+      this.$store.dispatch('fenix/updateMainData', data.data)
     },
     kelly_der (data) {
-      this.$store.dispatch('fenix/updateKellyDer', data)
+      console.log(data)
+      this.$store.dispatch('fenix/updateKellyDer', data.data)
     },
     kelly_izq (data) {
-      this.$store.dispatch('fenix/updateKellyIzq', data)
+      console.log(data)
+      this.$store.dispatch('fenix/updateKellyIzq', data.data)
     },
     bms (data) {
-      this.$store.dispatch('fenix/updateBms', data)
+      console.log(data)
+      this.$store.dispatch('fenix/updateBms', data.data)
     },
     bms_temp (data) {
-      this.$store.dispatch('fenix/updateBmsTemp', data)
+      console.log(data)
+      this.$store.dispatch('fenix/updateBmsTemp', data.data)
     },
     bms_volt (data) {
-      this.$store.dispatch('fenix/updateBmsVolt', data)
+      console.log(data)
+      this.$store.dispatch('fenix/updateBmsVolt', data.data)
     },
     mppt1 (data) {
-      this.$store.dispatch('fenix/updateMppt1', data)
+      console.log(data)
+      this.$store.dispatch('fenix/updateMppt1', data.data)
     },
     mppt2 (data) {
-      this.$store.dispatch('fenix/updateMppt2', data)
+      console.log(data)
+      this.$store.dispatch('fenix/updateMppt2', data.data)
     },
     mppt3 (data) {
-      this.$store.dispatch('fenix/updateMppt3', data)
+      console.log(data)
+      this.$store.dispatch('fenix/updateMppt3', data.data)
     },
     mppt4 (data) {
-      this.$store.dispatch('fenix/updateMppt4', data)
+      console.log(data)
+      this.$store.dispatch('fenix/updateMppt4', data.data)
     },
     potencia_mppt (data) {
       this.$store.dispatch('fenix/updatePotenciaMppt', data)

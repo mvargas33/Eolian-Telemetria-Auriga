@@ -16,6 +16,8 @@ public class XbeeSender implements Runnable{
     private BlockingQueue<byte[]> bytesToSend; // Queue de bytes[] para enviar por Xbee
     private XbeeReceiver myReceiver; // ONLY FOR TESTING, DELETE AFTER REAL TESING
     private XBeeDevice myDevice; // Xbee para envío de bytes
+
+    private byte[] actualArray;
     //private String REMOTE_NODE_IDENTIFIER; // Dirección de Xbee destino
     //private XBeeNetwork xbeeNetwork;
     //private RemoteXBeeDevice remoteDevice;
@@ -37,9 +39,10 @@ public class XbeeSender implements Runnable{
      * @param PORT_SEND : Puerto COM donde está conectada la Xbee
      * @throws Exception : Ecepcion de ejecucion
      */
-    public XbeeSender(int BAUD_RATE, String PORT_SEND) throws Exception{
+    public XbeeSender(int BAUD_RATE, String PORT_SEND, int byteArraySize) throws Exception{
         this.bytesToSend = new LinkedBlockingQueue<>();
         this.myDevice = new XBeeDevice(PORT_SEND, BAUD_RATE);
+        this.actualArray = new byte[byteArraySize];
         //this.REMOTE_NODE_IDENTIFIER = REMOTE_NODE_IDENTIFIER;
         this.myDevice.open(); // Esto se hace acá para hacerlo una sola vez, mejora la eficiencia de envío de mensajes
         //this.xbeeNetwork = myDevice.getNetwork();
@@ -71,9 +74,10 @@ public class XbeeSender implements Runnable{
      * Toma un byte[] array de la Queue y lo envía a través de las Xbees
      */
     public void sendByte() {
-        while(!this.bytesToSend.isEmpty()){
-            System.out.println("Tamaño de Queue de XbeeSender: " + this.bytesToSend.size());
-            byte[] data = this.bytesToSend.poll(); // Sacar byte[] de la Queue
+        //while(!this.bytesToSend.isEmpty()){
+
+        while(true){
+            //byte[] data = this.bytesToSend.poll(); // Sacar byte[] de la Queue
             try {
                 // Obtain the remote XBee device from the XBee network.
 
@@ -83,17 +87,29 @@ public class XbeeSender implements Runnable{
                 }*/
 
                 //System.out.print("Enviando datos a Xbee Destino: " + BitOperations.ArraytoString(data));
-                System.out.println("Enviado.");
-                myDevice.sendBroadcastData(data);
+                for(int i = 0; i < this.bytesToSend.size(); i++) {
+                    this.actualArray = this.bytesToSend.poll();
+                    myDevice.sendBroadcastData(bytesToSend.poll());
+                }
+
+                //System.out.println("Tamaño de Queue de XbeeSender: " + this.bytesToSend.size());
                 //myDevice.sendData(remoteDevice, data);
 
 
             } catch (XBeeException e) {
                 System.out.println("Error al enviar mensaje a Xbee Destino");
                 e.printStackTrace();
-                System.exit(1);
+                //System.exit(1);
             }
         }
+    }
+
+    /**
+     * Para control de delay
+     * @return tamaño de la cola
+     */
+    public int getQueueSize(){
+        return this.bytesToSend.size();
     }
 
     /**
@@ -103,12 +119,26 @@ public class XbeeSender implements Runnable{
     @Override
     public void run() {
         while(true){
-            try{
-                sendByte(); // Sacar byte[] de la cola y enviarlo
-            }catch (Exception e){
+            //sendByte(); // Sacar byte[] de la cola y enviarlo
+
+            String str_data = "";
+            for (int i = 0; i < 114; i++){
+                str_data += "0";
+            }
+            byte[] data = str_data.getBytes();
+
+            try {
+                while(true) {
+                    myDevice.sendBroadcastData(data);
+                }
+            } catch (XBeeException e) {
+                System.out.println("Error al enviar mensaje a Xbee Destino");
+                e.printStackTrace();
+                //System.exit(1);
+            }catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
+
     }
 }

@@ -4,6 +4,7 @@ import PresentationLayer.Packages.Components.State;
 import PresentationLayer.Packages.Components.StateSender;
 import ZigBeeLayer.Sending.SenderAdmin;
 
+import java.util.LinkedList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -37,8 +38,20 @@ public class AppSender extends  AppComponent implements Runnable{
         this.myPresentationState.setMySenderAdmin(mySenderAdmin);
     }
 
+    /**
+     * Retorna el StateSender. Se usa para inicializar el state con mensajes
+     * @return StateSender
+     */
     public State getState(){
         return this.myPresentationState;
+    }
+
+    /**
+     * Retorna la lista de MessagesWithIndex de la capa de presentación. Se usa para estimar delays
+     * @return lista de MessagesWithIndex de la capa de presentación.
+     */
+    public LinkedList<State.MessagesWithIndexes> getMessages(){
+        return this.myPresentationState.getListOfMyMessagesWithIndexes();
     }
 
     /**
@@ -84,7 +97,7 @@ public class AppSender extends  AppComponent implements Runnable{
         while(true) {
             try {
                 while (!newValuesQueue.isEmpty()) {
-                    System.out.println("Queue nuevos valores para " + this.ID + ": " + this.newValuesQueue.size());
+                    //System.out.println("Queue nuevos valores para " + this.ID + ": " + this.newValuesQueue.size());
                     double[] newValues = newValuesQueue.poll(); // 1 : Leer buffer en busca de nuevos valores entregados
                     super.updateValues(newValues);              // 2: Actualizar valores localmente
                     super.informToServices();                   // 3: Mandar a ponerse en cola de servicios
