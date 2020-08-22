@@ -88,7 +88,7 @@ public class XbeeSender implements Runnable{
 
                 //System.out.print("Enviando datos a Xbee Destino: " + BitOperations.ArraytoString(data));
                 for(int i = 0; i < this.bytesToSend.size(); i++) {
-                    this.actualArray = this.bytesToSend.poll();
+                    //this.actualArray = this.bytesToSend.poll();
                     myDevice.sendBroadcastData(bytesToSend.poll());
                 }
 
@@ -119,9 +119,10 @@ public class XbeeSender implements Runnable{
     @Override
     public void run() {
         while(true){
-            //sendByte(); // Sacar byte[] de la cola y enviarlo
+            try{
+            sendByte(); // Sacar byte[] de la cola y enviarlo
 
-            String str_data = "";
+            /*String str_data = "";
             for (int i = 0; i < 114; i++){
                 str_data += "0";
             }
@@ -130,12 +131,8 @@ public class XbeeSender implements Runnable{
             try {
                 while(true) {
                     myDevice.sendBroadcastData(data);
-                }
-            } catch (XBeeException e) {
-                System.out.println("Error al enviar mensaje a Xbee Destino");
-                e.printStackTrace();
-                //System.exit(1);
-            }catch (Exception e) {
+                }*/
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
