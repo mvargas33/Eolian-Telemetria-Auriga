@@ -105,6 +105,16 @@ public class AppComponent{
     }
 
     /**
+     * Hace un for secuencial para cada servicio, haciendo que usen los datos del AppComponente en forma secuencial.
+     */
+    public void sequentialInformToServices(){
+        for (Service s: mySubscriptions
+        ) {
+            s.sequentialRun(this); // Me pongo en cola del servicio
+        }
+    }
+
+    /**
      * Retorna el ID del AppComponent (= ID del State de capa inferior)
      * @return ID tipo String del AppComponent
      */

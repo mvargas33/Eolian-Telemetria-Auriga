@@ -108,4 +108,18 @@ public class AppSender extends  AppComponent implements Runnable{
             }
         }
     }
+
+    /**
+     * Método que ejecuta SensorReader para seguir secuencialmente lo que haría AppSender en run() en forma paralela
+     * @param newValues valores nuevos desde RandomReader
+     */
+    public void sequentialRun(double[] newValues){
+        try {
+            super.updateValues(newValues);              // 2: Actualizar valores localmente
+            super.sequentialInformToServices();         // 3: Pasar por todos los servicios ejecutando los serve(this) en cada caso
+            this.updatePresentationValuesAndEnQueue();  // 4-5: Update de Messages asociados en capas inferiores/Ponerse en cola de envío
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

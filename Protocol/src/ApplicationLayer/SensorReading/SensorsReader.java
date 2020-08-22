@@ -56,7 +56,8 @@ public abstract class SensorsReader implements Runnable {
                 currentTime = System.currentTimeMillis();
                 if(currentTime - lastTime >= this.delayTime){   // 0: Si ya pasó el tiempo de delay y me toca leer
                     this.values = this.read();                  // 1: Leer nuevos valores
-                    myComponent.enqueueNewValues(values);       // 2: Encola nuevos valores
+                    //myComponent.enqueueNewValues(values);       // 2: Encola nuevos valores
+                    myComponent.sequentialRun(values);          // Ejecuta secuancialmente todas las acciones hasta dejar los valores byte[] en la cola del Xbee
                     lastTime = currentTime;                     // 3: Actualiza tiempos de lectura
                 }
             }catch (Exception e){
@@ -64,4 +65,5 @@ public abstract class SensorsReader implements Runnable {
             }
         }
     }
+
 }
