@@ -3,7 +3,7 @@ package ZigBeeLayer.Receiving;
 import PresentationLayer.Encryption.CryptoAdmin;
 import PresentationLayer.Packages.Messages.Message;
 import PresentationLayer.Packages.Messages.ReceivedMessage;
-import Utilities.BitOperations;
+
 
 import java.util.HashMap;
 
@@ -31,13 +31,15 @@ public class ReceiverAdmin implements Runnable{
      * DEBE CHECKEAR CRC DEL MENSAJE
      */
     public void consumeByteArrayFromQueue() throws Exception{
-        while(!this.xbeeReceiver.isQueueEmpty()){
-            byte[] b = this.xbeeReceiver.consumeByteFromQueue();        // Extraer bytes RAW
-            byte[] unEncryptedBytes = this.myCryptoAdmin.decrypt(b);    // Desencriptar mensaje
+        while(true) {
+            for (int i= 0; i < this.xbeeReceiver.sizeOfQueue(); i++) {      // Saca de una pasada tantos byte[] como habían en cola hasta evaluar la condición
+                byte[] b = this.xbeeReceiver.consumeByteFromQueue();        // Extraer bytes RAW
+                byte[] unEncryptedBytes = this.myCryptoAdmin.decrypt(b);    // Desencriptar mensaje
 
-            char header = (char) unEncryptedBytes[0];                   // Extraer header
-            ReceivedMessage m = (ReceivedMessage) this.allMessages.get(header);
-            m.updateRawBytes(unEncryptedBytes); // Esto hace llamada en cadena hasta que todos los componentes que se actualizaron queden en la Queue de LocalMasterAdmin
+                char header = (char) unEncryptedBytes[0];                   // Extraer header
+                ReceivedMessage m = (ReceivedMessage) this.allMessages.get(header);
+                m.updateRawBytes(unEncryptedBytes); // Esto hace llamada en cadena hasta que todos los componentes que se actualizaron queden en la Queue de LocalMasterAdmin
+            }
         }
     }
 

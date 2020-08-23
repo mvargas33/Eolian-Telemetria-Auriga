@@ -1,11 +1,6 @@
 package ApplicationLayer.SensorReading;
 
-import ApplicationLayer.AppComponents.AppComponent;
 import ApplicationLayer.AppComponents.AppSender;
-import PresentationLayer.Packages.Components.State;
-
-import java.util.HashMap;
-import java.util.LinkedList;
 
 public abstract class SensorsReader implements Runnable {
     public AppSender myComponent;  // Componente al cual le encolará valores nuevos

@@ -4,8 +4,6 @@ import com.digi.xbee.api.XBeeDevice;
 import com.digi.xbee.api.exceptions.XBeeException;
 import com.digi.xbee.api.listeners.IDataReceiveListener;
 import com.digi.xbee.api.models.XBeeMessage;
-import com.digi.xbee.api.utils.HexUtils;
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -90,6 +88,14 @@ public class XbeeReceiver implements Runnable{
      */
     public boolean isQueueEmpty(){
         return bytesReceived.isEmpty();
+    }
+
+    /**
+     * Retorna el largo de la cola de recepción
+     * @return Largo de cola de recepción
+     */
+    public int sizeOfQueue(){
+        return bytesReceived.size();
     }
 
     /**

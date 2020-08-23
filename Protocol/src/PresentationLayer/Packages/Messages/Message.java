@@ -3,8 +3,6 @@ package PresentationLayer.Packages.Messages;
 import PresentationLayer.Packages.Components.State;
 import Utilities.BitOperations;
 
-import java.util.LinkedList;
-
 /*
  *  Piezas de bits que se intercambian entre las Xbees para hacer funcionar el protocolo.
  *  Los mensajes tienen un identificador y un largo definido.

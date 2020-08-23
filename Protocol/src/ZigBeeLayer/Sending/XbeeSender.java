@@ -1,7 +1,6 @@
 package ZigBeeLayer.Sending;
 
 import ZigBeeLayer.Receiving.XbeeReceiver;
-import Utilities.BitOperations;
 import com.digi.xbee.api.XBeeDevice;
 import com.digi.xbee.api.exceptions.XBeeException;
 

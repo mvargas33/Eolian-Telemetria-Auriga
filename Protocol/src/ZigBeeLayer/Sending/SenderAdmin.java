@@ -2,7 +2,6 @@ package ZigBeeLayer.Sending;
 
 import PresentationLayer.Encryption.CryptoAdmin;
 import PresentationLayer.Packages.Messages.Message;
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 

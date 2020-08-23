@@ -76,6 +76,40 @@ public class SequentialTest {
         return new CryptoAdmin(keyAdmin.getKey(), keyAdmin.getIV(), MAC_SIG_BYTES, IV_SIG_BYTES, CONTENT_SIG_BYTES);
     }
 
+    /**
+     * Control de delay de envío por mensaje, estilo ventana deslizante de TCP
+     * @param xbeeSender Para ver la cola de envío
+     * @param readers Para ajustar delay de lectura
+     * @throws Exception Del thread mismo
+     */
+    void activateDelayControl(XbeeSender xbeeSender, List<SensorsReader> readers) throws Exception{
+        int queueSizeAnterior = 0;
+        int queueSizeActual = 0;
+        int threshhold = 0;
+        int confirmaciones = 0;
+        while(true){
+            Thread.sleep(1000);
+            queueSizeActual = xbeeSender.getQueueSize();
+            if(queueSizeActual > queueSizeAnterior){
+                if(confirmaciones == 5){ // 5 confirmaciones seguidas
+                    threshhold = this.READ_PERIOD;
+                    this.READ_PERIOD = this.READ_PERIOD * 2;
+                    confirmaciones = 0;
+                }else{
+                    confirmaciones += 1;
+                }
+            }else{
+                confirmaciones = 0; // basta 1 vez que baje la cola para reiniciar el contador
+                if (this.READ_PERIOD - 1 > threshhold){
+                    this.READ_PERIOD -= 1;
+                }
+            }
+            System.out.println("New period: " + this.READ_PERIOD+ " Last queue size: " + queueSizeActual);
+            for (SensorsReader rd:readers) {rd.setDelayTime(this.READ_PERIOD * rd.getMyComponent().getMessages().size());}
+            queueSizeAnterior = queueSizeActual;
+        }
+    }
+
 
     void senderSetup() throws Exception {
         // Exclusive Xbee parameters
@@ -106,7 +140,7 @@ public class SequentialTest {
         int numberOfMessagesToBeSend = map.size();
         double bytesToBeSend = numberOfMessagesToBeSend * MSG_RAW_SIZE_BYTES;
         //this.READ_PERIOD = (int) (numberOfMessagesToBeSend * XBEE_MAX_MSG_PERIOD_MS + 10.0);
-        this.READ_PERIOD = 30;
+        this.READ_PERIOD = 100;
 
         System.out.println("Messages to send of 114 bytes: " + numberOfMessagesToBeSend + " In bytes: " + bytesToBeSend);
         System.out.println("Delay of each Message: " + READ_PERIOD);
@@ -122,67 +156,23 @@ public class SequentialTest {
         for (SensorsReader sr : randomReaders) { sequentialReaderExecutor.addReader(sr); }
 
         // High Level Services
-        PrintService printService = new PrintService();
-        WebSocketService webSocketService = new WebSocketService(SOCKET_PORT, HOSTNAME);
+        //PrintService printService = new PrintService();
+        /*WebSocketService webSocketService = new WebSocketService(SOCKET_PORT, HOSTNAME);
 
         for (AppComponent ac: appSenders) {
             //ac.subscribeToService(printService);
             ac.subscribeToService(webSocketService);
-        }
+        }*/
 
         // Execute threads
         ExecutorService mainExecutor = Executors.newFixedThreadPool(2);
-
-        // Init threads
         mainExecutor.submit(xbeeSender);
-        //mainExecutor.submit(senderAdmin);
         mainExecutor.submit(sequentialReaderExecutor);
-        //for (AppSender as: appSenders ) { mainExecutor.submit(as); }
-        //for (RandomReader rd:randomReaders) {mainExecutor.submit(rd);}
-        //mainExecutor.submit(printService);
-        //mainExecutor.submit(webSocketService);
-
-        /////////////////////////// ShutDown //////////////////////////
         mainExecutor.shutdown();
 
-        /*XBeeDevice myDevice = new XBeeDevice(XBEE_PORT, XBEE_BAUD);
-        myDevice.open();
-        byte[] data = new byte[114];
-        while(true) {
-            try {
-                myDevice.sendBroadcastData(data);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }*/
         /////////////////////////// Control delays //////////////////////////
-        /*int queueSizeAnterior = 0;
-        int queueSizeActual = 0;
-        int threshhold = 0;
-        int confirmaciones = 0;
-        while(true){
-            Thread.sleep(1000);
-            queueSizeActual = xbeeSender.getQueueSize();
-            if(queueSizeActual > queueSizeAnterior){
-                if(confirmaciones == 5){ // 5 confirmaciones seguidas
-                    threshhold = this.READ_PERIOD;
-                    this.READ_PERIOD = this.READ_PERIOD * 2;
-                    confirmaciones = 0;
-                }else{
-                    confirmaciones += 1;
-                }
-            }else{
-                confirmaciones = 0; // basta 1 vez que baje la cola para reiniciar el contador
-                if (this.READ_PERIOD - 1 > threshhold){
-                    this.READ_PERIOD -= 1;
-                }
-            }
-            System.out.println("New period: " + this.READ_PERIOD+ " Last queue size: " + queueSizeActual);
-            for (RandomReader rd:randomReaders) {rd.setDelayTime(this.READ_PERIOD * rd.getMyComponent().getMessages().size());}
-            queueSizeAnterior = queueSizeActual;
-        }*/
-
-        //System.out.println("END");
+        /*LinkedList<SensorsReader> l = new LinkedList<>();l.addAll(randomReaders);
+        activateDelayControl(xbeeSender, l);*/
     }
 
     void receiverSetup() throws Exception {
@@ -200,7 +190,7 @@ public class SequentialTest {
         // Lista de estados de capa inferior para incializar mensajes-state
         LinkedList<State> state_list = new LinkedList<>();
         for (AppReceiver as: appReceivers) {
-            as.ID = as.ID + "_R";
+            //as.ID = as.ID + "_R";
             state_list.add(as.getState());
         }
 
@@ -213,19 +203,19 @@ public class SequentialTest {
 
         // High Level Services
         PrintService printService = new PrintService();
+        WebSocketService webSocketService = new WebSocketService(SOCKET_PORT, HOSTNAME);
 
-        for (AppComponent ac: appReceivers) { ac.subscribeToService(printService); }
+        for (AppComponent ac: appReceivers) {
+            ac.subscribeToService(printService);
+            ac.subscribeToService(webSocketService);
+        }
 
         // Execute threads
-        ExecutorService mainExecutor = Executors.newFixedThreadPool(2+appReceivers.size()+1);
+        ExecutorService mainExecutor = Executors.newFixedThreadPool(2);
 
         // Init threads
         mainExecutor.submit(xbeeReceiver);
         mainExecutor.submit(receiverAdmin);
-        for (AppReceiver ap: appReceivers ) { mainExecutor.submit(ap); }
-        mainExecutor.submit(printService);
-
-        /////////////////////////// ShutDown //////////////////////////
         mainExecutor.shutdown();
     }
 
@@ -233,6 +223,6 @@ public class SequentialTest {
     public static void main(String[] args) throws Exception {
         SequentialTest it = new SequentialTest();
         it.senderSetup();
-        //it.receiverSetup();
+        it.receiverSetup();
     }
 }
