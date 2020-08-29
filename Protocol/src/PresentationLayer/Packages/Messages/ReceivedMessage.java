@@ -39,7 +39,8 @@ public class ReceivedMessage extends Message{
         for (StateReceiver s: this.myStates
         ) {
             //s.getAppReceiver().enqueueNewMessages(this); // Se pone en cola de cada AppComponent para que haga llamadas a sus States que lo actualicen
-            s.getAppReceiver().sequentialRun(this); // Llamada secuencial
+            s.updateMyValues(this.header); // Update de values de los States a los cuales pertenesco
+            s.getAppReceiver().sequentialRun(this); // Llamada secuencial. Luego subo a actualizar valores de presentación
         }
     }
 }

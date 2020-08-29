@@ -99,7 +99,7 @@ public class AppReceiver extends AppComponent implements Runnable{
      */
     public void sequentialRun(Message m){
         try {
-            this.myPresentationState.updateMyValues(m.getHeader());         // 2 : Update int[] de Componente presentación
+            //this.myPresentationState.updateMyValues(m.getHeader());         // 2 : Update int[] de Componente presentación
             this.updateFromReceiving(myPresentationState.getMyValues());    // 3 : Update double[] de valores reales
             super.sequentialInformToServices();                             // 4 : Informar a suscripciones uno a uno
         }catch (Exception e){
