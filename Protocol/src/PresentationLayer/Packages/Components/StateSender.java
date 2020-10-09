@@ -77,13 +77,16 @@ public class StateSender extends State{
         BitOperations.updateByteArrayFromValues(myValues, bytes, bitSig, m.myBitSig_inicio,  m.raw_inicio, m.raw_fin); // Update Messsage con lo que me corresponde
         //m.message.updateRawBytes(bytes); // TODO: Ver si esta linea es necesaria | Reemplazo directo de bytes de mensaje
         //m.message.bytes = bytes; // Update myself
-        SentMessage mm = (SentMessage) m.message;
+        /*SentMessage mm = (SentMessage) m.message;
         mm.marcarActualizacionDeComponente(m.componentNumber); // Marcar que este componente esta rdy en mensaje
         if(mm.isReadyToSend()){ // Si yo fui el último que faltaba para enviar el mensaje, calculo CRC8 y lo pongo en la queue
             //byte crc = BitOperations.calcCRC8(m.message.getBytes(), m.message.getLargoEnBytes() - 2); // Se calcula hasta antes del ultimo byte
             //m.message.getBytes()[m.message.getLargoEnBytes() - 1] = crc; // Update del CRC
-            this.mySenderAdmin.putMessageInQueue(m.message); // Poner en Queue de Sender Admin
-        }
+
+            // this.mySenderAdmin.putMessageInQueue(m.message); // Poner en Queue de Sender Admin
+            this.mySenderAdmin.sequentialRun(m.message); // Ejecución secuancial hasta ponerse en cola de Xbee
+        }*/
+        this.mySenderAdmin.sequentialRun(m.message); // Ejecución secuancial hasta ponerse en cola de Xbee
     }
     /*--------------------------------------------------- RESOURCES ---------------------------------------------------*/
 

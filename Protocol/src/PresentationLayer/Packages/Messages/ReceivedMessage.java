@@ -1,6 +1,5 @@
 package PresentationLayer.Packages.Messages;
 
-import ApplicationLayer.AppComponents.AppReceiver;
 import PresentationLayer.Packages.Components.State;
 import PresentationLayer.Packages.Components.StateReceiver;
 
@@ -39,7 +38,9 @@ public class ReceivedMessage extends Message{
         // Notify my components to check at my values
         for (StateReceiver s: this.myStates
         ) {
-            s.getAppReceiver().enqueueNewMessages(this); // Se pone en cola de cada AppComponent para que haga llamadas a sus States que lo actualicen
+            //s.getAppReceiver().enqueueNewMessages(this); // Se pone en cola de cada AppComponent para que haga llamadas a sus States que lo actualicen
+            s.updateMyValues(this.header); // Update de values de los States a los cuales pertenesco
+            s.getAppReceiver().sequentialRun(this); // Llamada secuencial. Luego subo a actualizar valores de presentación
         }
     }
 }

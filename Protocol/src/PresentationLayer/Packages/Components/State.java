@@ -1,11 +1,6 @@
 package PresentationLayer.Packages.Components;
 
 import PresentationLayer.Packages.Messages.Message;
-import ZigBeeLayer.Sending.SenderAdmin;
-import Utilities.BitOperations;
-
-import java.util.HashMap;
-import java.util.LinkedList;
 
 /*
     Los Componentes virtualizan los componentes del auto. Tienen un arreglo de valores int y un arreglo de bits significativos.

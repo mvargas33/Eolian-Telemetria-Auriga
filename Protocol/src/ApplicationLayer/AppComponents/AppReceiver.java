@@ -3,6 +3,7 @@ package ApplicationLayer.AppComponents;
 import PresentationLayer.Packages.Components.State;
 import PresentationLayer.Packages.Components.StateReceiver;
 import PresentationLayer.Packages.Messages.Message;
+import PresentationLayer.Packages.Messages.ReceivedMessage;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -66,6 +67,7 @@ public class AppReceiver extends AppComponent implements Runnable{
         for (int i = 0; i < len; i++) {
             this.valoresRealesActuales[i] = (valoresDeCapaPresentacion[i] - offset[i]) * Math.pow(10, -decimales[i]);
         }
+        this.updateMyJSON(); // Update JSON para WebSocket
     }
 
     /**
@@ -86,6 +88,20 @@ public class AppReceiver extends AppComponent implements Runnable{
                     super.informToServices();                                       // 4 : Informar a suscripciones
                 }
             }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Mismo que run() pero en forma secuencial
+     * @param m Message al cual hacer byte[] -> int[] - > double[] y luego informar a cada servicio secuencialmente
+     */
+    public void sequentialRun(Message m){
+        try {
+            //this.myPresentationState.updateMyValues(m.getHeader());         // 2 : Update int[] de Componente presentación
+            this.updateFromReceiving(myPresentationState.getMyValues());    // 3 : Update double[] de valores reales
+            super.sequentialInformToServices();                             // 4 : Informar a suscripciones uno a uno
         }catch (Exception e){
             e.printStackTrace();
         }

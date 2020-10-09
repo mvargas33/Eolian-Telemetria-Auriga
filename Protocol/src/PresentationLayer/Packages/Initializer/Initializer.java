@@ -2,7 +2,6 @@ package PresentationLayer.Packages.Initializer;
 
 import PresentationLayer.Packages.Components.State;
 import PresentationLayer.Packages.Messages.Message;
-import PresentationLayer.Packages.Messages.SentMessage;
 
 import java.util.HashMap;
 import java.util.LinkedList;
