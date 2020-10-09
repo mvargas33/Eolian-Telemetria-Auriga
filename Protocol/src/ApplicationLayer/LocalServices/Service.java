@@ -65,4 +65,12 @@ public abstract class Service implements Runnable{
             }
         }
     }
+
+    /**
+     * Ejecución secuencial pasando AppComponent como argumento
+     * @param c Componente a ser revisado por servicio
+     */
+    public void sequentialRun(AppComponent c){
+        this.serve(c);
+    }
 }

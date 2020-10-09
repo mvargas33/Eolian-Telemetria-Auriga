@@ -2,12 +2,7 @@ package ApplicationLayer.SensorReading.RandomReaders;
 
 import ApplicationLayer.AppComponents.AppSender;
 import ApplicationLayer.SensorReading.SensorsReader;
-import PresentationLayer.Packages.Components.State;
-//import ApplicationLayer.SensorReading.SensorsReader;
-//import sun.management.Sensor;
 
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Random;
 
 /**

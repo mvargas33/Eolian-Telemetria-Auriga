@@ -2,7 +2,6 @@ package ZigBeeLayer.Sending;
 
 import PresentationLayer.Encryption.CryptoAdmin;
 import PresentationLayer.Packages.Messages.Message;
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -16,6 +15,15 @@ public class SenderAdmin implements Runnable{
         this.messagesToSend = new LinkedBlockingQueue<>();
         this.myXbeeSender = xbeeSender; // Thread de xbeeSender debe ser creado antes que SenderAdmin
         this.myCryptoAdmin = myCryptoAdmin; // Encargado de proveer métodos de encriptación y HMAC
+    }
+
+    /**
+     * Ejecución secuencial desde AppSender hasta acá. La secuancia termina al ponerse en cola de envío de la Xbee para cada mensaje m
+     * @param m
+     */
+    public void sequentialRun(Message m){
+        byte[] b = this.myCryptoAdmin.encrypt(m.getBytes());    // Saco sus bytes y los encripto. Añado HMAC también
+        myXbeeSender.putByteInQueue(b);                         // Lo pongo en la Queue de envío
     }
 
     /**
