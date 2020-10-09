@@ -1,6 +1,7 @@
 package PresentationLayer.Packages.Components;
 
 import PresentationLayer.Packages.Messages.Message;
+import Utilities.DoubleOperations;
 
 /*
     Los Componentes virtualizan los componentes del auto. Tienen un arreglo de valores int y un arreglo de bits significativos.
@@ -30,7 +31,12 @@ public abstract class State {
 
     String ID;          // State ID, can be the name
     int[] myValues;     // True values
-    int[] bitSig;       // Bits significativos, MUST match myvalues[] lenght
+
+    public int len;                         // Deducido. Se calcula una vez. Número de valores en componente. Se usa en varios for()
+    public int[] decimales;                 // Deducido. Se calcula una vez. Cantidad de decimales de los valores
+    public int[] offset;                    // Deducido. Se calcula una vez. Offset para llegar del mínimo al 0
+    public int[] delta;                     // Deducido. Se calcula una vez. Cantidad de valores a representar
+    public int[] bitSignificativos;         // Deducido. Se calculauna vez.  Cantidad mínima de bits para representar 'delta' valores
 
 
     /**
@@ -39,10 +45,27 @@ public abstract class State {
      * @param bitsSignificativos : Array de bits significativos de cada valor en valores[]
      * @param ID : ID del Componente
      */
-    public State(String ID, int[] valores, int[] bitsSignificativos){
+    public State(String ID, double[] minimosConDecimal, double[] maximosConDecimal){
         this.ID = ID;
         this.myValues = valores;
-        this.bitSig = bitsSignificativos;
+
+        this.len = minimosConDecimal.length;
+
+        this.decimales = new int[len];
+        this.offset = new int[len];
+        this.delta = new int[len];
+        this.bitSignificativos = new int[len];
+
+
+
+        for (int i = 0; i < len; i++){
+            int min = DoubleOperations.extractDecimals(minimosConDecimal[i]);
+            int max = DoubleOperations.extractDecimals(maximosConDecimal[i]);
+            this.decimales[i] = Math.max(min, max);
+            this.offset[i] = (int) Math.floor(- (minimosConDecimal[i] * Math.pow(10, decimales[i])));
+            this.delta[i] = (int) Math.floor(1 + (maximosConDecimal[i] - minimosConDecimal[i]) * Math.pow(10, decimales[i]));
+            this.bitSignificativos[i] = (int) Math.ceil(Math.log(delta[i]) / Math.log(2));
+        }
     }
 
 
@@ -76,10 +99,10 @@ public abstract class State {
     public int[] getMyValues(){return this.myValues;}
 
     /**
-     * Retorna int[] de bitSig
+     * Retorna int[] de bitSignificativos
      * @return : Retorna array de bits significativos
      */
-    public int[] getBitSig(){return this.bitSig;}
+    public int[] getBitSig(){return this.bitSignificativos;}
 
     /**
      * Retorna el array de valores como String
@@ -104,7 +127,7 @@ public abstract class State {
     public String bitSigToString(){
         StringBuilder sb = new StringBuilder();
         sb.append("[ ");
-        for (int valor: this.bitSig
+        for (int valor: this.bitSignificativos
         ) {
             sb.append(valor);
             sb.append(" ");

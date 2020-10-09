@@ -5,6 +5,9 @@ package ApplicationLayer.LocalServices;
 import ApplicationLayer.AppComponents.AppComponent;
 import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.SocketIOServer;
+import org.json.simple.JSONObject;
+
+import java.util.HashMap;
 
 
 /**
@@ -16,6 +19,8 @@ public class WebSocketService extends Service{
     SocketIOServer server; // Actuamos como servidor, Cliente es la App en Vuejs
     Configuration config;
 
+    HashMap<String, JSONObject> map;
+
     /**
      * Constructor con valores default de parámetros
      */
@@ -25,6 +30,7 @@ public class WebSocketService extends Service{
         this.config.setHostname("localhost");
         this.config.setPort(3000);
         this.server = new SocketIOServer(config);
+        this.map = new HashMap<>();
     }
 
     /**
@@ -39,6 +45,7 @@ public class WebSocketService extends Service{
         this.config.setPort(PORT);
         this.server = new SocketIOServer(config);
         this.server.start();
+        this.map = new HashMap<>();
     }
 
     /**
@@ -49,8 +56,16 @@ public class WebSocketService extends Service{
     @Override
     void serve(AppComponent c) {
         try {
-            server.getBroadcastOperations().sendEvent(c.getID(), c.getMyJSON()); // Enviar evento a WebSocket del componente específico
-            //System.out.println("Bradcast de: " + c.getID());
+            if (map.containsKey(c.getID())) {
+                map.put(c.getID(), (JSONObject) map.get(c.getID()).put("data", c.getRealValues()));
+                server.getBroadcastOperations().sendEvent(c.getID(), map.get(c.getID())); // Enviar evento a WebSocket del componente específico
+                //System.out.println("Bradcast de: " + c.getID());
+            }else{
+                map.put(c.getID(), new JSONObject());
+                map.put(c.getID(), (JSONObject) map.get(c.getID()).put("data", c.getRealValues()));
+                server.getBroadcastOperations().sendEvent(c.getID(), map.get(c.getID())); // Enviar evento a WebSocket del componente específico
+                //System.out.println("Bradcast de: " + c.getID());
+            }
         }catch (Exception e){
             e.printStackTrace(); // Sólo se hace print, el sistema no se puede caer
         }

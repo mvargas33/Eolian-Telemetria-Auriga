@@ -17,8 +17,8 @@ public class StateSender extends State{
      * @param bitsSignificativos : Array de bits significativos de cada valor en valores[]
      * @param ID : ID del Componente
      */
-    public StateSender(String ID, int[] valores, int[] bitsSignificativos) {
-        super(ID, valores, bitsSignificativos);
+    public StateSender(String ID,) {
+        super(ID, );
         this.listOfMyMessagesWithIndexes = new LinkedList<>();
     }
 
@@ -46,6 +46,21 @@ public class StateSender extends State{
     }
 
     /*---------------------------------------------------- SENDING ----------------------------------------------------*/
+    /**
+     * SENDING DATA
+     * Calcula valores para capa de Presentación. "Compresión".
+     * Se usa variable global para optimizar uso de memoria.
+     * Pasa los valores actuales de capa de presentación a capa de presentación.
+     */
+    public void updatePresentationValuesAndEnQueue(){
+        // Update de valores int[]
+        for (int i = 0; i < len; i++) {
+            this.valoresAEnviar[i] = (int) Math.floor( valoresRealesActuales[i] * Math.pow(10, decimales[i]) ) + offset[i];
+        }
+        // Ejecutar llamadas de interfaz State-Mensaje hasta quedar en Queue de Xbee Sender
+        this.myPresentationState.replaceMyValues(this.valoresAEnviar);
+    }
+
 
     /**
      * UPDATE: Reemplazo directo de array values[] del componente.

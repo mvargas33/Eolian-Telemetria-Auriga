@@ -30,13 +30,6 @@ public class AppSender extends  AppComponent implements Runnable{
         this.myPresentationState = new StateSender(id, this.valoresAEnviar, this.bitSignificativos);
     }
 
-    /**
-     * SenderAdmin se setea a posteriori. Para poder crear el AppSender por separado
-     * @param mySenderAdmin : A quien se informa sobre nuevos valores y se pone ne cola
-     */
-    public void setSenderAdmin(SenderAdmin mySenderAdmin){
-        this.myPresentationState.setMySenderAdmin(mySenderAdmin);
-    }
 
     /**
      * Retorna el StateSender. Se usa para inicializar el state con mensajes
@@ -68,20 +61,7 @@ public class AppSender extends  AppComponent implements Runnable{
     }
 
 
-    /**
-     * SENDING DATA
-     * Calcula valores para capa de Presentación. "Compresión".
-     * Se usa variable global para optimizar uso de memoria.
-     * Pasa los valores actuales de capa de presentación a capa de presentación.
-     */
-    public void updatePresentationValuesAndEnQueue(){
-        // Update de valores int[]
-        for (int i = 0; i < len; i++) {
-            this.valoresAEnviar[i] = (int) Math.floor( valoresRealesActuales[i] * Math.pow(10, decimales[i]) ) + offset[i];
-        }
-        // Ejecutar llamadas de interfaz State-Mensaje hasta quedar en Queue de Xbee Sender
-        this.myPresentationState.replaceMyValues(this.valoresAEnviar);
-    }
+
 
     /**
      * Método principal de cada App State.
@@ -101,7 +81,7 @@ public class AppSender extends  AppComponent implements Runnable{
                     double[] newValues = newValuesQueue.poll(); // 1 : Leer buffer en busca de nuevos valores entregados
                     super.updateValues(newValues);              // 2: Actualizar valores localmente
                     super.informToServices();                   // 3: Mandar a ponerse en cola de servicios
-                    this.updatePresentationValuesAndEnQueue();  // 4-5: Update de Messages asociados en capas inferiores/Ponerse en cola de envío
+                    //this.updatePresentationValuesAndEnQueue();  // 4-5: Update de Messages asociados en capas inferiores/Ponerse en cola de envío
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -117,7 +97,7 @@ public class AppSender extends  AppComponent implements Runnable{
         try {
             super.updateValues(newValues);              // 2: Actualizar valores localmente
             super.sequentialInformToServices();         // 3: Pasar por todos los servicios ejecutando los serve(this) en cada caso
-            this.updatePresentationValuesAndEnQueue();  // 4-5: Update de Messages asociados en capas inferiores/Ponerse en cola de envío
+            //this.updatePresentationValuesAndEnQueue();  // 4-5: Update de Messages asociados en capas inferiores/Ponerse en cola de envío
         } catch (Exception e) {
             e.printStackTrace();
         }

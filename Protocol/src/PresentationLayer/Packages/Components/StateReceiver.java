@@ -17,7 +17,7 @@ public class StateReceiver extends State{
      * @param bitsSignificativos : Array de bits significativos de cada valor en valores[]
      * @param ID                 : ID del Componente
      */
-    public StateReceiver(String ID, int[] valores, int[] bitsSignificativos) {
+    public StateReceiver(String ID) {
         super(ID, valores, bitsSignificativos);
         this.hashOfMyMessagesWithIndexes = new HashMap<>();
     }
