@@ -1,4 +1,4 @@
-package Utilities;
+package ApplicationLayer.LocalServices.WirelessService.Utilities;
 
 /**
  * Clase que implementa funciones complementarias a usar por el proyecto.

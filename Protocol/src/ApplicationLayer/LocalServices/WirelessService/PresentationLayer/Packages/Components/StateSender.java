@@ -1,9 +1,8 @@
-package PresentationLayer.Packages.Components;
+package ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Components;
 
-import PresentationLayer.Packages.Messages.Message;
-import PresentationLayer.Packages.Messages.SentMessage;
-import Utilities.BitOperations;
-import ZigBeeLayer.Sending.SenderAdmin;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Messages.Message;
+import ApplicationLayer.LocalServices.WirelessService.Utilities.BitOperations;
+import ApplicationLayer.LocalServices.WirelessService.ZigBeeLayer.Sending.SenderAdmin;
 
 import java.util.LinkedList;
 
@@ -13,22 +12,14 @@ public class StateSender extends State{
 
     /**
      * Sender State, encargado de lecturas directas de sensores y envío de datos por SenderAdmin
-     * @param valores : Array de valores del componente
-     * @param bitsSignificativos : Array de bits significativos de cada valor en valores[]
      * @param ID : ID del Componente
      */
-    public StateSender(String ID,) {
-        super(ID, );
+    public StateSender(String ID, double[] minimosConDecimal, double[] maximosConDecimal, SenderAdmin mySenderAdmin) {
+        super(ID, minimosConDecimal, maximosConDecimal);
+        this.mySenderAdmin = mySenderAdmin;
         this.listOfMyMessagesWithIndexes = new LinkedList<>();
     }
 
-    /**
-     * El senderAdmin se setea a posteriori
-     * @param mySenderAdmin: A quien informa sobre nuevos valores leídos
-     */
-    public void setMySenderAdmin(SenderAdmin mySenderAdmin){
-        this.mySenderAdmin = mySenderAdmin; // Thread de Sender Admin debe ser creado antes que todos los componentes.
-    }
 
     /*-------------------------------------------------- INITIALIZING --------------------------------------------------*/
 
@@ -52,23 +43,13 @@ public class StateSender extends State{
      * Se usa variable global para optimizar uso de memoria.
      * Pasa los valores actuales de capa de presentación a capa de presentación.
      */
-    public void updatePresentationValuesAndEnQueue(){
+    public void updatePresentationValuesAndEnQueue(double[] newValues){
         // Update de valores int[]
         for (int i = 0; i < len; i++) {
-            this.valoresAEnviar[i] = (int) Math.floor( valoresRealesActuales[i] * Math.pow(10, decimales[i]) ) + offset[i];
+            this.myValues[i] = (int) Math.floor( newValues[i] * Math.pow(10, decimales[i]) ) + offset[i];
         }
         // Ejecutar llamadas de interfaz State-Mensaje hasta quedar en Queue de Xbee Sender
-        this.myPresentationState.replaceMyValues(this.valoresAEnviar);
-    }
-
-
-    /**
-     * UPDATE: Reemplazo directo de array values[] del componente.
-     * Luego actualiza todos los mensajes que corresponden a este componente, para luego ponerse en cola de envío.
-     * @param newValues : Array a reemplzar en Componente
-     */
-    public void replaceMyValues(int[] newValues){
-        this.myValues = newValues; // Reemplaza valores directamente
+        //this.myPresentationState.replaceMyValues(this.valoresAEnviar);
 
         for (MessagesWithIndexes mi : this.listOfMyMessagesWithIndexes
         ) {
@@ -89,7 +70,7 @@ public class StateSender extends State{
         // al usar OR como operando intermedio, i.e. los valores anterior preservan y hacen OR con nuevos, causando update erróneo
         // Header se preserva
         BitOperations.resetToZeroBitRange(bytes, m.raw_inicio, m.raw_fin);
-        BitOperations.updateByteArrayFromValues(myValues, bytes, bitSig, m.myBitSig_inicio,  m.raw_inicio, m.raw_fin); // Update Messsage con lo que me corresponde
+        BitOperations.updateByteArrayFromValues(myValues, bytes, bitSignificativos, m.myBitSig_inicio,  m.raw_inicio, m.raw_fin); // Update Messsage con lo que me corresponde
         //m.message.updateRawBytes(bytes); // TODO: Ver si esta linea es necesaria | Reemplazo directo de bytes de mensaje
         //m.message.bytes = bytes; // Update myself
         /*SentMessage mm = (SentMessage) m.message;

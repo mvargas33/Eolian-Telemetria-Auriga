@@ -1,8 +1,6 @@
 package ApplicationLayer.AppComponents;
 
 import ApplicationLayer.LocalServices.Service;
-import Utilities.DoubleOperations;
-import org.json.simple.JSONObject;
 
 import java.util.LinkedList;
 
@@ -22,14 +20,10 @@ public class AppComponent{
     public int len;                         // Deducido. Se calcula una vez. Número de valores en componente. Se usa en varios for()
     LinkedList<Service> mySubscriptions;    // Servicios a los que les comunico mis updates
 
-    // Usado por clase externa. TODO: Refactor en map (idCOmponente, JSON) en WebSocketService
-    public JSONObject myJSON;               // JSON Object de los valoresRealesActuales, re-usado por WebSocketService para enviar data por eventos
-
     /**
      * Inicia los objetos con constructores default
      */
     private AppComponent(){
-        this.myJSON = new JSONObject();
         this.mySubscriptions = new LinkedList<>();
     }
 
@@ -105,8 +99,16 @@ public class AppComponent{
      * Método que usan los localServices
      * @return array double[] de valores actuales del AppComponent
      */
-    public double[] getRealValues() {
+    public double[] getValoresRealesActuales() {
         return this.valoresRealesActuales;
+    }
+
+    public double[] getMinimosConDecimal() {
+        return minimosConDecimal;
+    }
+
+    public double[] getMaximosConDecimal() {
+        return maximosConDecimal;
     }
 
     @Override

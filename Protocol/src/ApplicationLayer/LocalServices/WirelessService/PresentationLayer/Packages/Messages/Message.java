@@ -1,7 +1,7 @@
-package PresentationLayer.Packages.Messages;
+package ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Messages;
 
-import PresentationLayer.Packages.Components.State;
-import Utilities.BitOperations;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Components.State;
+import ApplicationLayer.LocalServices.WirelessService.Utilities.BitOperations;
 
 /*
  *  Piezas de bits que se intercambian entre las Xbees para hacer funcionar el protocolo.

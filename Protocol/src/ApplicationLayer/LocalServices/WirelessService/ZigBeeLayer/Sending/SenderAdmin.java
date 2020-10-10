@@ -1,7 +1,7 @@
-package ZigBeeLayer.Sending;
+package ApplicationLayer.LocalServices.WirelessService.ZigBeeLayer.Sending;
 
-import PresentationLayer.Encryption.CryptoAdmin;
-import PresentationLayer.Packages.Messages.Message;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Encryption.CryptoAdmin;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Messages.Message;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 

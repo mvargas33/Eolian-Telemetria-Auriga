@@ -2,7 +2,7 @@ package ApplicationLayer.SensorReading.FenixArduinoReader;
 
 import ApplicationLayer.AppComponents.AppSender;
 import ApplicationLayer.SensorReading.SensorsReader;
-import PresentationLayer.Packages.Components.State;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Components.State;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;

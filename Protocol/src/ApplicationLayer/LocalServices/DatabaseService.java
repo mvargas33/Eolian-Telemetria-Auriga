@@ -19,7 +19,7 @@ public class DatabaseService extends Service implements Runnable{
      * @param c AppComponent a guardar en la base de datos
      */
     @Override
-    void serve(AppComponent c){
+    protected void serve(AppComponent c){
         try{
             // INSERT
         }catch (Exception e){

@@ -1,8 +1,8 @@
-package ZigBeeLayer.Receiving;
+package ApplicationLayer.LocalServices.WirelessService.ZigBeeLayer.Receiving;
 
-import PresentationLayer.Encryption.CryptoAdmin;
-import PresentationLayer.Packages.Messages.Message;
-import PresentationLayer.Packages.Messages.ReceivedMessage;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Encryption.CryptoAdmin;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Messages.Message;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Messages.ReceivedMessage;
 
 
 import java.util.HashMap;

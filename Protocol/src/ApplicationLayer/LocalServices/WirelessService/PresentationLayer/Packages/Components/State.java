@@ -1,7 +1,7 @@
-package PresentationLayer.Packages.Components;
+package ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Components;
 
-import PresentationLayer.Packages.Messages.Message;
-import Utilities.DoubleOperations;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Messages.Message;
+import ApplicationLayer.LocalServices.WirelessService.Utilities.DoubleOperations;
 
 /*
     Los Componentes virtualizan los componentes del auto. Tienen un arreglo de valores int y un arreglo de bits significativos.
@@ -29,9 +29,8 @@ public abstract class State {
         }
     }
 
-    String ID;          // State ID, can be the name
-    int[] myValues;     // True values
-
+    private String ID;                      // State ID, can be the name
+    public int[] myValues;                  // True values
     public int len;                         // Deducido. Se calcula una vez. Número de valores en componente. Se usa en varios for()
     public int[] decimales;                 // Deducido. Se calcula una vez. Cantidad de decimales de los valores
     public int[] offset;                    // Deducido. Se calcula una vez. Offset para llegar del mínimo al 0
@@ -41,23 +40,18 @@ public abstract class State {
 
     /**
      * Base State, encargado de lecturas directas de sensores y envío de datos por SenderAdmin
-     * @param valores : Array de valores del componente
-     * @param bitsSignificativos : Array de bits significativos de cada valor en valores[]
      * @param ID : ID del Componente
      */
     public State(String ID, double[] minimosConDecimal, double[] maximosConDecimal){
         this.ID = ID;
-        this.myValues = valores;
-
         this.len = minimosConDecimal.length;
-
+        this.myValues = new int[len];
         this.decimales = new int[len];
         this.offset = new int[len];
         this.delta = new int[len];
         this.bitSignificativos = new int[len];
 
-
-
+        // Calculation of bitSignificativos array
         for (int i = 0; i < len; i++){
             int min = DoubleOperations.extractDecimals(minimosConDecimal[i]);
             int max = DoubleOperations.extractDecimals(maximosConDecimal[i]);

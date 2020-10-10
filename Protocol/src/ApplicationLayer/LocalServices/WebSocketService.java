@@ -54,15 +54,15 @@ public class WebSocketService extends Service{
      * @param c AppComponent a consumir
      */
     @Override
-    void serve(AppComponent c) {
+    protected void serve(AppComponent c) {
         try {
             if (map.containsKey(c.getID())) {
-                map.put(c.getID(), (JSONObject) map.get(c.getID()).put("data", c.getRealValues()));
+                map.put(c.getID(), (JSONObject) map.get(c.getID()).put("data", c.getValoresRealesActuales()));
                 server.getBroadcastOperations().sendEvent(c.getID(), map.get(c.getID())); // Enviar evento a WebSocket del componente específico
                 //System.out.println("Bradcast de: " + c.getID());
             }else{
                 map.put(c.getID(), new JSONObject());
-                map.put(c.getID(), (JSONObject) map.get(c.getID()).put("data", c.getRealValues()));
+                map.put(c.getID(), (JSONObject) map.get(c.getID()).put("data", c.getValoresRealesActuales()));
                 server.getBroadcastOperations().sendEvent(c.getID(), map.get(c.getID())); // Enviar evento a WebSocket del componente específico
                 //System.out.println("Bradcast de: " + c.getID());
             }

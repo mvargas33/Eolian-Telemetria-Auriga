@@ -1,7 +1,7 @@
-package PresentationLayer.Packages.Messages;
+package ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Messages;
 
-import PresentationLayer.Packages.Components.State;
-import PresentationLayer.Packages.Components.StateReceiver;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Components.State;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Components.StateReceiver;
 
 import java.util.LinkedList;
 
@@ -33,14 +33,14 @@ public class ReceivedMessage extends Message{
      * para que miren el mensaje y estos extraigan los bits que necesiten.
      * @param newBytes : Valores actualizados de los bytes del mensaje
      */
-    public void updateRawBytes(byte[] newBytes){
+    public void updateRawBytes(byte[] newBytes) throws Exception{
         this.bytes = newBytes; // Update myself
         // Notify my components to check at my values
         for (StateReceiver s: this.myStates
         ) {
             //s.getAppReceiver().enqueueNewMessages(this); // Se pone en cola de cada AppComponent para que haga llamadas a sus States que lo actualicen
             s.updateMyValues(this.header); // Update de values de los States a los cuales pertenesco
-            s.getAppReceiver().sequentialRun(this); // Llamada secuencial. Luego subo a actualizar valores de presentación
+            //s.getAppReceiver().sequentialRun(this); // Llamada secuencial. Luego subo a actualizar valores de presentación
         }
     }
 }

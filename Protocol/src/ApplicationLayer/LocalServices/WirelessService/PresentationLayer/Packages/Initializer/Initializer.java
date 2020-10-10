@@ -1,7 +1,7 @@
-package PresentationLayer.Packages.Initializer;
+package ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Initializer;
 
-import PresentationLayer.Packages.Components.State;
-import PresentationLayer.Packages.Messages.Message;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Components.State;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Messages.Message;
 
 import java.util.HashMap;
 import java.util.LinkedList;

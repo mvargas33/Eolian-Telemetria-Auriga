@@ -2,7 +2,6 @@ package ApplicationLayer.LocalServices;
 
 import ApplicationLayer.AppComponents.AppComponent;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
@@ -10,7 +9,7 @@ import java.util.Arrays;
  */
 public class PrintService extends Service{
     @Override
-    void serve(AppComponent c) {
-        System.out.println(c.getID() + " : " + Arrays.toString(c.getRealValues()));
+    protected void serve(AppComponent c) {
+        System.out.println(c.getID() + " : " + Arrays.toString(c.getValoresRealesActuales()));
     }
 }

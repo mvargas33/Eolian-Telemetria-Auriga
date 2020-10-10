@@ -1,17 +1,10 @@
 package ApplicationLayer.AppComponents;
 
-import PresentationLayer.Packages.Components.State;
-import PresentationLayer.Packages.Components.StateSender;
-import ZigBeeLayer.Sending.SenderAdmin;
-
-import java.util.LinkedList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class AppSender extends  AppComponent implements Runnable{
     private final BlockingQueue<double[]> newValuesQueue; // Cola de valores nuevos puestos por el Sensor Reader
-    public int[] valoresAEnviar;            // Valores en formato de capa de presentación. (Sólo por optimización de memoria)
-    StateSender myPresentationState;              // Estado correspondiente de capa inferior
 
     /**
      * SimpleComponent sólo se caracteriza por sus valores mínimos, máximos, y su ID que se usará para muchas cosas.
@@ -24,27 +17,6 @@ public class AppSender extends  AppComponent implements Runnable{
     public AppSender(String id, double[] minimosConDecimal, double[] maximosConDecimal, String[] nombreParametros) {
         super(id, minimosConDecimal, maximosConDecimal, nombreParametros);
         this.newValuesQueue = new LinkedBlockingQueue<>();
-        this.valoresAEnviar = new int[len];
-
-        // Crea estado de capa inferior, con los datos deducidos de esta capa.
-        this.myPresentationState = new StateSender(id, this.valoresAEnviar, this.bitSignificativos);
-    }
-
-
-    /**
-     * Retorna el StateSender. Se usa para inicializar el state con mensajes
-     * @return StateSender
-     */
-    public State getState(){
-        return this.myPresentationState;
-    }
-
-    /**
-     * Retorna la lista de MessagesWithIndex de la capa de presentación. Se usa para estimar delays
-     * @return lista de MessagesWithIndex de la capa de presentación.
-     */
-    public LinkedList<State.MessagesWithIndexes> getMessages(){
-        return this.myPresentationState.getListOfMyMessagesWithIndexes();
     }
 
     /**
@@ -59,9 +31,6 @@ public class AppSender extends  AppComponent implements Runnable{
             e.printStackTrace();
         }
     }
-
-
-
 
     /**
      * Método principal de cada App State.

@@ -7,19 +7,16 @@ import ApplicationLayer.LocalServices.PrintService;
 import ApplicationLayer.LocalServices.WebSocketService;
 import ApplicationLayer.SensorReading.RandomReaders.RandomReader;
 import ExcelToAppComponent.CSVToAppComponent;
-import PresentationLayer.Encryption.CryptoAdmin;
-import PresentationLayer.Encryption.KeyAdmin;
-import PresentationLayer.Packages.Components.State;
-import PresentationLayer.Packages.Components.StateSender;
-import PresentationLayer.Packages.Initializer.Initializer;
-import PresentationLayer.Packages.Initializer.ReceiverInitializer;
-import PresentationLayer.Packages.Initializer.SenderInitializer;
-import PresentationLayer.Packages.Messages.Message;
-import PresentationLayer.Packages.Messages.ReceivedMessage;
-import ZigBeeLayer.Receiving.ReceiverAdmin;
-import ZigBeeLayer.Receiving.XbeeReceiver;
-import ZigBeeLayer.Sending.SenderAdmin;
-import ZigBeeLayer.Sending.XbeeSender;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Encryption.CryptoAdmin;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Encryption.KeyAdmin;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Components.State;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Initializer.ReceiverInitializer;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Initializer.SenderInitializer;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Messages.Message;
+import ApplicationLayer.LocalServices.WirelessService.ZigBeeLayer.Receiving.ReceiverAdmin;
+import ApplicationLayer.LocalServices.WirelessService.ZigBeeLayer.Receiving.XbeeReceiver;
+import ApplicationLayer.LocalServices.WirelessService.ZigBeeLayer.Sending.SenderAdmin;
+import ApplicationLayer.LocalServices.WirelessService.ZigBeeLayer.Sending.XbeeSender;
 import com.digi.xbee.api.XBeeDevice;
 import org.junit.jupiter.api.Test;
 
@@ -29,8 +26,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class InitializerTest {
     // Cryptography common parameters

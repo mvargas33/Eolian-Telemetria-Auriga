@@ -1,7 +1,7 @@
-package PresentationLayer.Packages.Messages;
+package ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Messages;
 
-import PresentationLayer.Packages.Components.State;
-import PresentationLayer.Packages.Components.StateSender;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Components.State;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Components.StateSender;
 
 import java.util.LinkedList;
 

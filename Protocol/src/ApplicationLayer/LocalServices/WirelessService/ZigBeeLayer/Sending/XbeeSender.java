@@ -1,6 +1,6 @@
-package ZigBeeLayer.Sending;
+package ApplicationLayer.LocalServices.WirelessService.ZigBeeLayer.Sending;
 
-import ZigBeeLayer.Receiving.XbeeReceiver;
+import ApplicationLayer.LocalServices.WirelessService.ZigBeeLayer.Receiving.XbeeReceiver;
 import com.digi.xbee.api.XBeeDevice;
 import com.digi.xbee.api.exceptions.XBeeException;
 

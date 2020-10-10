@@ -1,4 +1,4 @@
-package Utilities;
+package ApplicationLayer.LocalServices.WirelessService.Utilities;
 
 public class BitOperations {
     // Raw tiene n bytes de la forma:
