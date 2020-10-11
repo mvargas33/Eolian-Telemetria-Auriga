@@ -94,11 +94,7 @@ public class AppComponent{
         return this.ID;
     }
 
-    /**
-     * Retorna el array de valores actuales del AppComponent.
-     * Método que usan los localServices
-     * @return array double[] de valores actuales del AppComponent
-     */
+
     public double[] getValoresRealesActuales() {
         return this.valoresRealesActuales;
     }

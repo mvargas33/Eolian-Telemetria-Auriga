@@ -30,21 +30,21 @@ public class AppReceiver extends AppComponent implements Runnable{
      * 3 : Update de double[] locales
      * 4 : Se coloca en cola del objeto WebSocketService y DatabaseService
      */
-//    @Override
-//    public void run() {
-//        try{
-//            while(true){
-//                while(!messageQueue.isEmpty()){
-//                    Message m = messageQueue.poll();                                // 1 : Leer buffer en busca de nuevos valores entregados
-//                    this.myPresentationState.updateMyValues(m.getHeader());         // 2 : Update int[] de Componente presentación
-//                    this.updateFromReceiving(myPresentationState.getMyValues());    // 3 : Update double[] de valores reales
-//                    super.informToServices();                                       // 4 : Informar a suscripciones
-//                }
-//            }
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//    }
+    @Override
+    public void run() {
+        try{
+            while(true){
+                while(!messageQueue.isEmpty()){
+                    Message m = messageQueue.poll();                                // 1 : Leer buffer en busca de nuevos valores entregados
+                    this.myPresentationState.updateMyValues(m.getHeader());         // 2 : Update int[] de Componente presentación
+                    //this.updateFromReceiving(myPresentationState.getMyValues());    // 3 : Update double[] de valores reales
+                    super.informToServices();                                       // 4 : Informar a suscripciones
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Mismo que run() pero en forma secuencial

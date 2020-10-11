@@ -13,12 +13,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class WirelessSender extends WirelessService{
-    // Xbee Sender parameter
-    String XBEE_PORT = "COM3";
-
     StateSender actualStateSender; // To save memory
 
-    public WirelessSender(List<AppSender> components) throws Exception{
+    public WirelessSender(List<AppSender> components, String XBEE_PORT) throws Exception{
+        this.XBEE_PORT = XBEE_PORT;
 
         CryptoAdmin cryptoAdmin = setupCryptoAdmin();
         XbeeSender xbeeSender = new XbeeSender(XBEE_BAUD, XBEE_PORT, (int) MSG_RAW_SIZE_BYTES);

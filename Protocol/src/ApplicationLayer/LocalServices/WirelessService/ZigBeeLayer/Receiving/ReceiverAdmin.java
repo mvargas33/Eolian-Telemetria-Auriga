@@ -43,7 +43,6 @@ public class ReceiverAdmin implements Runnable{
         }
     }
 
-
     /**
      * Consume() : Lee un dato del buffer compartido. Obtiene el mensaje correspondiente según el ID (header)
      * y le pasa el nuevo valor a este objeto Message. Después el Message le hace notify() de Observer a
