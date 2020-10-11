@@ -104,11 +104,21 @@ public class XbeeReceiver implements Runnable{
      * */
     @Override
     public void run() {
-        while(true){
-            try{
-                Thread.sleep(1000000);
-            } catch (Exception err) {
-                err.printStackTrace();
+        if (myDeviceR != null){
+            while(true){
+                try{
+                    Thread.sleep(1000000);
+                } catch (Exception err) {
+                    err.printStackTrace();
+                }
+            }
+        }else{
+            while(true){
+                try{
+                    return; // End thread as XbeeSender put byte[] in queue
+                } catch (Exception err) {
+                    err.printStackTrace();
+                }
             }
         }
     }

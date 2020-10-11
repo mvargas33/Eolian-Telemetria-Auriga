@@ -48,6 +48,40 @@ public class WirelessReceiver extends WirelessService{
     }
 
     /**
+     * Testing constructor
+     * @param components list of AppComponents
+     * @throws Exception
+     */
+    public WirelessReceiver(List<AppReceiver> components) throws Exception {
+        CryptoAdmin cryptoAdmin = setupCryptoAdmin();
+        xbeeReceiver = new XbeeReceiver();
+
+        LinkedList<State> state_list = new LinkedList<>(); // Only for initializer
+
+        for (AppReceiver c: components ) {
+            StateReceiver newState = new StateReceiver(c.getID(), c.getMinimosConDecimal(), c.getMaximosConDecimal(), c);
+            state_list.add(newState);
+            states.put(c.getID(), newState); // Local global map
+        }
+
+        // Initializer of States/Messages
+        ReceiverInitializer receiverInitializer = new ReceiverInitializer(state_list, MSG_SIZE_BITS, FIRST_HEADER);
+        map = receiverInitializer.genMessages();
+
+        // Receiver Admin
+        receiverAdmin = new ReceiverAdmin(xbeeReceiver, map, cryptoAdmin);
+
+    }
+
+    /**
+     * FOR TESTING: PASSING TO XBEEsENDER TO BUT BYTES DIRECLTY IN QUEUE
+     * @return
+     */
+    public XbeeReceiver getXbeeReceiver() {
+        return xbeeReceiver;
+    }
+
+    /**
      * Debe sacar los componentes pendientes de su lista, si esta vacía no entra
      */
     @Override

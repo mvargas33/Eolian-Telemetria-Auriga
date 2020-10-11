@@ -117,9 +117,10 @@ public class XbeeSender implements Runnable{
      */
     @Override
     public void run() {
-        while(true){
-            try{
-            sendByte(); // Sacar byte[] de la cola y enviarlo
+        if (myDevice != null) {
+            while (true) {
+                try {
+                    sendByte(); // Sacar byte[] de la cola y enviarlo
 
             /*String str_data = "";
             for (int i = 0; i < 114; i++){
@@ -131,10 +132,19 @@ public class XbeeSender implements Runnable{
                 while(true) {
                     myDevice.sendBroadcastData(data);
                 }*/
-            } catch (Exception e) {
-                e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        // This is used for testing wothout Xbees connected
+        }else{
+            while (true) {
+                try {
+                    sendByteOffline();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
-
     }
 }

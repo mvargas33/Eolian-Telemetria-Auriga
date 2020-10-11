@@ -32,6 +32,10 @@ public class WirelessService extends Service {
     int MSG_SIZE_BITS = 8*(16*5);
     int FIRST_HEADER = 56;
 
+    public WirelessService() {
+        this.states = new HashMap<>();
+    }
+
     /**
      * Ejecutarlo para cambiar las keys de sender/receiver
      * @throws NoSuchAlgorithmException Error de AES (no saldrá nunca)

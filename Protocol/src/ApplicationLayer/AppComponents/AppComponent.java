@@ -41,6 +41,7 @@ public class AppComponent{
         this.minimosConDecimal = minimosConDecimal;
         this.maximosConDecimal = maximosConDecimal;
         this.nombreParametros = nombreParametros;
+        this.len = minimosConDecimal.length;
         this.valoresRealesActuales = new double[len];
     }
 
