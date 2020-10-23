@@ -10,6 +10,7 @@ import java.nio.Buffer;
 import java.util.ArrayList;
 
 public class GPSReader extends SensorsReader {
+    //temporal, por ahora solo va a leer longitud y latitud
 
     public GPSReader(AppSender myComponent, long readingDelayInMS) {
         super(myComponent, readingDelayInMS);
@@ -59,7 +60,7 @@ public class GPSReader extends SensorsReader {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                readMessage(line)
+                readMessage(line);
             }
 
             //para ver si termino
