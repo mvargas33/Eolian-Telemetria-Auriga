@@ -11,9 +11,44 @@ import java.util.ArrayList;
 
 public class GPSReader extends SensorsReader {
     //temporal, por ahora solo va a leer longitud y latitud
+    private double longitud;
+    private double latitud;
+    private int lat_dir; // 0 == N (North), 1 == S (South)
+    private int long_dir; // 0 == E (East), 1 == W (West)
+    private double[] values = new double[2]; //por ahora solo guarda 2 valores, values[0] = lat y values[1] = long
 
     public GPSReader(AppSender myComponent, long readingDelayInMS) {
         super(myComponent, readingDelayInMS);
+    }
+
+    public void GLLreader(String[] msg) {
+        //aca habria que agregar bloqueadores en toda la operacion porque es una seccion critica
+        //referencia (ojo que esta corrida la nomenclatura en el link) https://gpsd.gitlab.io/gpsd/NMEA.html#_gll_geographic_position_latitudelongitude
+        //por ahora esto sería t_odo
+        //esto requiere setters? todo: setters
+        latitud = Double.parseDouble(msg[1]);
+        switch (msg[2]) {
+            case "N":
+                lat_dir = 0;
+                break;
+            case "S":
+                lat_dir = 1;
+                break;
+            default:
+                System.out.println("ERROR: Valor "+msg[2]+" no identificado como direccion de latitud.");
+        }
+        longitud = Double.parseDouble(msg[3]);
+        switch (msg[4]) {
+            case "E":
+                long_dir = 0;
+                break;
+            case "W":
+                long_dir = 1;
+                break;
+            default:
+                System.out.println("ERROR: Valor "+msg[4]+" no identificado como direccion de longitud.");
+                // todo: no se si un mensaje de aviso basta o es mejor tirar un error.
+        }
     }
 
     void readMessage(String message) {
@@ -22,7 +57,7 @@ public class GPSReader extends SensorsReader {
             // esto se podria hacer con una clase 'NMEAsentenceReader' implementada para cada tipo de mensaje, pero no se
             // que tanto valga la pena, primero se planea implementar asi, luego evaluar si es mejor abstraerlo mas.
             case "$GPGLL":
-                //GPGLLreader
+                GLLreader(msg);
                 break;
             case "$GPMDA":
                 //GPMDAreader
@@ -81,6 +116,8 @@ public class GPSReader extends SensorsReader {
 
     @Override
     public double[] read() {
-        return new double[0];
+        values[0] = latitud;
+        values[1] = longitud;
+        return values;
     }
 }
