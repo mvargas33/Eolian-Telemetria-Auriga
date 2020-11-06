@@ -1,10 +1,10 @@
 //package Test.OldTests;
 //
-//import PresentationLayer.Packages.Components.State;
-//import PresentationLayer.Packages.Initializer.Initializer;
-//import ZigBeeLayer.Receiving.XbeeReceiver;
-//import ZigBeeLayer.Sending.SenderAdmin;
-//import ZigBeeLayer.Sending.XbeeSender;
+//import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Components.State;
+//import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Initializer.Initializer;
+//import ApplicationLayer.LocalServices.WirelessService.ZigBeeLayer.Receiving.XbeeReceiver;
+//import ApplicationLayer.LocalServices.WirelessService.ZigBeeLayer.Sending.SenderAdmin;
+//import ApplicationLayer.LocalServices.WirelessService.ZigBeeLayer.Sending.XbeeSender;
 //
 //import java.util.HashMap;
 //import java.util.LinkedList;

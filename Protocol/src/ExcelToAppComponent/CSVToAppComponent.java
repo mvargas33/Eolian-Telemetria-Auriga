@@ -100,7 +100,7 @@ public class CSVToAppComponent {
                 min[i] = Double.parseDouble(min_str[i]);
                 max[i] = Double.parseDouble(max_str[i]);
             }
-            list.add(new AppReceiver(comp.split("\\.")[0], min, max, params));
+            list.add(new AppReceiver(comp.split("\\.")[0] + "_R", min, max, params));
         }
 
         return list;

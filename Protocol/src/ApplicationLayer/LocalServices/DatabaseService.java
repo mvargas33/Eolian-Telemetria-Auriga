@@ -19,9 +19,10 @@ public class DatabaseService extends Service implements Runnable{
      * @param c AppComponent a guardar en la base de datos
      */
     @Override
-    void serve(AppComponent c){
+    protected void serve(AppComponent c){
         try{
-            // INSERT
+            // INSERT double[] en su tabla, sacar el timestamp del momento en que guarda
+
         }catch (Exception e){
             e.printStackTrace(); // Sólo se hace print, el sistema no se puede caer
         }

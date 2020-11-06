@@ -1,7 +1,7 @@
 package Test.UnitTests;
 
-import PresentationLayer.Encryption.CryptoAdmin;
-import PresentationLayer.Encryption.KeyAdmin;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Encryption.CryptoAdmin;
+import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Encryption.KeyAdmin;
 
 import static org.junit.jupiter.api.Assertions.*;
 
