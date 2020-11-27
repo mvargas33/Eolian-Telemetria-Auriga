@@ -79,9 +79,15 @@ public class KeyAdmin {
      */
     public void setKeyFromEncodedString(String encodedKey){
         // decode the base64 encoded string
+        System.out.println("Cryptography Key: " + encodedKey);
         byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
         // rebuild key using SecretKeySpec
-        this.key = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+        try {
+            this.key = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+        }catch (Exception e){
+            System.out.println("Problema al incializar SecretKeySpec");
+            e.printStackTrace();
+        }
     }
 
     /**

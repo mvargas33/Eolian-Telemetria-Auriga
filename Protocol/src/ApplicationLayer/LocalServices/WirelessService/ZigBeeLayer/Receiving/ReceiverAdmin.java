@@ -31,6 +31,7 @@ public class ReceiverAdmin implements Runnable{
      * DEBE CHECKEAR CRC DEL MENSAJE
      */
     public void consumeByteArrayFromQueue() throws Exception{
+        System.out.println("consumeByteArrayFromQueue");
         while(true) {
             for (int i= 0; i < this.xbeeReceiver.sizeOfQueue(); i++) {      // Saca de una pasada tantos byte[] como habían en cola hasta evaluar la condición
                 byte[] b = this.xbeeReceiver.consumeByteFromQueue();        // Extraer bytes RAW
@@ -50,6 +51,7 @@ public class ReceiverAdmin implements Runnable{
      */
     @Override
     public void run() {
+        System.out.println("Receiver admin inicializado ...");
         while (true){
             try {
                 consumeByteArrayFromQueue();

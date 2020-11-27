@@ -33,10 +33,12 @@ public class XbeeRandomTest {
         for (AppComponent ac: appReceivers) {ac.subscribeToService(printService); }
 
         // Execute threads
-        ExecutorService mainExecutor = Executors.newFixedThreadPool(2);
+        ExecutorService mainExecutor = Executors.newFixedThreadPool(4);
 
         // Init threads
-        mainExecutor.submit(wirelessReceiver);
+        //mainExecutor.submit(wirelessReceiver); // Crea 2 threads más
+        mainExecutor.submit(wirelessReceiver.getXbeeReceiver());
+        mainExecutor.submit(wirelessReceiver.getReceiverAdmin());
         mainExecutor.submit(printService);
 
         mainExecutor.shutdown();

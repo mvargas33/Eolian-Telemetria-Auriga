@@ -36,7 +36,7 @@ public class XbeeSandBox {
     /* Constants */
 
     private static final String PORT_RECEIVE = "COM6";
-    private static final int BAUD_RATE = 9600;
+    private static final int BAUD_RATE = 230400;
 
     /*
     public static void main(String[] args) {
@@ -77,11 +77,11 @@ public class XbeeSandBox {
         System.out.println(" |  XBee Java Library Send Data Sample  |");
         System.out.println(" +--------------------------------------+\n");
 
-        XBeeDevice myDevice = new XBeeDevice(PORT_SEND, BAUD_RATE);
+        //XBeeDevice myDevice = new XBeeDevice(PORT_SEND, BAUD_RATE);
         //byte[] dataToSend = DATA_TO_SEND.getBytes();
         byte[] dataToSend = {0,1,2,3,4,5};
 
-        try {
+        //try {
             /*----------- RECEIVER -------------*/
             XBeeDevice myDeviceR = new XBeeDevice(PORT_RECEIVE, BAUD_RATE);
 
@@ -97,7 +97,7 @@ public class XbeeSandBox {
                 System.exit(1);
             }
             /*------------------------------------*/
-
+/*
             myDevice.open();
 
             // Obtain the remote XBee device from the XBee network.
@@ -115,13 +115,14 @@ public class XbeeSandBox {
             myDevice.sendData(remoteDevice, dataToSend);
 
             System.out.println("Success");
-
-        } catch (XBeeException e) {
+*/
+        //}
+        /* catch (XBeeException e) {
             System.out.println("Error");
             e.printStackTrace();
             System.exit(1);
-        } finally {
-            myDevice.close();
-        }
+        }/* finally {
+            myDeviceR.close();
+        }*/
     }
 }
