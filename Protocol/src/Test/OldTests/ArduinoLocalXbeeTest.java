@@ -1,14 +1,14 @@
 //package Test.OldTests;
 //
-//import PresentationLayer.Packages.Components.State;
+//import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Components.State;
 //import ApplicationLayer.LocalServices.DatabaseService;
 //import ApplicationLayer.LocalServices.WebSocketService;
-//import PresentationLayer.Packages.Initializer.Initializer;
-//import PresentationLayer.Packages.Messages.Message;
-//import ZigBeeLayer.Receiving.ReceiverAdmin;
-//import ZigBeeLayer.Receiving.XbeeReceiver;
-//import ZigBeeLayer.Sending.SenderAdmin;
-//import ZigBeeLayer.Sending.XbeeSender;
+//import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Initializer.Initializer;
+//import ApplicationLayer.LocalServices.WirelessService.PresentationLayer.Packages.Messages.Message;
+//import ApplicationLayer.LocalServices.WirelessService.ZigBeeLayer.Receiving.ReceiverAdmin;
+//import ApplicationLayer.LocalServices.WirelessService.ZigBeeLayer.Receiving.XbeeReceiver;
+//import ApplicationLayer.LocalServices.WirelessService.ZigBeeLayer.Sending.SenderAdmin;
+//import ApplicationLayer.LocalServices.WirelessService.ZigBeeLayer.Sending.XbeeSender;
 //import ApplicationLayer.SensorReading.FenixArduinoReader.ArduinoReader;
 //
 //import java.util.HashMap;

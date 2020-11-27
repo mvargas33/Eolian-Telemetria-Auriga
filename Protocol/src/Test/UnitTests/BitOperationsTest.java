@@ -1,9 +1,7 @@
 package Test.UnitTests;
 
-import Utilities.BitOperations;
+import ApplicationLayer.LocalServices.WirelessService.Utilities.BitOperations;
 
-
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
