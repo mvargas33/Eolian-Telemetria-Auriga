@@ -19,7 +19,7 @@
                 :loading="loading2"
                 :percentage="percentage2"
                 round
-                :color="darkMode ? 'grey' : 'grey'"
+                :color="darkMode ? 'purple-10' : 'purple-10'"
                 @click="turnDarkMode()"
                 :icon="darkMode ? 'o_dark_mode' : 'dark_mode'"
                 >
