@@ -66,6 +66,9 @@
             </div>
         </div>
         <div>
+            <SocAuriga></SocAuriga>
+        </div>
+        <div>
             <AlertasInferiores></AlertasInferiores>
         </div>
     </div>
@@ -77,10 +80,11 @@ import Marcha from './Marcha'
 import KmRecorridos from './KmRecorridos'
 import AlertasSuperiores from './AlertasSuperiores'
 import AlertasInferiores from './AlertasInferiores'
+import SocAuriga from './SocAuriga'
 
 export default {
   name: 'Principal',
-  components: { VueSvgGauge, Marcha, KmRecorridos, AlertasSuperiores, AlertasInferiores },
+  components: { VueSvgGauge, Marcha, KmRecorridos, AlertasSuperiores, AlertasInferiores, SocAuriga },
   data () {
     return { hola: 0 }
   }

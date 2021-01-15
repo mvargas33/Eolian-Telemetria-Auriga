@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="flex flex-center topCenter-auriga">
     <div class="col">
       <div class="row">
         <Principal></Principal>
