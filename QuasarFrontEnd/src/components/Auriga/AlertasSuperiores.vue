@@ -2,11 +2,11 @@
     <div class="row" style="padding-bottom: 3%">
         <!-- Luces -->
         <div class="col allCenter alert-icon">
-            <q-icon color="white" name="flare" />
+            <q-icon color="grey" name="flare" />
         </div>
         <!-- Luces altas -->
         <div class="col allCenter alert-icon">
-            <q-icon color="white" name="filter_tilt_shift" />
+            <q-icon color="grey" name="filter_tilt_shift" />
         </div>
         <!-- Intermitente izquierdo -->
         <div class="col allCenter alert-icon">
@@ -26,14 +26,14 @@
             <q-icon color="blue" name="explore" />
         </div>
         <div class="col allCenter alert-icon">
-            <q-icon color="white" name="offline_bolt" />
+            <q-icon color="grey" name="offline_bolt" />
         </div>
         <div class="col allCenter alert-icon">
-            <q-icon color="white" name="power_settings_new" />
+            <q-icon color="grey" name="power_settings_new" />
         </div>
         <div class="col allCenter alert-icon">
-            <q-icon v-if="musicON" color="white" name="volume_up" />
-            <q-icon v-if="!musicON" color="white" name="volume_off" />
+            <q-icon v-if="musicON" color="grey" name="volume_up" />
+            <q-icon v-if="!musicON" color="grey" name="volume_off" />
         </div>
         <div class="col allCenter alert-icon">
             <q-icon v-if="gpsON" color="blue" name="location_on" />
