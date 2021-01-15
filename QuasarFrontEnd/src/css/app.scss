@@ -7,6 +7,28 @@ justify-content: center;
 align-items: center;
 }
 
+.topCenter {
+padding: 0;
+height: 100%;
+display: flex;
+justify-content: center;
+align-items: flex-start;
+}
+
+.dark {
+    background-color: #101f38;
+    color: white;
+}
+
+.light {
+    background-color: white;
+    color: black;
+}
+
+.marcha {
+    font-size: 30px;
+}
+
 .etiqueta {
 font-size: 90%;
 }
