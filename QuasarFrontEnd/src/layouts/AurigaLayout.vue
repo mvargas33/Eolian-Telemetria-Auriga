@@ -99,19 +99,21 @@ const menuList = [
   }
 ]
 
+import { mapState, mapMutations } from 'vuex'
+
 export default {
   name: 'Auriga',
   data () {
     return {
       leftDrawerOpen: false,
-      menuList,
-      darkMode: true
+      menuList
     }
   },
+  computed: {
+    ...mapState('general', ['darkMode'])
+  },
   methods: {
-    turnDarkMode () {
-      this.darkMode = !this.darkMode
-    },
+    ...mapMutations('general', ['turnDarkMode']),
     darkModeClass (mode) {
       if (mode === true) {
         return 'dark'

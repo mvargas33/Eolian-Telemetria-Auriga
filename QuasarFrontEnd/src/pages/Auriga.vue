@@ -5,6 +5,7 @@
         <Principal></Principal>
       </div>
       <div class="row">
+        <Temperaturas></Temperaturas>
       </div>
     </div>
   </q-page>
@@ -12,9 +13,10 @@
 
 <script>
 import Principal from '../components/Auriga/Principal'
+import Temperaturas from '../components/Auriga/Temperaturas'
 
 export default {
   name: 'Auriga',
-  components: { Principal }
+  components: { Principal, Temperaturas }
 }
 </script>

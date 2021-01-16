@@ -7,7 +7,10 @@
       <q-linear-progress stripe size="50px" :value="mainData[3]/100"
       track-color="rgbInterpolationSOC(mainData[3]/100)" class="q-mt-sm" :rounded="true">
         <div class="absolute-full flex flex-center">
-          <q-badge color="white" text-color="black" :label="progressLabel2" />
+          <!-- <q-badge trasparent text-color="black" :label="progressLabel2" style="font-size: 70%"/> -->
+          <div class="allCenter" :style="darkMode ? 'font-size:100%;color: white' : 'font-size:100%;color: black'">
+              {{progressLabel2}}
+          </div>
         </div>
       </q-linear-progress>
     </div>
@@ -21,6 +24,7 @@ export default {
   name: 'SocAuriga',
   computed: {
     ...mapState('fenix', ['mainData']),
+    ...mapState('general', ['darkMode']),
     progressLabel2 () {
       return (this.$store.state.fenix.mainData[3]).toFixed(2) + '%'
     }

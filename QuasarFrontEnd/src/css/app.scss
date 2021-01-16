@@ -31,6 +31,13 @@ justify-content: center;
 align-items: flex-end;
 }
 
+.badge-etiqueta {
+padding: 0;
+display: flex;
+justify-content: center;
+align-items: flex-end; 
+}
+
 .dark {
     background-color: #101f38;
     color: white;
@@ -51,6 +58,10 @@ font-size: 90%;
 
 .numero {
 font-size: 190%;
+}
+
+.temperaturas {
+    font-size: 250%;
 }
 
 .km-recorridos {
