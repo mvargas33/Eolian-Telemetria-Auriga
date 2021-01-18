@@ -1,8 +1,11 @@
 <template>
-    <div class="padding-1 temperaturas" style="width:100%">
+    <div class="temperaturas" style="width:100%;padding-left:5%;padding-right:5%">
         <div class="row">
-            <div class="col-2 allCenter">
-                Imagen
+            <div class="col-2 topCenter">
+                <img
+                src="../../assets/Auriga/battery.png"
+                style="max-width: 100%;padding:5%"
+                />
             </div>
             <div class="col">
                 <div class="row">
@@ -63,8 +66,11 @@
         </div>
         <div class="row">
             <div class="col">
-                <div class="row allCenter">
-                    Imagen
+                <div class="row topCenter">
+                    <img
+                    src="../../assets/Auriga/engine.png"
+                    style="max-width: 40%;padding:5%"
+                    />
                 </div>
                 <div class="row">
                     <div class="col allCenter">
@@ -76,8 +82,11 @@
                 </div>
             </div>
             <div class="col">
-                <div class="row allCenter">
-                    Imagen
+                <div class="row topCenter">
+                    <img
+                    src="../../assets/Auriga/wire.png"
+                    style="max-width: 40%;padding:5%"
+                    />
                 </div>
                 <div class="row">
                     <div class="col allCenter">
@@ -89,8 +98,11 @@
                 </div>
             </div>
             <div class="col">
-                <div class="row allCenter">
-                    Imagen
+                <div class="row topCenter">
+                    <img
+                    src="../../assets/Auriga/solar-panel.png"
+                    style="max-width: 40%;padding:5%"
+                    />
                 </div>
                 <div class="row">
                     <div class="col allCenter">
