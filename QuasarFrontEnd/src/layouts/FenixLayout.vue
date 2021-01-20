@@ -14,6 +14,10 @@
                 <q-toolbar-title>
                 Eolian Fénix
                 </q-toolbar-title>
+                <q-btn
+                to="/auriga">
+                    A
+                </q-btn>
             </q-toolbar>
         </q-header>
 

@@ -24,7 +24,7 @@ const routes = [
     path: '/auriga',
     component: () => import('layouts/AurigaLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Auriga.vue') }
+      { path: '/auriga', component: () => import('pages/Auriga.vue') }
     ]
   },
   {
