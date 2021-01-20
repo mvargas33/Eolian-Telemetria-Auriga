@@ -1,0 +1,14 @@
+{
+  "name": "servidor_produccion",
+  "version": "1.0.0",
+  "description": "Servidor de produccion de frontend",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run dev"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
