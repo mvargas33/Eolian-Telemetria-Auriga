@@ -33,6 +33,13 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/AurigaBasic.vue') }
     ]
+  },
+  {
+    path: '/aurigabaterias',
+    component: () => import('layouts/AurigaLayout.vue'),
+    children: [
+      { path: '/aurigabaterias', component: () => import('pages/AurigaBaterias.vue') }
+    ]
   }
 ]
 
