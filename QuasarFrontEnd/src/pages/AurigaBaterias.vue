@@ -1,34 +1,17 @@
 <template>
     <div class="padding-5">
-      <div class="row">
-        <div class="col">
-          <h5>O</h5>
-        </div>
-        <div class="col">
-          <h5>O</h5>
-        </div>
-        <div class="col">
-          <h5>O</h5>
-        </div>
-        <div class="col">
-          <h5>O</h5>
-        </div>
-        <div class="col">
-          <h5>O</h5>
-        </div>
-        <div class="col">
-          <h5>O</h5>
-        </div>
+      <div>
+        <AlertasSuperiores></AlertasSuperiores>
       </div>
       <div class="row">
         <div class="col">
-          <h5>HOLA</h5>
+          <h5>67 Km/Hr</h5>
         </div>
         <div class="col">
-          <h5>HOLA</h5>
+          <Marcha></Marcha>
         </div>
         <div class="col">
-          <h5>HOLA</h5>
+          <h5>3.1 KW</h5>
         </div>
       </div>
       <div class="q-pa-md">
@@ -37,14 +20,32 @@
       <hr/>
       <div class="row">
         <div class="col">
-          <h1>HOLA</h1>
+          <div class="row">
+            <div class="col">
+              <h5>{{ minBatteries }}</h5>
+            </div>
+            <div class="col">
+              <h5>{{ meanBatteries }}</h5>
+            </div>
+            <div class="col">
+              <h5>{{ maxBatteries }}</h5>
+            </div>
+          </div>
         </div>
         <div class="col">
-          <h1>HOLA</h1>
+          <AlertasInferiores/>
         </div>
-        <div class="col">
-          <h1>HOLA</h1>
-        </div>
+         <div class="row">
+            <div class="col">
+              <h5>{{ minBatteries }}</h5>
+            </div>
+            <div class="col">
+              <h5>{{ meanBatteries }}</h5>
+            </div>
+            <div class="col">
+              <h5>{{ maxBatteries }}</h5>
+            </div>
+          </div>
       </div>
       <hr/>
       <!-- <q-btn color="white" text-color="black" label="Change Modulo 1" @click="updateModulo(0)"/> -->
@@ -156,6 +157,10 @@
 </template>
 
 <script>
+
+import AlertasSuperiores from '../components/Auriga/AlertasSuperiores'
+import AlertasInferiores from '../components/Auriga/AlertasInferiores'
+import Marcha from '../components/Auriga/Marcha'
 /* Métodos para interpolar colores en RGB o HSL. Source: https://codepen.io/njmcode/pen/axoyD/ */
 
 // // Converts a #ffffff hex string into an [r,g,b] array
@@ -253,9 +258,19 @@ export default {
       progress: '0.5'
     }
   },
+  components: { AlertasSuperiores, AlertasInferiores, Marcha },
   name: 'BancoBaterias',
   computed: {
-    ...mapState('fenix', ['bms_volt', 'bms_temp'])
+    ...mapState('fenix', ['bms_volt', 'bms_temp']),
+    minBatteries () {
+      return 'minimoBat'
+    },
+    meanBatteries () {
+      return 'mediaBat'
+    },
+    maxBatteries () {
+      return 'maximoBat'
+    }
   },
   methods: {
     ...mapMutations('fenix', ['updateModulo']),
