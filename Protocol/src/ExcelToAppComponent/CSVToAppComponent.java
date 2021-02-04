@@ -24,8 +24,10 @@ public class CSVToAppComponent {
      * @return Lista de nombre de archivos .csv
      */
     public static List<String> listFilesForFolder(String directory) {
+        System.out.println(directory);
         List<String> filenames = new LinkedList<String>();
         File folder = new File(directory);
+        System.out.println(folder.getAbsolutePath());
 
         File[] list = folder.listFiles();
         if (list != null) {
