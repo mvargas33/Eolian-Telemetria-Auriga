@@ -4,6 +4,8 @@ import com.digi.xbee.api.XBeeDevice;
 import com.digi.xbee.api.exceptions.XBeeException;
 import com.digi.xbee.api.listeners.IDataReceiveListener;
 import com.digi.xbee.api.models.XBeeMessage;
+import com.digi.xbee.api.utils.HexUtils;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -24,9 +26,9 @@ public class XbeeReceiver implements Runnable{
 
         @Override
         public void dataReceived(XBeeMessage xbeeMessage) {
-            //System.out.format("From %s >> %s | %s%n", xbeeMessage.getDevice().get64BitAddress(),
-                    //HexUtils.prettyHexString(HexUtils.byteArrayToHexString(xbeeMessage.getData())),
-                    //new String(xbeeMessage.getData()));
+//            System.out.format("From %s >> %s | %s%n", xbeeMessage.getDevice().get64BitAddress(),
+//                    HexUtils.prettyHexString(HexUtils.byteArrayToHexString(xbeeMessage.getData())),
+//                    new String(xbeeMessage.getData()));
             try{
                 //System.out.println("Recibido.");
                 this.bytesReceived.put(xbeeMessage.getData()); // Pone datos en la Queue compartida por esta clase y XbeeReceiver
@@ -56,7 +58,7 @@ public class XbeeReceiver implements Runnable{
         try {
             myDeviceR.open();
             myDeviceR.addDataListener(new XbeeReceiver.MyListener(this.bytesReceived));
-            System.out.println("Xbee destino inicializada correctamente ...");
+            System.out.println("Xbee receiver inicializada correctamente ...");
         } catch (XBeeException e) {
             e.printStackTrace();
             System.exit(1);

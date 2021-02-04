@@ -24,7 +24,7 @@ const routes = [
     path: '/auriga',
     component: () => import('layouts/AurigaLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Auriga.vue') }
+      { path: '/auriga', component: () => import('pages/Auriga.vue') }
     ]
   },
   {
@@ -32,6 +32,13 @@ const routes = [
     component: () => import('layouts/EmptyLayout.vue'),
     children: [
       { path: '', component: () => import('pages/AurigaBasic.vue') }
+    ]
+  },
+  {
+    path: '/aurigabaterias',
+    component: () => import('layouts/AurigaLayout.vue'),
+    children: [
+      { path: '/aurigabaterias', component: () => import('pages/AurigaBaterias.vue') }
     ]
   }
 ]

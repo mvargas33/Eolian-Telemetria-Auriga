@@ -1,5 +1,4 @@
 package ApplicationLayer.SensorReading.GPSReader;
-
 import ApplicationLayer.AppComponents.AppSender;
 import ApplicationLayer.SensorReading.SensorsReader;
 

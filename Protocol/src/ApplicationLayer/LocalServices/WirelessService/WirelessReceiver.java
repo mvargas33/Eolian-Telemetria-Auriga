@@ -81,6 +81,12 @@ public class WirelessReceiver extends WirelessService{
         return xbeeReceiver;
     }
 
+
+    public ReceiverAdmin getReceiverAdmin() {
+        return receiverAdmin;
+    }
+
+
     /**
      * Debe sacar los componentes pendientes de su lista, si esta vacía no entra
      */

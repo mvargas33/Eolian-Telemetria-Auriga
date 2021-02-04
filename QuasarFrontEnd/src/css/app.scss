@@ -7,12 +7,69 @@ justify-content: center;
 align-items: center;
 }
 
+.topCenter {
+padding: 0;
+height: 50%;
+display: flex;
+justify-content: center;
+align-items: flex-start;
+}
+
+.topCenter-auriga {
+padding: 1%;
+height: 100%;
+display: flex;
+justify-content: center;
+align-items: flex-start;
+}
+
+.botCenter {
+padding: 0;
+height: 50%;
+display: flex;
+justify-content: center;
+align-items: flex-end;
+}
+
+.badge-etiqueta {
+padding: 0;
+display: flex;
+justify-content: center;
+align-items: flex-end; 
+}
+
+.dark {
+    background-color: #101f38;
+    color: white;
+}
+
+.light {
+    background-color: white;
+    color: black;
+}
+
+.marcha {
+font-size: 150%;
+}
+
 .etiqueta {
 font-size: 90%;
 }
 
 .numero {
 font-size: 190%;
+}
+
+.temperaturas {
+    font-size: 250%;
+}
+
+.km-recorridos {
+font-size: 290%;
+}
+
+.km-recorridos-label {
+font-size: 140%;
 }
 
 .texto-bold {
@@ -25,4 +82,8 @@ font-weight: bold;
 
 .padding-1 {
     padding: 1%;
+}
+
+.alert-icon {
+    font-size: 70px;
 }
