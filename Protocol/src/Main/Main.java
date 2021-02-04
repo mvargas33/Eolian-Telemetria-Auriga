@@ -20,6 +20,8 @@ import java.util.concurrent.Executors;
 
 public class Main {
 
+    public String dir = "Eolian-Telemetria-Auriga/Protocol/src/ExcelToAppComponent/Eolian_fenix";
+
     public XbeeReceiver xbeeReceiver;
     /**
      * Se lanza esta funcion al iniciar la RPI.
@@ -34,8 +36,7 @@ public class Main {
 
     void receiverSetup() throws Exception {
         // ojo con este path!!
-        //String dir = "src/ExcelToAppComponent/Eolian_fenix";
-        String dir = "C:\\Users\\Dante\\Desktop\\Eolian\\Eolian-Telemetria-Auriga\\Protocol\\src\\ExcelToAppComponent\\Eolian_fenix";
+        //String dir = "../ExcelToAppComponent/Eolian_fenix";
 
         List<AppReceiver> appReceivers = CSVToAppComponent.CSVs_to_AppReceivers(dir);
 
@@ -65,8 +66,8 @@ public class Main {
      */
     void senderSetup() throws Exception {
         // ojo con estos paths antes de correr el main!!
-        //String dir = "src/ExcelToAppComponent/Eolian_fenix";
-        String dir = "C:\\Users\\Dante\\Desktop\\Eolian\\Eolian-Telemetria-Auriga\\Protocol\\src\\ExcelToAppComponent\\Eolian_fenix";
+        //String dir = "../ExcelToAppComponent/Eolian_fenix";
+
 
         List<AppSender> appSenders = CSVToAppComponent.CSVs_to_AppSenders(dir);
         LinkedList<RandomReader> randomReaders = new LinkedList<>();
