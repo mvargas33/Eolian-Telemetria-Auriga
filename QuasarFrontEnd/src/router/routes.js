@@ -35,10 +35,23 @@ const routes = [
     ]
   },
   {
+    path: '/map',
+    component: () => import('layouts/AurigaLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/Map.vue') }
+    ]
+  },
+  {
+    path: '/graphs',
+    component: () => import('layouts/AurigaLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/Graphs.vue') }
+
     path: '/aurigabaterias',
     component: () => import('layouts/AurigaLayout.vue'),
     children: [
       { path: '/aurigabaterias', component: () => import('pages/AurigaBaterias.vue') }
+
     ]
   }
 ]
