@@ -33,6 +33,20 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/AurigaBasic.vue') }
     ]
+  },
+  {
+    path: '/map',
+    component: () => import('layouts/AurigaLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/Map.vue') }
+    ]
+  },
+  {
+    path: '/graphs',
+    component: () => import('layouts/AurigaLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/Graphs.vue') }
+    ]
   }
 ]
 
